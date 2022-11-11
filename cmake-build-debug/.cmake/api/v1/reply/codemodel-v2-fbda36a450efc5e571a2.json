@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "E:/GitHub/2UFP_Projeto_AED/cmake-build-debug",
-		"source" : "E:/GitHub/2UFP_Projeto_AED"
+		"build" : "C:/Users/manue/Desktop/GitHub/2UFP_Projeto_AED/cmake-build-debug",
+		"source" : "C:/Users/manue/Desktop/GitHub/2UFP_Projeto_AED"
 	},
 	"version" : 
 	{
