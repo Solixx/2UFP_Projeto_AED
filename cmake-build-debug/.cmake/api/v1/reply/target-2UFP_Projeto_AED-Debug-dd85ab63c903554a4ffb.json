@@ -56,9 +56,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				1,
-				4,
-				5
+				1
 			]
 		}
 	],
@@ -96,18 +94,14 @@
 			"sourceIndexes" : 
 			[
 				0,
-				1,
-				4,
-				5
+				1
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				2,
-				3,
-				6
+				2
 			]
 		}
 	],
@@ -122,34 +116,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "pr/projeto.c",
+			"path" : "projeto/projeto.c",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "pr/projeto.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"path" : "libs_src/lib_util.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "libs_src/lib_util.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "libs_src/lib_stats.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "libs_src/lib_stats.h",
+			"path" : "projeto/projeto.h",
 			"sourceGroupIndex" : 1
 		}
 	],

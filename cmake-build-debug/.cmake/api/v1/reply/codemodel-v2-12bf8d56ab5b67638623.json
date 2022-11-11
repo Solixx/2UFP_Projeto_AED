@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "2UFP_Projeto_AED::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-2UFP_Projeto_AED-Debug-a3c7532d1f3f49ab07df.json",
+					"jsonFile" : "target-2UFP_Projeto_AED-Debug-dd85ab63c903554a4ffb.json",
 					"name" : "2UFP_Projeto_AED",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/manue/Desktop/GitHub/2UFP_Projeto_AED/cmake-build-debug",
-		"source" : "C:/Users/manue/Desktop/GitHub/2UFP_Projeto_AED"
+		"build" : "E:/GitHub/2UFP_Projeto_AED/cmake-build-debug",
+		"source" : "E:/GitHub/2UFP_Projeto_AED"
 	},
 	"version" : 
 	{
