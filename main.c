@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include "projeto/projeto.h"
 
 int main() {
-    printf("Hello, World!\n");
+
+    main_projeto();
+    
     return 0;
 }

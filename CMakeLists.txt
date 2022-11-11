@@ -3,4 +3,4 @@ project(2UFP_Projeto_AED C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(2UFP_Projeto_AED main.c)
+add_executable(2UFP_Projeto_AED main.c projeto/projeto.c projeto/projeto.h)
