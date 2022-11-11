@@ -1,0 +1,7 @@
+# ninja log v5
+0	104	6899068091593590	CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj	9b25622549f1997c
+8	107	6899068091603590	CMakeFiles/2UFP_Projeto_AED.dir/pr/projeto.c.obj	5319c47e0d4b0a8c
+107	182	6899068092333588	2UFP_Projeto_AED.exe	848266d4ef3683e7
+7	99	6899068626397281	CMakeFiles/2UFP_Projeto_AED.dir/libs_src/lib_stats.c.obj	b09d6de1b6c7c0da
+2	488	6899068630299823	CMakeFiles/2UFP_Projeto_AED.dir/libs_src/lib_util.c.obj	2a84483f1dada44b
+489	556	6899068630959822	2UFP_Projeto_AED.exe	487f1247b24304a8
