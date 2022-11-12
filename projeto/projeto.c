@@ -7,9 +7,9 @@
 void main_projeto(){
 
     //cliente0();
-    //cliente1();
+    cliente1();
     //cliente2();
-    cliente3();
+    //cliente3();
 }
 
 void cliente0(){
@@ -20,6 +20,7 @@ void cliente0(){
 
 void cliente1(){
     int k = 4;
+    int n[k];
 
     print_bipolar_numbers(k);
 }
