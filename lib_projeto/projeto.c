@@ -4,7 +4,7 @@
 
 #include "projeto.h"
 
-void main_projeto(){
+void main_lib_projeto(){
 
     //cliente0();
     cliente1();

@@ -26,6 +26,6 @@ void cliente1();
 void cliente2();
 void cliente3();
 
-void main_projeto();
+void main_lib_projeto();
 
 #endif //INC_2UFP_PROJETO_AED_PROJETO_H
