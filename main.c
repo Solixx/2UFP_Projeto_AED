@@ -19,7 +19,7 @@ void projetoAED(){
     char *fileName = "../data/chaves_publicas";
     FILE *fileChavesPubString = fopen(fileName, "r");
     char **matrixPub, **matrixPriv;
-    char lines = 3, fileLinePos = 0;
+    int lines = 2, fileLinePos = 0;
 
     //Alocar espaço para a matriz e inicializar com 0
     matrixPub = (char **) calloc(lines * sizeof (char *), sizeof (char *));

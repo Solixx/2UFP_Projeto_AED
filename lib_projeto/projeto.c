@@ -23,7 +23,7 @@ void cliente1(){
     int n[k];
 
     //print_bipolar_numbers(k);
-    printf("%s\n", find_mul_bipolar_number("312"));
+    printf("%s\n", find_mul_bipolar_number("22"));
 }
 
 void cliente2(){
@@ -136,23 +136,26 @@ void print_bipolar_numbers(int k){
 
 char* find_mul_bipolar_number(char *k){
     char *n;
-    char rightNum = '0', leftNum = '0';
-    int num = 0, digitos = 2, power = 10;
-    int j = 0, changePos = digitos-1, numDigits = 2;
+    char rightNum = '1', leftNum = '0';
+    int digitos = 2, j = 0, changePos = 0, numDigits = 2, findNonZero = 0;
+
+    for (int i = 0; i < strlen(k); ++i) {
+
+    }
 
     n = (char *) calloc(digitos, sizeof (char));
     while (1){
         n = (char *) realloc(n, digitos);
-        if(leftNum == '9' && changePos == 0 && rightNum == '8'){
+        if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
             digitos++;
-            leftNum = '0';
+            leftNum = '1';
             rightNum = '0';
         }
-        if(rightNum == '9' && changePos == 0){
+        if(rightNum == '9' && changePos == digitos -1){
             leftNum++;
         }
-        if(changePos == 0){
-            changePos = digitos-1;
+        if(changePos == digitos -1){
+            changePos = 0;
             if(rightNum != '9'){
                 rightNum++;
             } else{
@@ -162,7 +165,7 @@ char* find_mul_bipolar_number(char *k){
         if(leftNum == rightNum){
             rightNum++;
         }
-        if(j >= changePos){
+        if(j > changePos){
             n[j] = rightNum;
         } else{
             n[j] = leftNum;
@@ -179,15 +182,7 @@ char* find_mul_bipolar_number(char *k){
             printf("NUM = %d\n", num);
              */
             numDigits = digitos;
-            for (int i = 0; i < numDigits; ++i) {
-                if(n[i]-'0' == 0){
-                    n[i] = n[i+1];
-                    numDigits--;
-                }
-                if(i == numDigits-1){
-                    n[i+1] = '\0';
-                }
-            }
+            n[strlen(n)] = '\0';
             if(atoi(n) > atoi(k) && atoi(n)%atoi(k) == 0){
                 return n;
             }
@@ -197,11 +192,10 @@ char* find_mul_bipolar_number(char *k){
             }
             num = 0;
              */
-            changePos--;
+            changePos++;
             j = 0;
 
         } else{
-            //printf("%c", n[j]);
             j++;
         }
     }
