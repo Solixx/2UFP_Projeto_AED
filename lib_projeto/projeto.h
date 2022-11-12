@@ -15,6 +15,8 @@ int bipolar_number(char *text);
 
 void print_bipolar_numbers(int k);
 
+char* find_mul_bipolar_number(char *k);
+
 int hist(char* num, int histo[]);
 
 int RL_V1(char* num, int runLess[]);

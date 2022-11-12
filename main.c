@@ -16,27 +16,32 @@ int main() {
 
 void projetoAED(){
 
-    char *fileName = "E:/GitHub/2UFP_Projeto_AED/data/chaves_publicas.txt";
+    char *fileName = "../data/chaves_publicas";
     FILE *fileChavesPubString = fopen(fileName, "r");
-    char **matrixPub;
-    char lines = 2, columns = 2;
+    char **matrixPub, **matrixPriv;
+    char lines = 3, fileLinePos = 0;
 
-    if(fileChavesPubString == NULL){
-        printf("jdjwahjda");
-    }
-
+    //Alocar espaço para a matriz e inicializar com 0
     matrixPub = (char **) calloc(lines * sizeof (char *), sizeof (char *));
+    matrixPriv = (char **) calloc(lines * sizeof (char *), sizeof (char *));
 
+    //Alocar espaço para cada linha da matriz e inicializar com 0
     for (int i = 0; i < lines; ++i) {
-        for (int j = 0; j < columns; ++j) {
-            matrixPub[i] = (char *) calloc(columns * sizeof (char *), sizeof (char));
-        }
+        matrixPub[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+        matrixPriv[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+    }
+
+    //Cada linha da matriz recebe uma chave publica guardada no ficheiro "data/chaves_publicas"
+    while (fgets(matrixPub[fileLinePos], 100, fileChavesPubString) != NULL){
+        matrixPub[fileLinePos] = strtok(matrixPub[fileLinePos], "\n");
+        fileLinePos++;
     }
 
     for (int i = 0; i < lines; ++i) {
-        for (int j = 0; j < columns; ++j) {
-            printf("%s", matrixPub[i]);
-        }
-        printf("\n");
+        matrixPriv[i] = find_mul_bipolar_number(matrixPub[i]);
+    }
+
+    for (int i = 0; i < lines; ++i) {
+        printf("%s\n", matrixPriv[i]);
     }
 }

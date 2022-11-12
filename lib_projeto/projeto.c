@@ -22,7 +22,8 @@ void cliente1(){
     int k = 4;
     int n[k];
 
-    print_bipolar_numbers(k);
+    //print_bipolar_numbers(k);
+    printf("%s\n", find_mul_bipolar_number("312"));
 }
 
 void cliente2(){
@@ -128,6 +129,79 @@ void print_bipolar_numbers(int k){
             j = 0;
         } else{
             printf("%d", n[j]);
+            j++;
+        }
+    }
+}
+
+char* find_mul_bipolar_number(char *k){
+    char *n;
+    char rightNum = '0', leftNum = '0';
+    int num = 0, digitos = 2, power = 10;
+    int j = 0, changePos = digitos-1, numDigits = 2;
+
+    n = (char *) calloc(digitos, sizeof (char));
+    while (1){
+        n = (char *) realloc(n, digitos);
+        if(leftNum == '9' && changePos == 0 && rightNum == '8'){
+            digitos++;
+            leftNum = '0';
+            rightNum = '0';
+        }
+        if(rightNum == '9' && changePos == 0){
+            leftNum++;
+        }
+        if(changePos == 0){
+            changePos = digitos-1;
+            if(rightNum != '9'){
+                rightNum++;
+            } else{
+                rightNum = '0';
+            }
+        }
+        if(leftNum == rightNum){
+            rightNum++;
+        }
+        if(j >= changePos){
+            n[j] = rightNum;
+        } else{
+            n[j] = leftNum;
+        }
+        if(j == digitos-1){
+            /*
+            for (int i = 0; i < digitos; ++i) {
+                if(i < digitos-1){
+                    n[i] *= 10;
+                }
+                num += n[i];
+            }
+
+            printf("NUM = %d\n", num);
+             */
+            numDigits = digitos;
+            for (int i = 0; i < numDigits; ++i) {
+                if(n[i]-'0' == 0){
+                    n[i] = n[i+1];
+                    numDigits--;
+                }
+                if(i == numDigits-1){
+                    n[i+1] = '\0';
+                }
+            }
+            if(atoi(n) > atoi(k) && atoi(n)%atoi(k) == 0){
+                return n;
+            }
+            /*
+            if(num > k && num%k == 0){
+                return num;
+            }
+            num = 0;
+             */
+            changePos--;
+            j = 0;
+
+        } else{
+            //printf("%c", n[j]);
             j++;
         }
     }
