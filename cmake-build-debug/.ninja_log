@@ -1,11 +1,7 @@
 # ninja log v5
-1	85	6899791692645450	CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj	9b25622549f1997c
+1	91	6899793631656232	CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj	9b25622549f1997c
 8	89	6899791692695447	CMakeFiles/2UFP_Projeto_AED.dir/projeto/testes.c.obj	5a3e66715287b087
 9	121	6899777500222536	CMakeFiles/2UFP_Projeto_AED.dir/projeto/projeto.c.obj	d6d1cf0dbe48c6c9
-89	154	6899791693315446	2UFP_Projeto_AED.exe	3a89520c8862bf38
-1	128	6899792870273854	CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj	9b25622549f1997c
+103	174	6899794695700613	2UFP_Projeto_AED.exe	fcb7ae5f8babdbc7
 7	158	6899792870273854	CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj	d08c7de5f6e63d7f
-9	163	6899792870613853	CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj	9a8ca333aedac1a7
-163	230	6899792871253854	2UFP_Projeto_AED.exe	fcb7ae5f8babdbc7
-1	83	6899792944687524	CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj	9b25622549f1997c
-84	151	6899792945327525	2UFP_Projeto_AED.exe	fcb7ae5f8babdbc7
+1	103	6899794695010614	CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj	9a8ca333aedac1a7

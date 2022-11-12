@@ -4,8 +4,8 @@
 
 int main() {
 
-    //main_lib_projeto();
-    main_test();
+    main_lib_projeto();
+    //main_test();
 
     return 0;
 }
