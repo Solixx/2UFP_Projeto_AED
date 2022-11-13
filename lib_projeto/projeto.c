@@ -139,12 +139,8 @@ void print_bipolar_numbers(int k){
 
 char* find_mul_bipolar_number(char *k){
     char *n;
-    char rightNum = '1', leftNum = '0';
+    char rightNum = '0', leftNum = '1';
     int digitos = 2, j = 0, changePos = 0, numDigits = 2, findNonZero = 0;
-
-    for (int i = 0; i < strlen(k); ++i) {
-
-    }
 
     n = (char *) calloc(digitos, sizeof (char));
     while (1){
