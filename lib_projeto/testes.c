@@ -41,26 +41,32 @@ void matrixDinamicaInt(){
 void matrixDinamicaString(){
 
     char **matrix;
-    char c = 0;
-    int lines = 3, columns = 6;
+    char *c = "0";
+    int lines = 1, columns = 2;
 
-    matrix = (char **) malloc(lines * sizeof (char *));
+    matrix = calloc(lines * sizeof (char *), sizeof (char *));
 
     for (int i = 0; i < lines; ++i) {
-        matrix[i] = (char *) malloc(columns * sizeof (char));
+        matrix[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
     }
 
     for (int i = 0; i < lines; ++i) {
-        for (int j = 0; j < columns; ++j) {
-            matrix[i][j] = c;
-            c++;
-        }
+        matrix[i] = c;
+        c++;
     }
 
     for (int i = 0; i < lines; ++i) {
-        for (int j = 0; j < columns; ++j) {
-            printf("%d\t", matrix[i][j]);
-        }
+        printf("%s\t", matrix[i]);
+        printf("\n");
+    }
+
+    matrix = (char **) realloc(matrix, lines+1 * sizeof (char *));
+    matrix[lines-1] = "2";
+    matrix[lines] = "3";
+    lines++;
+
+    for (int i = 0; i < lines; ++i) {
+        printf("%s\t", matrix[i]);
         printf("\n");
     }
 }
