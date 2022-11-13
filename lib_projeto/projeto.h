@@ -23,6 +23,8 @@ int RL_V1(char* num, int runLess[]);
 
 int RL_V2(char* num, int runLess[]);
 
+char* RL_V2_String(char* num, char rL[]);
+
 void cliente0();
 void cliente1();
 void cliente2();

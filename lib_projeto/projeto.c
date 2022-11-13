@@ -7,9 +7,9 @@
 void main_lib_projeto(){
 
     //cliente0();
-    cliente1();
+    //cliente1();
     //cliente2();
-    //cliente3();
+    cliente3();
 }
 
 void cliente0(){
@@ -40,6 +40,7 @@ void cliente2(){
 
 void cliente3(){
     char t[] = "77555";
+    char rL[4];
     int runLess[4];
 
     if(bipolar_number(t) == 0){
@@ -47,10 +48,12 @@ void cliente3(){
             runLess[i] = 0;
         }
         //RL_V1(t, runLess);
-        RL_V2(t, runLess);
+        //RL_V2(t, runLess);
+        RL_V2_String(t,rL);
         printf("RL\n");
         for (int i = 0; i < 4; ++i) {
-            printf("%d ", runLess[i]);
+            //printf("%d ", runLess[i]);
+            printf("%c ", rL[i]);
         }
     }
 }
@@ -241,7 +244,24 @@ int RL_V2(char* num, int runLess[]){
         if(*(num+i) != *(num+(i-1))){
             runLessPos += 2;
             runLess[runLessPos+1] = *(num+i)-'0';
+            printf("hdhkjawda\n");
         }
         runLess[runLessPos]++;
+    }
+}
+
+char* RL_V2_String(char* num, char rL[]){
+    int runLessPos = 0;
+    char count = '1';
+    *(rL+runLessPos) = count;
+    *(rL+(runLessPos+1)) = *(num);
+    for (int i = 1; i < strlen(num); ++i) {
+        if(*(num+i) != *(num+(i-1))){
+            runLessPos += 2;
+            *(rL+(runLessPos+1)) = *(num+i);
+            count='0';
+        }
+        count++;
+        *(rL+runLessPos) = count;
     }
 }

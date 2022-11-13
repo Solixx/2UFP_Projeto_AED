@@ -19,7 +19,7 @@ void projetoAED(){
     char *fileName = "../data/chaves_publicas";
     FILE *fileChavesPubString = fopen(fileName, "r");
     int lines = 1, fileLinePos = 0;
-    char **matrixPub, **matrixPriv;
+    char **matrixPub, **matrixPriv, matrixCod[lines][4];
 
     //Alocar espaço para a matriz e inicializar com 0
     matrixPub = calloc(lines * sizeof (char *), sizeof (char *));
@@ -37,6 +37,7 @@ void projetoAED(){
         matrixPub[lines-1] = strtok(matrixPub[lines-1], "\n");
         //Guarda o valor em matrixPriv[i]
         matrixPriv[i] = find_mul_bipolar_number(matrixPub[lines-1]);
+        RL_V2_String(matrixPriv[i], matrixCod[i]);
         fileLinePos++;
         lines++;
     }
