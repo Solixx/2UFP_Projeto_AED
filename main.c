@@ -28,6 +28,9 @@ void projetoAED(){
 
     for (int i = 0; i < lines; ++i) {
         //Alocar espaço para cada nova linha da matriz e inicializar com 0
+        matrixPub = (char **) realloc(matrixPub, lines * sizeof (char *));
+        matrixPriv = (char **) realloc(matrixPriv, lines * sizeof (char *));
+        matrixCod = (char **) realloc(matrixCod, lines * sizeof (char *));
         matrixPub[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
         matrixPriv[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
         matrixCod[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
