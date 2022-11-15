@@ -42,7 +42,9 @@ void projetoAED(){
         matrixPub[lines-1] = strtok(matrixPub[lines-1], "\n");
         //Guarda o valor em matrixPriv[i]
         matrixPriv[i] = find_mul_bipolar_number(matrixPub[lines-1]);
-        RL_V2_String(matrixPriv[i], matrixCod[i]);
+        if(strcmp(matrixPriv[i], "\0")){
+            RL_V2_String(matrixPriv[i], matrixCod[i]);
+        }
         fileLinePos++;
         lines++;
     }

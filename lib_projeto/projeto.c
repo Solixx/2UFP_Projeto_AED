@@ -7,9 +7,9 @@
 void main_lib_projeto(){
 
     //cliente0();
-    //cliente1();
+    cliente1();
     //cliente2();
-    cliente3();
+    //cliente3();
 }
 
 void cliente0(){
@@ -23,7 +23,7 @@ void cliente1(){
     int n[k];
 
     //print_bipolar_numbers(k);
-    printf("%s\n", find_mul_bipolar_number("22"));
+    printf("%s\n", find_mul_bipolar_number("2014"));
 }
 
 void cliente2(){
@@ -170,29 +170,18 @@ char* find_mul_bipolar_number(char *k){
             n[j] = leftNum;
         }
         if(j == digitos-1){
-            /*
-            for (int i = 0; i < digitos; ++i) {
-                if(i < digitos-1){
-                    n[i] *= 10;
-                }
-                num += n[i];
-            }
-
-            printf("NUM = %d\n", num);
-             */
-            numDigits = digitos;
-            n[strlen(n)] = '\0';
-            if(atoi(n) > atoi(k) && atoi(n)%atoi(k) == 0){
+            if(atoi(n) > 2147483647 || atoi(n) < 0){
+                n = "\0";
                 return n;
+            } else{
+                numDigits = digitos;
+                n[strlen(n)] = '\0';
+                if(atoi(n) > atoi(k) && atoi(n)%atoi(k) == 0){
+                    return n;
+                }
+                changePos++;
+                j = 0;
             }
-            /*
-            if(num > k && num%k == 0){
-                return num;
-            }
-            num = 0;
-             */
-            changePos++;
-            j = 0;
 
         } else{
             j++;
