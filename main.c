@@ -50,7 +50,7 @@ void projetoAED(struct matrixString mString, struct matrixInts mInts){
         mInts.matrixPriv[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
         mInts.matrixCod[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
         //Se já não haver valores para ler sai do array e para de alocar memoria
-        if(fgets(mString.matrixPub[lines-1], 100, fileChavesPubString) == NULL){
+        if(fgets(mString.matrixPub[lines-1], sizeof (mString.matrixPub[lines-1]), fileChavesPubString) == NULL){
             break;
         }
         //Recebe os valores do ficheiro e retira o \n
