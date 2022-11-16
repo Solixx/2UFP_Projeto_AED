@@ -4,7 +4,7 @@
 
 void projetoAED(struct matrixString mString, struct matrixInts mInts);
 
-int main() {
+int main(int argc, const char *argv[]) {
 
     struct matrixString mStrings;
     struct matrixInts mInts;
