@@ -22,7 +22,7 @@ void projetoAED(struct matrixString mString, struct matrixInts mInts){
     char *fileName = "../data/chaves_publicas";
     FILE *fileChavesPubString = fopen(fileName, "r");
     int output;
-    int lines = 1, fileLinePos = 0, k = 0;
+    int lines = 1, columnsPub = 1, columnsPriv = 1, k = 0, digits = 0;
     //char **matrixPub, **matrixPriv, **matrixCod;
 
     //Alocar espaço para a matriz e inicializar com 0
@@ -36,80 +36,89 @@ void projetoAED(struct matrixString mString, struct matrixInts mInts){
 
     for (int i = 0; i < lines; ++i) {
         //Alocar espaço para cada nova linha da matriz e inicializar com 0
-        mString.matrixPub = (char **) realloc(mString.matrixPub, lines * sizeof (char *));
-        mString.matrixPriv = (char **) realloc(mString.matrixPriv, lines * sizeof (char *));
-        mString.matrixCod = (char **) realloc(mString.matrixCod, lines * sizeof (char *));
         mString.matrixPub[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
         mString.matrixPriv[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
         mString.matrixCod[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
 
-        mInts.matrixPub = (int **) realloc(mInts.matrixPub, lines * sizeof (int *));
-        mInts.matrixPriv = (int **) realloc(mInts.matrixPriv, lines * sizeof (int *));
-        mInts.matrixCod = (int **) realloc(mInts.matrixCod, lines * sizeof (int *));
         mInts.matrixPub[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
         mInts.matrixPriv[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
         mInts.matrixCod[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
+
         //Se já não haver valores para ler sai do array e para de alocar memoria
         if(fgets(mString.matrixPub[lines-1], sizeof (mString.matrixPub[lines-1]), fileChavesPubString) == NULL){
             break;
         }
-        //Recebe os valores do ficheiro e retira o \n
-        mString.matrixPub[lines-1] = strtok(mString.matrixPub[lines-1], "\n");
-        mInts.matrixPub[lines-1][0] = atoi(mString.matrixPub[lines-1]);
-        //Guarda o valor em matrixPriv[i]
-        if(strcmp(mString.matrixPub[i], "\0")){
-            mString.matrixPriv[i] = find_mul_bipolar_number(mString.matrixPub[lines-1]);
-            mInts.matrixPriv[lines-1][0] = atoi(mString.matrixPriv[lines-1]);
-        }
-        if(strcmp(mString.matrixPriv[i], "\0")){
-            RL_V2_String(mString.matrixPriv[i], mString.matrixCod[i]);
-        }
-        fileLinePos++;
         lines++;
     }
 
+    for (int i = 0; i < lines-1; ++i) {
+        //Recebe os valores do ficheiro e retira o \n e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPub)
+        mString.matrixPub[i] = strtok(mString.matrixPub[i], "\n");
+        columnsPub = countColumnPub(digits, mString, i, columnsPub);
+
+        //Guarda o valor em matrixPriv[i]  e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPriv)
+        if(strcmp(mString.matrixPub[i], "\0")){
+            mString.matrixPriv[i] = find_mul_bipolar_number(mString.matrixPub[i]);
+            columnsPriv = countColumnPriv(digits, mString, i, columnsPriv);
+        }
+
+        //Guarda o valor em matrixCod[i]
+        if(strcmp(mString.matrixPriv[i], "\0")){
+            RL_V2_String(mString.matrixPriv[i], mString.matrixCod[i]);
+        }
+    }
+
+    //Guardar os numeros na matriz de inteiros
+    for (int i = 0; i < lines-1; ++i) {
+        //Array com digitos da mString.matrixPub[i]
+        int *allD = (int *) calloc(numDigits(atoi(mString.matrixPub[i])) * sizeof (*allD), sizeof (*allD));
+        allDigits(atoi(mString.matrixPub[i]), allD);
+        //Guardar os valores de allD em mInts.matrixPub[i][j-1]
+        for (int j = 1; j <= columnsPub; j++) {
+            //Se J ultrapassar o numero de digitos em mString.matrixPub[i] guarda o valor -1 (este vai ser usardo como valor de referencia para uma coluna vazia visto que é ncessário escrever os '0')
+            if(j <= numDigits(atoi(mString.matrixPub[i]))) {
+                mInts.matrixPub[i][j-1] = allD[numDigits(atoi(mString.matrixPub[i])) - j];
+            }else{
+                mInts.matrixPub[i][j-1] = -1;
+            }
+        }
+        free(allD);
+    }
+
+    //Guardar os numeros na matriz de inteiros
     for (int i = 0; i < lines; ++i) {
-        RL_V2_Ints(mInts.matrixPriv[i][0], mInts.matrixCod[i]);
-    }
-
-    printf("\tStrings - Chaves Publicas\t\n");
-    for (int i = 0; i < lines-1; ++i) {
-        printf("%s\t", mString.matrixPub[i]);
-    }
-    free(mString.matrixPub);
-
-    printf("\n\tStrings - Chaves Privadas\t\n");
-    for (int i = 0; i < lines-1; ++i) {
-        printf("%s\t", mString.matrixPriv[i]);
-    }
-    free(mString.matrixPriv);
-
-    printf("\n\tStrings - Chaves Codificadas\t\n");
-    for (int i = 0; i < lines-1; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            printf("%c\t", mString.matrixCod[i][j]);
+        //Array com digitos da mString.matrixPriv[i]
+        int *allD = (int *) calloc(numDigits(atoi(mString.matrixPriv[i])) * sizeof (*allD), sizeof (*allD));
+        allDigits(atoi(mString.matrixPriv[i]), allD);
+        //Guardar os valores de allD em mInts.matrixPriv[i][j-1]
+        for (int j = 1; j <= columnsPriv; ++j) {
+            //Se J ultrapassar o numero de digitos em mString.matrixPriv[i] guarda o valor -1 (este vai ser usardo como valor de referencia para uma coluna vazia visto que é ncessário escrever os '0')
+            if(j <= numDigits(atoi(mString.matrixPriv[i]))){
+                mInts.matrixPriv[i][j-1] = allD[numDigits(atoi(mString.matrixPriv[i]))-j];
+            }else{
+                mInts.matrixPriv[i][j-1] = -1;
+            }
         }
-        printf("\n");
-
+        free(allD);
     }
 
-    printf("\tInts - Chaves Publicas\t\n");
-    for (int i = 0; i < lines-1; ++i) {
-        printf("%d\t", mInts.matrixPub[i][0]);
-    }
-    free(mInts.matrixPub);
-
-    printf("\n\tInts - Chaves Privadas\t\n");
-    for (int i = 0; i < lines-1; ++i) {
-        printf("%d\t", mInts.matrixPriv[i][0]);
-    }
-    free(mInts.matrixPriv);
-
-    printf("\n\tInts - Chaves Codificadas\t\n");
-    for (int i = 0; i < lines-1; ++i) {
+    //Guardar os numeros na matriz de inteiros
+    for (int i = 0; i < lines; ++i) {
         for (int j = 0; j < 4; ++j) {
-            printf("%d\t", mInts.matrixCod[i][j]);
+            //Se mString.matrixPriv[i] for uma string vazia inserimos -1 (este vai ser usardo como valor de referencia para uma coluna vazia visto que é ncessário escrever os '0')
+            if(strcmp(mString.matrixPriv[i], "\0")){
+                mInts.matrixCod[i][j] = mString.matrixCod[i][j] - '0';
+            }else{
+                mInts.matrixCod[i][j] = -1;
+            }
         }
-        printf("\n");
     }
+
+    printStringMatrixPub(mString, lines);
+    printStringMatrixPriv(mString, lines);
+    printStringMatrixCod(mString, lines);
+    printIntMatrixPub(mInts, lines, columnsPub);
+    printIntMatrixPriv(mInts, lines, columnsPriv);
+    printIntMatrixCod(mInts, lines);
+
 }

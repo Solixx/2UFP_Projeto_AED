@@ -350,3 +350,79 @@ void allDigits(int num, int allD[]){
         i++;
     }
 }
+
+int countColumnPub(int digits, struct matrixString mString, int i, int columnsPub){
+    digits = numDigits(atoi(mString.matrixPub[i]));
+    if(digits > columnsPub){
+        columnsPub = digits;
+    }
+    return columnsPub;
+}
+int countColumnPriv(int digits, struct matrixString mString, int i, int columnsPriv){
+    digits = numDigits(atoi(mString.matrixPriv[i]));
+    if(digits > columnsPriv){
+        columnsPriv = digits;
+    }
+    return columnsPriv;
+}
+
+void printStringMatrixPub(struct matrixString mString, int lines){
+    printf("\tStrings - Chaves Publicas\t\n");
+    for (int i = 0; i < lines-1; ++i) {
+        printf("%s\t", mString.matrixPub[i]);
+    }
+    free(mString.matrixPub);
+}
+
+void printStringMatrixPriv(struct matrixString mString, int lines){
+    printf("\n\tStrings - Chaves Privadas\t\n");
+    for (int i = 0; i < lines-1; ++i) {
+        printf("%s\t", mString.matrixPriv[i]);
+    }
+    free(mString.matrixPriv);
+}
+
+void printStringMatrixCod(struct matrixString mString, int lines){
+    printf("\n\tStrings - Chaves Codificadas\t\n");
+    for (int i = 0; i < lines-1; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            printf("%c\t", mString.matrixCod[i][j]);
+        }
+        printf("\n");
+    }
+    free(mString.matrixCod);
+}
+
+void printIntMatrixPub(struct matrixInts mInts, int lines, int columns){
+    printf("\n\tInts - Chaves Publicas\t\n");
+    for (int i = 0; i < lines-1; ++i) {
+        for (int j = 0; j < columns; ++j) {
+            if(mInts.matrixPub[i][j] >= 0) printf("%d\t", mInts.matrixPub[i][j]);
+        }
+        printf("\n");
+    }
+    free(mInts.matrixPub);
+}
+
+void printIntMatrixPriv(struct matrixInts mInts, int lines, int columns){
+    printf("\n\tInts - Chaves Privadas\t\n");
+    for (int i = 0; i < lines-1; ++i) {
+        for (int j = 0; j < columns; ++j) {
+            if(mInts.matrixPriv[i][j] >= 0) printf("%d\t", mInts.matrixPriv[i][j]);
+        }
+        printf("\n");
+    }
+    free(mInts.matrixPriv);
+}
+
+void printIntMatrixCod(struct matrixInts mInts, int lines){
+    printf("\n\tInts - Chaves Codificadas\t\n");
+    for (int i = 0; i < lines-1; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            if(mInts.matrixCod[i][j] >= 0) printf("%d\t", mInts.matrixCod[i][j]);
+            else printf("0\t");
+        }
+        printf("\n");
+    }
+    free(mInts.matrixCod);
+}

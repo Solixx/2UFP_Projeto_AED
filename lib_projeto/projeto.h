@@ -45,6 +45,17 @@ int numDigits(int num);
 
 void allDigits(int num, int allD[]);
 
+int countColumnPub(int digits, struct matrixString mString, int i, int columnsPub);
+
+int countColumnPriv(int digits, struct matrixString mString, int i, int columnsPriv);
+
+void printStringMatrixPub(struct matrixString mString, int lines);
+void printStringMatrixPriv(struct matrixString mString, int lines);
+void printStringMatrixCod(struct matrixString mString, int lines);
+void printIntMatrixPub(struct matrixInts mInts, int lines, int columns);
+void printIntMatrixPriv(struct matrixInts mInts, int lines, int columns);
+void printIntMatrixCod(struct matrixInts mInts, int lines);
+
 void cliente0();
 void cliente1();
 void cliente2();
