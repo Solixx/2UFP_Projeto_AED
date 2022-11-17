@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <ctype.h>
+#include <time.h>
 
 struct matrixString{
     char **matrixPub;
@@ -56,13 +57,17 @@ void printIntMatrixPub(struct matrixInts mInts, int lines, int columns);
 void printIntMatrixPriv(struct matrixInts mInts, int lines, int columns);
 void printIntMatrixCod(struct matrixInts mInts, int lines);
 
-int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubString);
+int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName);
 
 struct matrixString receiveMatrixString(struct matrixString mString, int columns[], int digits, int lines);
 
 void receiveMatrixPubInt(struct matrixString mString, struct matrixInts mInts, int columnsPub, int lines);
 void receiveMatrixPrivInt(struct matrixString mString, struct matrixInts mInts, int columnsPriv, int lines);
 void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, int lines);
+
+void randomKey(FILE *fileChavesPubWrite, char *fileName, int n);
+
+struct matrixString removeKey(struct matrixString mString, char *key, int lines);
 
 void cliente0();
 void cliente1();

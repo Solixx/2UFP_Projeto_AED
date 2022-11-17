@@ -427,7 +427,10 @@ void printIntMatrixCod(struct matrixInts mInts, int lines){
     free(mInts.matrixCod);
 }
 
-int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubString){
+int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName){
+
+    fileChavesPubRead = fopen(fileName, "r");
+
     for (int i = 0; i < lines; ++i) {
         //Alocar espaço para cada nova linha da matriz e inicializar com 0
         mString.matrixPub[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
@@ -439,11 +442,12 @@ int readFromFileString(struct matrixString mString, struct matrixInts mInts, int
         mInts.matrixCod[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
 
         //Se já não haver valores para ler sai do array e para de alocar memoria
-        if(fgets(mString.matrixPub[lines-1], sizeof (mString.matrixPub[lines-1]), fileChavesPubString) == NULL){
+        if(fgets(mString.matrixPub[lines-1], sizeof (mString.matrixPub[lines-1]), fileChavesPubRead) == NULL){
             break;
         }
         lines++;
     }
+    fclose(fileChavesPubRead);
     return lines;
 }
 
@@ -451,6 +455,7 @@ struct matrixString receiveMatrixString(struct matrixString mString, int columns
     for (int i = 0; i < lines-1; ++i) {
         //Recebe os valores do ficheiro e retira o \n e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPub)
         mString.matrixPub[i] = strtok(mString.matrixPub[i], "\n");
+        *(mString.matrixPub[i]+ strlen(mString.matrixPub[i])) = '\0';
         columns[0] = countColumnPub(digits, mString, i, columns[0]);
 
         //Guarda o valor em matrixPriv[i]  e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPriv)
@@ -514,4 +519,31 @@ void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, i
             }
         }
     }
+}
+
+void randomKey(FILE *fileChavesPubWrite, char *fileName, int n){
+
+    fileChavesPubWrite = fopen(fileName, "a");
+    time_t t1;
+    srand((unsigned ) time(&t1));
+    for (int i = 0; i < n; ++i) {
+        int r = rand()%250;
+        fprintf(fileChavesPubWrite,"%d",r);
+        fprintf(fileChavesPubWrite,"\n");
+    }
+    fclose(fileChavesPubWrite);
+}
+
+struct matrixString removeKey(struct matrixString mString, char *key, int lines){
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(mString.matrixPub[i], key) == 0){
+            for (int j = i; j < lines-1; ++j) {
+                strcpy(mString.matrixPub[j], mString.matrixPub[j+1]);
+                strcpy(mString.matrixPriv[j], mString.matrixPriv[j+1]);
+                strcpy(mString.matrixCod[j], mString.matrixCod[j+1]);
+            }
+            lines--;
+        }
+    }
+    return mString;
 }

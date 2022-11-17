@@ -23,6 +23,7 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/chaves_publicas" beforeDir="false" afterPath="$PROJECT_DIR$/data/chaves_publicas" afterDir="false" />
@@ -114,7 +115,7 @@
       <workItem from="1668614789983" duration="667000" />
       <workItem from="1668615642958" duration="9000" />
       <workItem from="1668616574430" duration="111000" />
-      <workItem from="1668633353629" duration="11872000" />
+      <workItem from="1668633353629" duration="18074000" />
     </task>
     <servers />
   </component>
