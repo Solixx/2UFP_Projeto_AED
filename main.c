@@ -36,10 +36,10 @@ void projetoAED(struct matrixString mString, struct matrixInts mInts){
     mInts.matrixPriv = calloc(lines * sizeof (int *), sizeof (int *));
     mInts.matrixCod = calloc(lines * sizeof (int *), sizeof (int *));
 
-    //randomKey(fileChavesPubWrite, fileName, randomNumbers);
+    //randomKeyFile(fileChavesPubWrite, fileName, randomNumbers);
 
     //Ler do ficheiro e guardar em mString.matrixPub e recebr o numero de linhas para a matriz
-    lines = readFromFileString(mString, mInts, lines, fileChavesPubRead, fileName);
+    lines = readFromFileString(mString, mInts, lines, fileChavesPubRead, fileName, columns, digits);
     //Receber os valores de mString.matrixPub sem o "\n" & mString.matrixPriv & mString.matrixCod e valores das columnsPub, e columnsPriv
     mString = receiveMatrixString(mString, columns, digits, lines);
     columnsPub = columns[0];
@@ -49,7 +49,7 @@ void projetoAED(struct matrixString mString, struct matrixInts mInts){
     receiveMatrixPrivInt(mString, mInts, columnsPriv, lines);
     receiveMatrixCodInt(mString, mInts, lines);
 
-    //mString = removeKey(mString, mString.matrixPub[1], lines);
+    //mString = removeKeyMatrix(mString, mString.matrixPub[1], lines);
 
     printStringMatrixPub(mString, lines);
     printStringMatrixPriv(mString, lines);
@@ -57,4 +57,5 @@ void projetoAED(struct matrixString mString, struct matrixInts mInts){
     printIntMatrixPub(mInts, lines, columnsPub);
     printIntMatrixPriv(mInts, lines, columnsPriv);
     printIntMatrixCod(mInts, lines);
+
 }

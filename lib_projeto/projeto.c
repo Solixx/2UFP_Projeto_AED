@@ -371,7 +371,6 @@ void printStringMatrixPub(struct matrixString mString, int lines){
     for (int i = 0; i < lines-1; ++i) {
         printf("%s\t", mString.matrixPub[i]);
     }
-    free(mString.matrixPub);
 }
 
 void printStringMatrixPriv(struct matrixString mString, int lines){
@@ -379,7 +378,6 @@ void printStringMatrixPriv(struct matrixString mString, int lines){
     for (int i = 0; i < lines-1; ++i) {
         printf("%s\t", mString.matrixPriv[i]);
     }
-    free(mString.matrixPriv);
 }
 
 void printStringMatrixCod(struct matrixString mString, int lines){
@@ -390,7 +388,6 @@ void printStringMatrixCod(struct matrixString mString, int lines){
         }
         printf("\n");
     }
-    free(mString.matrixCod);
 }
 
 void printIntMatrixPub(struct matrixInts mInts, int lines, int columns){
@@ -401,7 +398,6 @@ void printIntMatrixPub(struct matrixInts mInts, int lines, int columns){
         }
         printf("\n");
     }
-    free(mInts.matrixPub);
 }
 
 void printIntMatrixPriv(struct matrixInts mInts, int lines, int columns){
@@ -412,7 +408,6 @@ void printIntMatrixPriv(struct matrixInts mInts, int lines, int columns){
         }
         printf("\n");
     }
-    free(mInts.matrixPriv);
 }
 
 void printIntMatrixCod(struct matrixInts mInts, int lines){
@@ -424,14 +419,14 @@ void printIntMatrixCod(struct matrixInts mInts, int lines){
         }
         printf("\n");
     }
-    free(mInts.matrixCod);
 }
 
-int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName){
+int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName, int columns[], int digits){
 
     fileChavesPubRead = fopen(fileName, "r");
 
     for (int i = 0; i < lines; ++i) {
+
         //Alocar espaço para cada nova linha da matriz e inicializar com 0
         mString.matrixPub[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
         mString.matrixPriv[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
@@ -442,9 +437,10 @@ int readFromFileString(struct matrixString mString, struct matrixInts mInts, int
         mInts.matrixCod[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
 
         //Se já não haver valores para ler sai do array e para de alocar memoria
-        if(fgets(mString.matrixPub[lines-1], sizeof (mString.matrixPub[lines-1]), fileChavesPubRead) == NULL){
+        if(fgets(mString.matrixPub[i], sizeof (mString.matrixPub[i]), fileChavesPubRead) == NULL){
             break;
         }
+        mString = receiveMatrixString(mString, columns, digits, lines);
         lines++;
     }
     fclose(fileChavesPubRead);
@@ -521,7 +517,7 @@ void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, i
     }
 }
 
-void randomKey(FILE *fileChavesPubWrite, char *fileName, int n){
+void randomKeyFile(FILE *fileChavesPubWrite, char *fileName, int n){
 
     fileChavesPubWrite = fopen(fileName, "a");
     time_t t1;
@@ -534,7 +530,7 @@ void randomKey(FILE *fileChavesPubWrite, char *fileName, int n){
     fclose(fileChavesPubWrite);
 }
 
-struct matrixString removeKey(struct matrixString mString, char *key, int lines){
+struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int lines){
     for (int i = 0; i < lines; ++i) {
         if(strcmp(mString.matrixPub[i], key) == 0){
             for (int j = i; j < lines-1; ++j) {

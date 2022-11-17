@@ -57,7 +57,7 @@ void printIntMatrixPub(struct matrixInts mInts, int lines, int columns);
 void printIntMatrixPriv(struct matrixInts mInts, int lines, int columns);
 void printIntMatrixCod(struct matrixInts mInts, int lines);
 
-int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName);
+int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName, int columns[], int digits);
 
 struct matrixString receiveMatrixString(struct matrixString mString, int columns[], int digits, int lines);
 
