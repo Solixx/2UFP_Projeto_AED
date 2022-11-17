@@ -421,16 +421,17 @@ void printIntMatrixCod(struct matrixInts mInts, int lines){
     }
 }
 
-int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName, int columns[], int digits){
+int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName, int columns[], int digits, int pos){
 
+    if(lines < pos) printf("Insira uma posicao possivel\n");
     fileChavesPubRead = fopen(fileName, "r");
 
-    for (int i = 0; i < lines; ++i) {
+    for (int i = pos; i < lines; ++i) {
 
         //Alocar espaço para cada nova linha da matriz e inicializar com 0
-        mString.matrixPub[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
-        mString.matrixPriv[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
-        mString.matrixCod[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+        mString.matrixPub[i] = (char *) calloc(lines * sizeof (char*), sizeof (char));
+        mString.matrixPriv[i] = (char *) calloc(lines * sizeof (char*), sizeof (char));
+        mString.matrixCod[i] = (char *) calloc(lines * sizeof (char*), sizeof (char));
 
         mInts.matrixPub[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
         mInts.matrixPriv[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
@@ -438,17 +439,43 @@ int readFromFileString(struct matrixString mString, struct matrixInts mInts, int
 
         //Se já não haver valores para ler sai do array e para de alocar memoria
         if(fgets(mString.matrixPub[i], sizeof (mString.matrixPub[i]), fileChavesPubRead) == NULL){
+            free(mString.matrixPub[i]);
+            free(mString.matrixPriv[i]);
+            free(mString.matrixCod[i]);
+            free(mInts.matrixPub[i]);
+            free(mInts.matrixPriv[i]);
+            free(mInts.matrixCod[i]);
             break;
         }
-        mString = receiveMatrixString(mString, columns, digits, lines);
+        mString = receiveFileMatrixString(mString, columns, digits, lines, pos);
         lines++;
     }
     fclose(fileChavesPubRead);
     return lines;
 }
 
-struct matrixString receiveMatrixString(struct matrixString mString, int columns[], int digits, int lines){
-    for (int i = 0; i < lines-1; ++i) {
+int readFromString(struct matrixString mString, struct matrixInts mInts, int lines, int columns[], int digits, int pos, char *key){
+
+    if(lines < pos) printf("Insira uma posicao possivel\n");
+
+        //Alocar espaço para cada nova linha da matriz e inicializar com 0
+        mString.matrixPub[pos] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+        mString.matrixPriv[pos] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+        mString.matrixCod[pos] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+
+        mInts.matrixPub[pos] = (int *) calloc(lines * sizeof (int *), sizeof (int));
+        mInts.matrixPriv[pos] = (int *) calloc(lines * sizeof (int *), sizeof (int));
+        mInts.matrixCod[pos] = (int *) calloc(lines * sizeof (int *), sizeof (int));
+
+        //Se já não haver valores para ler sai do array e para de alocar memoria
+        mString.matrixPub[pos] = key;
+        mString = receiveMatrixString(mString, columns, digits, lines, pos);
+        lines++;
+    return lines;
+}
+
+struct matrixString receiveFileMatrixString(struct matrixString mString, int columns[], int digits, int lines, int pos){
+    for (int i = pos; i < lines; ++i) {
         //Recebe os valores do ficheiro e retira o \n e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPub)
         mString.matrixPub[i] = strtok(mString.matrixPub[i], "\n");
         *(mString.matrixPub[i]+ strlen(mString.matrixPub[i])) = '\0';
@@ -467,9 +494,23 @@ struct matrixString receiveMatrixString(struct matrixString mString, int columns
     }
     return mString;
 }
+struct matrixString receiveMatrixString(struct matrixString mString, int columns[], int digits, int lines, int pos){
+    //Recebe os valores do ficheiro e retira o \n e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPub)
+    columns[0] = countColumnPub(digits, mString, pos, columns[0]);
+    //Guarda o valor em matrixPriv[i]  e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPriv)
+    if(strcmp(mString.matrixPub[pos], "\0")){
+        mString.matrixPriv[pos] = find_mul_bipolar_number(mString.matrixPub[pos]);
+        columns[1] = countColumnPriv(digits, mString, pos, columns[1]);
+    }
+    //Guarda o valor em matrixCod[i]
+    if(strcmp(mString.matrixPriv[pos], "\0")){
+        RL_V2_String(mString.matrixPriv[pos], mString.matrixCod[pos]);
+    }
+    return mString;
+}
 
 void receiveMatrixPubInt(struct matrixString mString, struct matrixInts mInts, int columnsPub, int lines){
-    for (int i = 0; i < lines; ++i) {
+    for (int i = 0; i < lines-1; ++i) {
         //Array com digitos da mString.matrixPub[i]
         int *allD = (int *) calloc(numDigits(atoi(mString.matrixPub[i])) * sizeof (*allD), sizeof (*allD));
         allDigits(atoi(mString.matrixPub[i]), allD);
@@ -487,7 +528,7 @@ void receiveMatrixPubInt(struct matrixString mString, struct matrixInts mInts, i
 }
 
 void receiveMatrixPrivInt(struct matrixString mString, struct matrixInts mInts, int columnsPriv, int lines){
-    for (int i = 0; i < lines; ++i) {
+    for (int i = 0; i < lines-1; ++i) {
         //Array com digitos da mString.matrixPriv[i]
         int *allD = (int *) calloc(numDigits(atoi(mString.matrixPriv[i])) * sizeof (*allD), sizeof (*allD));
         allDigits(atoi(mString.matrixPriv[i]), allD);
@@ -505,7 +546,7 @@ void receiveMatrixPrivInt(struct matrixString mString, struct matrixInts mInts, 
 }
 
 void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, int lines){
-    for (int i = 0; i < lines; ++i) {
+    for (int i = 0; i < lines-1; ++i) {
         for (int j = 0; j < 4; ++j) {
             //Se mString.matrixPriv[i] for uma string vazia inserimos -1 (este vai ser usardo como valor de referencia para uma coluna vazia visto que é ncessário escrever os '0')
             if(strcmp(mString.matrixPriv[i], "\0")){
@@ -528,6 +569,14 @@ void randomKeyFile(FILE *fileChavesPubWrite, char *fileName, int n){
         fprintf(fileChavesPubWrite,"\n");
     }
     fclose(fileChavesPubWrite);
+}
+
+void randomKeyMatrix(char* r){
+    int random = 0;
+    time_t t1;
+    srand((unsigned ) time(&t1));
+    random = rand()%250;
+    sprintf(r, "%d", random);
 }
 
 struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int lines){

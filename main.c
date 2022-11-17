@@ -26,6 +26,7 @@ void projetoAED(struct matrixString mString, struct matrixInts mInts){
     int output;
     int lines = 1, columnsPub = 0, columnsPriv = 0, k = 0, digits = 0, randomNumbers = 2;
     int columns[2] = {0,0}; // 0 -> columnsPub / 1 -> columnsPriv
+    char *randomNum;
 
     //Alocar espaço para a matriz e inicializar com 0
     mString.matrixPub = calloc(lines * sizeof (char *), sizeof (char *));
@@ -38,12 +39,15 @@ void projetoAED(struct matrixString mString, struct matrixInts mInts){
 
     //randomKeyFile(fileChavesPubWrite, fileName, randomNumbers);
 
+
     //Ler do ficheiro e guardar em mString.matrixPub e recebr o numero de linhas para a matriz
-    lines = readFromFileString(mString, mInts, lines, fileChavesPubRead, fileName, columns, digits);
+    lines = readFromFileString(mString, mInts, lines, fileChavesPubRead, fileName, columns, digits, lines-1);
+    randomKeyMatrix(randomNum);
+    lines = readFromString(mString, mInts, lines, columns, digits, lines-1, randomNum);
     //Receber os valores de mString.matrixPub sem o "\n" & mString.matrixPriv & mString.matrixCod e valores das columnsPub, e columnsPriv
-    mString = receiveMatrixString(mString, columns, digits, lines);
     columnsPub = columns[0];
     columnsPriv = columns[1];
+
     //Guardar os numeros na matriz de inteiros
     receiveMatrixPubInt(mString, mInts, columnsPub, lines);
     receiveMatrixPrivInt(mString, mInts, columnsPriv, lines);

@@ -57,15 +57,18 @@ void printIntMatrixPub(struct matrixInts mInts, int lines, int columns);
 void printIntMatrixPriv(struct matrixInts mInts, int lines, int columns);
 void printIntMatrixCod(struct matrixInts mInts, int lines);
 
-int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName, int columns[], int digits);
+int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubRead, char *fileName, int columns[], int digits, int pos);
+int readFromString(struct matrixString mString, struct matrixInts mInts, int lines, int columns[], int digits, int pos, char *key);
 
-struct matrixString receiveMatrixString(struct matrixString mString, int columns[], int digits, int lines);
+struct matrixString receiveFileMatrixString(struct matrixString mString, int columns[], int digits, int lines, int pos);
+struct matrixString receiveMatrixString(struct matrixString mString, int columns[], int digits, int lines, int pos);
 
 void receiveMatrixPubInt(struct matrixString mString, struct matrixInts mInts, int columnsPub, int lines);
 void receiveMatrixPrivInt(struct matrixString mString, struct matrixInts mInts, int columnsPriv, int lines);
 void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, int lines);
 
 void randomKey(FILE *fileChavesPubWrite, char *fileName, int n);
+void randomKeyMatrix(char* r);
 
 struct matrixString removeKey(struct matrixString mString, char *key, int lines);
 
