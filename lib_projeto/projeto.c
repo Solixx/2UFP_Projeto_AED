@@ -426,3 +426,92 @@ void printIntMatrixCod(struct matrixInts mInts, int lines){
     }
     free(mInts.matrixCod);
 }
+
+int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubString){
+    for (int i = 0; i < lines; ++i) {
+        //Alocar espaço para cada nova linha da matriz e inicializar com 0
+        mString.matrixPub[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+        mString.matrixPriv[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+        mString.matrixCod[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
+
+        mInts.matrixPub[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
+        mInts.matrixPriv[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
+        mInts.matrixCod[i] = (int *) calloc(lines * sizeof (int *), sizeof (int));
+
+        //Se já não haver valores para ler sai do array e para de alocar memoria
+        if(fgets(mString.matrixPub[lines-1], sizeof (mString.matrixPub[lines-1]), fileChavesPubString) == NULL){
+            break;
+        }
+        lines++;
+    }
+    return lines;
+}
+
+struct matrixString receiveMatrixString(struct matrixString mString, int columns[], int digits, int lines){
+    for (int i = 0; i < lines-1; ++i) {
+        //Recebe os valores do ficheiro e retira o \n e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPub)
+        mString.matrixPub[i] = strtok(mString.matrixPub[i], "\n");
+        columns[0] = countColumnPub(digits, mString, i, columns[0]);
+
+        //Guarda o valor em matrixPriv[i]  e conta o numero de colunas que vao ser necessárias para a matriz de inteiros (columnsPriv)
+        if(strcmp(mString.matrixPub[i], "\0")){
+            mString.matrixPriv[i] = find_mul_bipolar_number(mString.matrixPub[i]);
+            columns[1] = countColumnPriv(digits, mString, i, columns[1]);
+        }
+
+        //Guarda o valor em matrixCod[i]
+        if(strcmp(mString.matrixPriv[i], "\0")){
+            RL_V2_String(mString.matrixPriv[i], mString.matrixCod[i]);
+        }
+    }
+    return mString;
+}
+
+void receiveMatrixPubInt(struct matrixString mString, struct matrixInts mInts, int columnsPub, int lines){
+    for (int i = 0; i < lines; ++i) {
+        //Array com digitos da mString.matrixPub[i]
+        int *allD = (int *) calloc(numDigits(atoi(mString.matrixPub[i])) * sizeof (*allD), sizeof (*allD));
+        allDigits(atoi(mString.matrixPub[i]), allD);
+        //Guardar os valores de allD em mInts.matrixPub[i][j-1]
+        for (int j = 1; j <= columnsPub; j++) {
+            //Se J ultrapassar o numero de digitos em mString.matrixPub[i] guarda o valor -1 (este vai ser usardo como valor de referencia para uma coluna vazia visto que é ncessário escrever os '0')
+            if(j <= numDigits(atoi(mString.matrixPub[i]))) {
+                mInts.matrixPub[i][j-1] = allD[numDigits(atoi(mString.matrixPub[i])) - j];
+            }else{
+                mInts.matrixPub[i][j-1] = -1;
+            }
+        }
+        free(allD);
+    }
+}
+
+void receiveMatrixPrivInt(struct matrixString mString, struct matrixInts mInts, int columnsPriv, int lines){
+    for (int i = 0; i < lines; ++i) {
+        //Array com digitos da mString.matrixPriv[i]
+        int *allD = (int *) calloc(numDigits(atoi(mString.matrixPriv[i])) * sizeof (*allD), sizeof (*allD));
+        allDigits(atoi(mString.matrixPriv[i]), allD);
+        //Guardar os valores de allD em mInts.matrixPriv[i][j-1]
+        for (int j = 1; j <= columnsPriv; ++j) {
+            //Se J ultrapassar o numero de digitos em mString.matrixPriv[i] guarda o valor -1 (este vai ser usardo como valor de referencia para uma coluna vazia visto que é ncessário escrever os '0')
+            if(j <= numDigits(atoi(mString.matrixPriv[i]))){
+                mInts.matrixPriv[i][j-1] = allD[numDigits(atoi(mString.matrixPriv[i]))-j];
+            }else{
+                mInts.matrixPriv[i][j-1] = -1;
+            }
+        }
+        free(allD);
+    }
+}
+
+void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, int lines){
+    for (int i = 0; i < lines; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            //Se mString.matrixPriv[i] for uma string vazia inserimos -1 (este vai ser usardo como valor de referencia para uma coluna vazia visto que é ncessário escrever os '0')
+            if(strcmp(mString.matrixPriv[i], "\0")){
+                mInts.matrixCod[i][j] = mString.matrixCod[i][j] - '0';
+            }else{
+                mInts.matrixCod[i][j] = -1;
+            }
+        }
+    }
+}

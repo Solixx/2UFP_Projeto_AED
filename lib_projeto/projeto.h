@@ -56,6 +56,14 @@ void printIntMatrixPub(struct matrixInts mInts, int lines, int columns);
 void printIntMatrixPriv(struct matrixInts mInts, int lines, int columns);
 void printIntMatrixCod(struct matrixInts mInts, int lines);
 
+int readFromFileString(struct matrixString mString, struct matrixInts mInts, int lines, FILE *fileChavesPubString);
+
+struct matrixString receiveMatrixString(struct matrixString mString, int columns[], int digits, int lines);
+
+void receiveMatrixPubInt(struct matrixString mString, struct matrixInts mInts, int columnsPub, int lines);
+void receiveMatrixPrivInt(struct matrixString mString, struct matrixInts mInts, int columnsPriv, int lines);
+void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, int lines);
+
 void cliente0();
 void cliente1();
 void cliente2();
