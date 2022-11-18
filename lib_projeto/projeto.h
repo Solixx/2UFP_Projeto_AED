@@ -43,8 +43,10 @@ int RL_V2_Ints(int num, int runLess[]);
 char* RL_V2_String(char* num, char rL[]);
 
 int numDigits(int num);
+int numDigitsLong(unsigned long long num);
 
 void allDigits(int num, int allD[]);
+void allDigitsLong(unsigned long long num, int allD[]);
 
 int countColumnPub(int digits, struct matrixString mString, int i, int columnsPub);
 

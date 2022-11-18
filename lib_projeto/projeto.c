@@ -3,6 +3,8 @@
 //
 
 #include "projeto.h"
+#include "aed1_lp1_2223_proj_part1_chars.h"
+#include "aed1_lp1_2223_proj_part1_ints.h"
 
 void main_lib_projeto(){
 
@@ -156,6 +158,7 @@ char* find_mul_bipolar_number(char *k){
         n = (char *) realloc(n, digitos);
         if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
             digitos++;
+            changePos--;
             leftNum = '1';
             rightNum = '0';
         }
@@ -342,7 +345,25 @@ int numDigits(int num){
     return digits;
 }
 
+int numDigitsLong(unsigned long long num){
+    int digits = 0;
+    do {
+        num /= 10;
+        digits++;
+    } while (num != 0);
+    return digits;
+}
+
 void allDigits(int num, int allD[]){
+    int i = 0;
+    while (num){
+        allD[i] = num%10;
+        num /= 10;
+        i++;
+    }
+}
+
+void allDigitsLong(unsigned long long num, int allD[]){
     int i = 0;
     while (num){
         allD[i] = num%10;
@@ -596,4 +617,100 @@ struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int 
         }
     }
     return mString;
+}
+
+
+//Funcoes do ficheiro dos professores
+char* key_long_2_digits_char(unsigned long long key){
+    int digits = numDigits(key);
+    char *keydigits = malloc(digits * sizeof (char));
+    sprintf(keydigits, "%llu", key);
+    return keydigits;
+}
+
+unsigned long long key_digits_2_long_char(char* keydigits){
+    return atoll(keydigits);
+}
+
+unsigned long long calc_private_key_char(unsigned long long pubkey){
+    char *n;
+    char rightNum = '0', leftNum = '1';
+    int digitos = 2, j = 0, changePos = 0, numDigits = 2, findNonZero = 0;
+
+    n = (char *) calloc(digitos, sizeof (char));
+    while (1){
+        n = (char *) realloc(n, digitos);
+        if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
+            digitos++;
+            changePos--;
+            leftNum = '1';
+            rightNum = '0';
+        }
+        if(rightNum == '9' && changePos == digitos -1){
+            leftNum++;
+        }
+        if(changePos == digitos -1){
+            changePos = 0;
+            if(rightNum != '9'){
+                rightNum++;
+            } else{
+                rightNum = '0';
+            }
+        }
+        if(leftNum == rightNum){
+            rightNum++;
+        }
+        if(j > changePos){
+            n[j] = rightNum;
+        } else{
+            n[j] = leftNum;
+        }
+        if(j == digitos-1){
+                numDigits = digitos;
+                n[strlen(n)] = '\0';
+                if(atoll(n) > pubkey && atoll(n)%pubkey == 0){
+                    return atoll(n);
+                }
+                changePos++;
+                j = 0;
+
+        } else{
+            j++;
+        }
+    }
+}
+
+unsigned long long calc_runlength_char(unsigned long long privkey){
+    unsigned long long codKey = 0;
+    int runLessPos = 0, digits, pow = 10;
+    digits = numDigitsLong(privkey);
+    int allD[digits], runLess[4];
+
+    for (int i = 0; i < 4; ++i) {
+        runLess[i] = 0;
+    }
+    if(privkey >= 10){
+        allDigitsLong(privkey, allD);
+        runLess[runLessPos] = 1;
+        runLess[runLessPos+1] = allD[digits-1];
+        for (int i = digits-1; i >= 0; i--) {
+            if(allD[i] != allD[i-1]){
+                runLessPos += 2;
+                runLess[runLessPos+1] = allD[i-1];
+            }
+            runLess[runLessPos]++;
+        }
+        for (int i = 3; i >= 0; i--) {
+            if ( i == 3){
+                codKey = runLess[i];
+            } else{
+                codKey += runLess[i]*pow;
+                pow *= 10;
+            }
+        }
+        return codKey;
+    }
+    else{
+        return 0;
+    }
 }

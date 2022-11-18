@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "lib_projeto/projeto.h"
 #include "lib_projeto/testes.h"
+#include "lib_projeto/aed1_lp1_2223_proj_part1_chars.h"
+#include "lib_projeto/aed1_lp1_2223_proj_part1_ints.h"
 
 void projetoAED(struct matrixString mString, struct matrixInts mInts);
 
@@ -10,9 +12,9 @@ int main(int argc, const char *argv[]) {
     struct matrixInts mInts;
 
     //main_lib_projeto();
-    //main_test();
+    main_test();
 
-    projetoAED(mStrings, mInts);
+    //projetoAED(mStrings, mInts);
 
     return 0;
 }

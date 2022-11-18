@@ -4,11 +4,21 @@
 
 #include "projeto.h"
 #include "testes.h"
+#include "aed1_lp1_2223_proj_part1_chars.h"
+#include "aed1_lp1_2223_proj_part1_ints.h"
 
 int main_test(){
+    char* publicKeyChar;
+    unsigned long long publicKeyLong = 0, privKeyLong = 0, codKey = 0;
 
-    //matrixDinamicaInt();
-    matrixDinamicaString();
+    publicKeyChar = key_long_2_digits_char(2014);
+    printf("PubChar - %s\n", publicKeyChar);
+    publicKeyLong = key_digits_2_long_char(publicKeyChar);
+    printf("PubLong - %llu\n", publicKeyLong);
+    privKeyLong = calc_private_key_char(publicKeyLong);
+    printf("Priv - %llu\n", privKeyLong);
+    codKey = calc_runlength_char(privKeyLong);
+    printf("Cod - %llu\n", codKey);
 
     return 0;
 }
