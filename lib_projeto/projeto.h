@@ -68,7 +68,7 @@ void receiveMatrixPrivInt(struct matrixString mString, struct matrixInts mInts, 
 void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, int lines);
 
 void randomKey(FILE *fileChavesPubWrite, char *fileName, int n);
-void randomKeyMatrix(char* r);
+char** randomKeyMatrix(char** r, int n);
 
 struct matrixString removeKey(struct matrixString mString, char *key, int lines);
 

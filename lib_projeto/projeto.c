@@ -571,12 +571,17 @@ void randomKeyFile(FILE *fileChavesPubWrite, char *fileName, int n){
     fclose(fileChavesPubWrite);
 }
 
-void randomKeyMatrix(char* r){
-    int random = 0;
-    time_t t1;
-    srand((unsigned ) time(&t1));
-    random = rand()%250;
-    sprintf(r, "%d", random);
+char** randomKeyMatrix(char** r, int n){
+    int random = 0, digits = 0;
+
+    r = (char **) malloc(n*sizeof (char *));
+    for (int i = 0; i < n; ++i) {
+        random = rand();
+        digits = numDigits(random);
+        r[i] = (char *) malloc(digits * sizeof (char));
+        sprintf(r[i], "%d", random);
+    }
+    return r;
 }
 
 struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int lines){
