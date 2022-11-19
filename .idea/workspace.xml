@@ -18,17 +18,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d660894-d3c2-4f74-9e1c-aab11e66193d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data/chaves_publicas.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-3d1d27edc425be2b61b8.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-11-18T18-56-16-0260.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/chaves_publicas" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/testes.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/testes.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,6 +72,11 @@
   }
 }</component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="2UFP_Projeto_AED" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="2UFP_Projeto_AED" TARGET_NAME="2UFP_Projeto_AED" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="2UFP_Projeto_AED" RUN_TARGET_NAME="2UFP_Projeto_AED">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -126,6 +132,9 @@
       <workItem from="1668829672830" duration="276000" />
       <workItem from="1668860932568" duration="10253000" />
       <workItem from="1668871296005" duration="594000" />
+      <workItem from="1668872042328" duration="329000" />
+      <workItem from="1668874873882" duration="437000" />
+      <workItem from="1668876643124" duration="8998000" />
     </task>
     <servers />
   </component>

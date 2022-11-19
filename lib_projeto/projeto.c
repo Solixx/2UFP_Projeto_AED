@@ -151,7 +151,7 @@ void print_bipolar_numbers(int k){
 char* find_mul_bipolar_number(char *k){
     char *n;
     char rightNum = '0', leftNum = '1';
-    int digitos = 2, j = 0, changePos = 0, numDigits = 2, findNonZero = 0;
+    int digitos = 2, j = 0, changePos = 0, numDigits = 2;
 
     n = (char *) calloc(digitos, sizeof (char));
     while (1){
@@ -204,7 +204,7 @@ char* find_mul_bipolar_number(char *k){
 int find_mul_bipolar_number_Int(int k){
     int *n;
     int rightNum = 0, leftNum = 1;
-    int digitos = 2, j = 0, changePos = 0, findNonZero = 0;
+    int digitos = 2, j = 0, changePos = 0;
 
     n = (int *) calloc(digitos, sizeof (int));
     while (1){
@@ -632,7 +632,7 @@ struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int 
 }
 
 
-//Funcoes do ficheiro dos professores
+//Funcoes Strings do ficheiro dos professores
 char* key_long_2_digits_char(unsigned long long key){
     int digits = numDigits(key);
     char *keydigits = malloc(digits * sizeof (char));
@@ -647,7 +647,7 @@ unsigned long long key_digits_2_long_char(char* keydigits){
 unsigned long long calc_private_key_char(unsigned long long pubkey){
     char *n;
     char rightNum = '0', leftNum = '1';
-    int digitos = 2, j = 0, changePos = 0, numDigits = 2, findNonZero = 0;
+    int digitos = 2, j = 0, changePos = 0, numDigits = 2;
 
     n = (char *) calloc(digitos, sizeof (char));
     while (1){
@@ -951,4 +951,115 @@ void load_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_k
     }
 
     fclose(fileChavesPubRead);
+}
+
+
+//Funcoes Ints do ficheiro dos professores
+unsigned long long new_public_key_int(void){
+    unsigned long long r = 0;
+    for (int i = 0; i < 1; ++i) {
+        r = rand()%250;
+    }
+    return r;
+}
+
+short* key_long_2_digits_int(unsigned long long key){
+    int i = 0, s=0, hi = numDigitsLong(key)-1, size = (numDigitsLong(key)+1);
+    short *keyDigits = (short *) calloc(size * sizeof (short), sizeof (short ));
+    short temp = 0;
+    unsigned long long tempKey = key;
+    if (keyDigits == NULL) {
+        printf("Erro no malloc\n");
+        return 0;
+    }
+    while (tempKey){
+        keyDigits[i] = tempKey%10;
+        tempKey /= 10;
+        i++;
+    }
+    for (int j = 0; j < numDigitsLong(key); ++j) {
+        if(hi <= j) break;
+        temp = keyDigits[j];
+        keyDigits[j] = keyDigits[hi];
+        keyDigits[hi] = temp;
+        hi--;
+    }
+    keyDigits[size-1] = -1;
+    return keyDigits;
+}
+
+unsigned long long key_digits_2_long_int(short* keydigits){
+    int i = 0, size = 0, pow = 10;
+    unsigned long long pubKey = 0;
+
+    while (1){
+        if(keydigits[i] == -1) break;
+        i++;
+        size++;
+    }
+
+    for (int j = 0; j < size; j++) {
+        if(j == 0){
+            pubKey = keydigits[j];
+        } else{
+            if(keydigits[j] == 0){
+                pubKey *= pow;
+            } else{
+                pubKey *= pow;
+                pubKey += keydigits[j];
+            }
+        }
+    }
+
+    return pubKey;
+}
+
+unsigned long long calc_private_key_int(unsigned long long pubkey){
+    unsigned long long privKey = 0;
+    short *n;
+    short rightNum = 0, leftNum = 1;
+    int digitos = 2, j = 0, changePos = 0;
+
+    n = (short *) calloc(digitos, sizeof (short));
+    while (1){
+        n = (short *) realloc(n, (digitos+1) * sizeof (short));
+        if(leftNum == 9 && changePos == digitos -1 && rightNum == 8){
+            digitos++;
+            changePos--;
+            leftNum = 1;
+            rightNum = 0;
+        }
+        if(rightNum == 9 && changePos == digitos -1){
+            leftNum++;
+        }
+        if(changePos == digitos -1){
+            changePos = 0;
+            if(rightNum != 9){
+                rightNum++;
+            } else{
+                rightNum = 0;
+            }
+        }
+        if(leftNum == rightNum){
+            rightNum++;
+        }
+        if(j > changePos){
+            n[j] = rightNum;
+        } else{
+            n[j] = leftNum;
+        }
+        if(j == digitos-1){
+            n[digitos] = -1;
+            privKey = key_digits_2_long_int(n);
+            if(privKey > ULONG_LONG_MAX || privKey < 0) return 0;
+            if(privKey > pubkey && privKey%pubkey == 0){
+                return privKey;
+            }
+            changePos++;
+            j = 0;
+
+        } else{
+            j++;
+        }
+    }
 }

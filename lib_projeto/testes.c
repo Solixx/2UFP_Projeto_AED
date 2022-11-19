@@ -7,11 +7,24 @@
 #include "aed1_lp1_2223_proj_part1_chars.h"
 #include "aed1_lp1_2223_proj_part1_ints.h"
 
+void clienteString(struct matrixString mString);
+void clienteInt(struct matrixInts mInts);
+
 int main_test(){
 
     struct matrixString mString;
     struct matrixInts mInts;
 
+    time_t t1;
+    srand((unsigned ) time(&t1));
+
+    //clienteString(mString);
+    clienteInt(mInts);
+
+    return 0;
+}
+
+void clienteString(struct matrixString mString){
     char filename[] = "../data/chaves_publicas.txt";
     char *publicKeyChar, *privKeyChar, *codKeyChar;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
@@ -132,5 +145,19 @@ int main_test(){
 
     //char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long partialpubkey); //TODO nao percebi muito bem
 
-    return 0;
+}
+
+void clienteInt(struct matrixInts mInts){
+
+    unsigned long long pubKey;
+    short *allD = NULL;
+    pubKey = new_public_key_int();
+    printf("PubKey Random - %llu\n", pubKey);
+    allD = key_long_2_digits_int(pubKey);
+    for (int i = 0; i < numDigitsLong(pubKey)+1; ++i) {
+        printf("Digits PubKey - %hi\n", allD[i]);
+    }
+    pubKey = key_digits_2_long_int(allD);
+    printf("PubKey Por Digitos - %llu\n", pubKey);
+    printf("PrivKey - %llu", calc_private_key_int(pubKey));
 }
