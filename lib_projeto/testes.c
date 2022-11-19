@@ -8,75 +8,77 @@
 #include "aed1_lp1_2223_proj_part1_ints.h"
 
 int main_test(){
-    char* publicKeyChar;
-    unsigned long long publicKeyLong = 0, privKeyLong = 0, codKey = 0;
 
+    struct matrixString mString;
+    struct matrixInts mInts;
+
+    char *publicKeyChar, *privKeyChar, *codKeyChar;
+    unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
+
+    /*
+    privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
+    codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     publicKeyChar = key_long_2_digits_char(2014);
     printf("PubChar - %s\n", publicKeyChar);
     publicKeyLong = key_digits_2_long_char(publicKeyChar);
     printf("PubLong - %llu\n", publicKeyLong);
     privKeyLong = calc_private_key_char(publicKeyLong);
-    printf("Priv - %llu\n", privKeyLong);
-    codKey = calc_runlength_char(privKeyLong);
-    printf("Cod - %llu\n", codKey);
+    printf("PrivLong - %llu\n", privKeyLong);
+    sprintf(privKeyChar, "%llu", privKeyLong);
+    printf("PrivChar - %s\n", privKeyChar);
+    codKeyLong = calc_runlength_char(privKeyLong);
+    printf("CodLong - %llu\n", codKeyLong);
+    sprintf(codKeyChar, "%llu", codKeyLong);
+    printf("CodChar - %s\n", codKeyChar);
+     */
+
+    mString.matrixPub = alloc_matrix_char(2, 5);
+    mString.matrixPriv = alloc_matrix_char(2, 5);
+    mString.matrixCod = alloc_matrix_char(2, 5);
+
+    /*
+    store_key_char(mString.matrixPub, 5, publicKeyLong);
+    store_key_char(mString.matrixPriv, 5, privKeyLong);
+    store_key_char(mString.matrixCod, 5, codKeyLong);
+
+    publicKeyChar = key_long_2_digits_char(8);
+    printf("PubChar - %s\n", publicKeyChar);
+    publicKeyLong = key_digits_2_long_char(publicKeyChar);
+    printf("PubLong - %llu\n", publicKeyLong);
+    privKeyLong = calc_private_key_char(publicKeyLong);
+    printf("PrivLong - %llu\n", privKeyLong);
+    sprintf(privKeyChar, "%llu", privKeyLong);
+    printf("PrivChar - %s\n", privKeyChar);
+    codKeyLong = calc_runlength_char(privKeyLong);
+    printf("CodLong - %llu\n", codKeyLong);
+    sprintf(codKeyChar, "%llu", codKeyLong);
+    printf("CodChar - %s\n", codKeyChar);
+
+    store_key_char(mString.matrixPub, 5, publicKeyLong);
+    store_key_char(mString.matrixPriv, 5, privKeyLong);
+    store_key_char(mString.matrixCod, 5, codKeyLong);
+
+    printf("Exist - %d\n", exists_key_char(mString.matrixPub, 5, 2014));
+    printf("Exist - %d\n", exists_key_char(mString.matrixPub, 5, publicKeyLong));
+
+    printf("A Chave Privada e - %llu\n", get_private_key_char(mString.matrixPub, mString.matrixPriv, 5, 2014));
+    printf("A Chave Codificada e - %llu\n", get_runlength_char(mString.matrixPriv, mString.matrixCod, 5, 16));
+
+    printf("Chave Publica Apagada %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, 5, '8'));
+
+     */
+    bulk_populate_public_keys_char(mString.matrixPub, 2);
+    for (int i = 0; i < 2; ++i) {
+        printf("mString PubMatrix de %d - %s\n", i, mString.matrixPub[i]);
+    }
+    bulk_compute_private_keys_char(mString.matrixPub, mString.matrixPriv, 2);
+    for (int i = 0; i < 2; ++i) {
+        printf("mString PrivMatrix de %d - %s\n", i, mString.matrixPriv[i]);
+    }
+    bulk_compute_runlengths_char(mString.matrixPriv, mString.matrixCod, 2);
+    for (int i = 0; i < 2; ++i) {
+        printf("mString CodMatrix de %d - %s\n", i, mString.matrixCod[i]);
+    }
 
     return 0;
-}
-
-void matrixDinamicaInt(){
-
-    int **matrix, lines = 3, columns = 6, c = 0;
-
-    matrix = (int **) malloc(lines * sizeof (int *));
-
-    for (int i = 0; i < lines; ++i) {
-        matrix[i] = (int *) malloc(columns * sizeof (int));
-    }
-
-    for (int i = 0; i < lines; ++i) {
-        for (int j = 0; j < columns; ++j) {
-            matrix[i][j] = c;
-            c++;
-        }
-    }
-
-    for (int i = 0; i < lines; ++i) {
-        for (int j = 0; j < columns; ++j) {
-            printf("%d\t", matrix[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-void matrixDinamicaString(){
-
-    char **matrix;
-    char *c = "0";
-    int lines = 1, columns = 2;
-
-    matrix = calloc(lines * sizeof (char *), sizeof (char *));
-
-    for (int i = 0; i < lines; ++i) {
-        matrix[i] = (char *) calloc(lines * sizeof (char *), sizeof (char));
-    }
-
-    for (int i = 0; i < lines; ++i) {
-        matrix[i] = c;
-        c++;
-    }
-
-    for (int i = 0; i < lines; ++i) {
-        printf("%s\t", matrix[i]);
-        printf("\n");
-    }
-
-    matrix = (char **) realloc(matrix, lines+1 * sizeof (char *));
-    matrix[lines-1] = "2";
-    matrix[lines] = "3";
-    lines++;
-
-    for (int i = 0; i < lines; ++i) {
-        printf("%s\t", matrix[i]);
-        printf("\n");
-    }
 }

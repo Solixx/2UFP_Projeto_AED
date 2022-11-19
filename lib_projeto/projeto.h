@@ -71,6 +71,7 @@ void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, i
 
 void randomKey(FILE *fileChavesPubWrite, char *fileName, int n);
 char** randomKeyMatrix(char** r, int n);
+char* randomKeyValue(char* r);
 
 struct matrixString removeKey(struct matrixString mString, char *key, int lines);
 

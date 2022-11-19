@@ -605,6 +605,18 @@ char** randomKeyMatrix(char** r, int n){
     return r;
 }
 
+char* randomKeyValue(char* r){
+    int random = 0, digits = 0;
+
+    r = (char *) malloc(sizeof (char));
+    for (int i = 0; i < 1; ++i) {
+        random = rand()%250;
+        digits = numDigits(random);
+        sprintf(r, "%d", random);
+    }
+    return r;
+}
+
 struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int lines){
     for (int i = 0; i < lines; ++i) {
         if(strcmp(mString.matrixPub[i], key) == 0){
@@ -668,6 +680,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
         if(j == digitos-1){
                 numDigits = digitos;
                 n[strlen(n)] = '\0';
+                if(atoll(n) > ULONG_LONG_MAX || atoll(n) < 0) return 0;
                 if(atoll(n) > pubkey && atoll(n)%pubkey == 0){
                     return atoll(n);
                 }
@@ -712,5 +725,108 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
     }
     else{
         return 0;
+    }
+}
+
+unsigned long long private_key_from_runlength_char(unsigned long long runlengthkey){} //TODO como descobrir a chave privada com a chave cod quando o numero de digitos da cod é maior que 4
+
+char** alloc_matrix_char(int nlines, int ncolumns){
+    char **matrix;
+    matrix = (char **) calloc(nlines * sizeof (char *), sizeof (char *));
+    for (int i = 0; i < nlines; ++i) {
+        matrix[i] = (char *) calloc(ncolumns * sizeof (char), sizeof (char));
+    }
+    return matrix;
+}
+
+void store_key_char(char **matrix, int lines, unsigned long long key){
+    char *keyChar = malloc(numDigitsLong(key) * sizeof (char));
+    sprintf(keyChar, "%llu", key);
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix[i], "\0") == 0){
+            matrix[i] = keyChar;
+            break;
+        }
+    }
+}
+
+int exists_key_char(char **matrix, int lines, unsigned long long key){
+    char *keyChar = malloc(numDigitsLong(key) * sizeof (char));
+    sprintf(keyChar, "%llu", key);
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix[i], keyChar) == 0){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+unsigned long long get_private_key_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long pubkey){
+    char *keyChar = malloc(numDigitsLong(pubkey) * sizeof (char));
+    sprintf(keyChar, "%llu", pubkey);
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kpub[i], keyChar) == 0){
+            return atoll(matrix_kpriv[i]);
+        }
+    }
+    return 0;
+}
+
+unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, int lines, unsigned long long privkey){
+    char *keyChar = malloc(numDigitsLong(privkey) * sizeof (char));
+    sprintf(keyChar, "%llu", privkey);
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kpriv[i], keyChar) == 0){
+            return atoll(matrix_kcod[i]);
+        }
+    }
+    return 0;
+}
+
+unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char pubkey){
+    char *keyChar = malloc(numDigitsLong(pubkey) * sizeof (char));
+    sprintf(keyChar, "%llu", pubkey);
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kpub[i], keyChar) == 0){
+            free(matrix_kpub[i]);
+            free(matrix_kpriv[i]);
+            free(matrix_kcod[i]);
+            break;
+        }
+    }
+    return pubkey-'0';
+} //TODO a chave publica não deveria ser *char ou invés de char porque assim só posso por 1 carater sendo que as chaves publicas podem ter mais de 1 carater
+
+void bulk_populate_public_keys_char(char **matrix_kpub, int lines){
+    time_t t1;
+    srand((unsigned ) time(&t1));
+    char** r = (char **) malloc(sizeof (char *));
+    matrix_kpub = (char **) realloc(matrix_kpub, lines * sizeof (char *));
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kpub[i], "\0") == 0){
+            matrix_kpub[i] = randomKeyValue(matrix_kpub[i]);
+        }
+    }
+}
+
+void bulk_compute_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines){
+    unsigned long long val;
+    matrix_kpriv = (char **) realloc(matrix_kpriv, lines * sizeof (char *));
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kpriv[i], "\0") == 0){
+            val = calc_private_key_char(atoll(matrix_kpub[i]));
+            store_key_char(matrix_kpriv, lines, val);
+        }
+    }
+}
+
+void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int lines){
+    unsigned long long val;
+    matrix_kcod = (char **) realloc(matrix_kcod, lines * sizeof (char *));
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kcod[i], "\0") == 0){
+            val = calc_runlength_char(atoll(matrix_kpriv[i]));
+            store_key_char(matrix_kcod, lines, val);
+        }
     }
 }
