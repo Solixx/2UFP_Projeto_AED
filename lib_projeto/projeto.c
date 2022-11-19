@@ -1063,3 +1063,38 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
         }
     }
 }
+
+unsigned long long calc_runlength_int(unsigned long long privkey){
+    unsigned long long codKey = 0;
+    int runLessPos = 0, digits, pow = 10;
+    digits = numDigitsLong(privkey);
+    int allD[digits], runLess[4];
+
+    for (int i = 0; i < 4; ++i) {
+        runLess[i] = 0;
+    }
+    if(privkey >= 10){
+        allDigitsLong(privkey, allD);
+        runLess[runLessPos] = 1;
+        runLess[runLessPos+1] = allD[digits-1];
+        for (int i = digits-1; i >= 0; i--) {
+            if(allD[i] != allD[i-1]){
+                runLessPos += 2;
+                runLess[runLessPos+1] = allD[i-1];
+            }
+            runLess[runLessPos]++;
+        }
+        for (int i = 3; i >= 0; i--) {
+            if ( i == 3){
+                codKey = runLess[i];
+            } else{
+                codKey += runLess[i]*pow;
+                pow *= 10;
+            }
+        }
+        return codKey;
+    }
+    else{
+        return 0;
+    }
+}

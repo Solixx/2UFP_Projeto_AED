@@ -19,16 +19,13 @@
   <component name="ChangeListManager">
     <list default="true" id="4d660894-d3c2-4f74-9e1c-aab11e66193d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-3d1d27edc425be2b61b8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-11-18T18-56-16-0260.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-11-19T18-59-10-0962.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/testes.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/testes.c" afterDir="false" />
     </list>
@@ -134,7 +131,7 @@
       <workItem from="1668871296005" duration="594000" />
       <workItem from="1668872042328" duration="329000" />
       <workItem from="1668874873882" duration="437000" />
-      <workItem from="1668876643124" duration="8998000" />
+      <workItem from="1668876643124" duration="10891000" />
     </task>
     <servers />
   </component>
@@ -151,5 +148,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/lib_projeto/projeto.c</url>
+          <line>1066</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
