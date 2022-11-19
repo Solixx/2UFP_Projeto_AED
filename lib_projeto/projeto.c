@@ -695,7 +695,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
 
 unsigned long long calc_runlength_char(unsigned long long privkey){
     unsigned long long codKey = 0;
-    int runLessPos = 0, digits, pow = 10;
+    int runLessPos = 0, digits, pow = 1;
     digits = numDigitsLong(privkey);
     int allD[digits], runLess[4];
 
@@ -713,12 +713,16 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
             }
             runLess[runLessPos]++;
         }
-        for (int i = 3; i >= 0; i--) {
-            if ( i == 3){
+        for (int i = 0; i < 4; i++) {
+            if ( i == 0){
                 codKey = runLess[i];
             } else{
-                codKey += runLess[i]*pow;
-                pow *= 10;
+                for (int j = 0; j < numDigitsLong(runLess[i]); ++j) {
+                    pow *= 10;
+                }
+                codKey *= pow;
+                codKey += runLess[i];
+                pow = 1;
             }
         }
         return codKey;
@@ -1066,7 +1070,7 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
 
 unsigned long long calc_runlength_int(unsigned long long privkey){
     unsigned long long codKey = 0;
-    int runLessPos = 0, digits, pow = 10;
+    int runLessPos = 0, digits, pow = 1;
     digits = numDigitsLong(privkey);
     int allD[digits], runLess[4];
 
@@ -1084,12 +1088,16 @@ unsigned long long calc_runlength_int(unsigned long long privkey){
             }
             runLess[runLessPos]++;
         }
-        for (int i = 3; i >= 0; i--) {
-            if ( i == 3){
+        for (int i = 0; i < 4; i++) {
+            if ( i == 0){
                 codKey = runLess[i];
             } else{
-                codKey += runLess[i]*pow;
-                pow *= 10;
+                for (int j = 0; j < numDigitsLong(runLess[i]); ++j) {
+                    pow *= 10;
+                }
+                codKey *= pow;
+                codKey += runLess[i];
+                pow = 1;
             }
         }
         return codKey;
@@ -1098,3 +1106,5 @@ unsigned long long calc_runlength_int(unsigned long long privkey){
         return 0;
     }
 }
+
+unsigned long long private_key_from_runlength_int(unsigned long long runlengthkey); //TODO como descobrir a chave privada com a chave cod quando o numero de digitos da cod é maior que 4

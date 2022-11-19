@@ -32,7 +32,7 @@ void clienteString(struct matrixString mString){
 
     privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
-    publicKeyChar = key_long_2_digits_char(2);
+    publicKeyChar = key_long_2_digits_char(2014);
     //printf("PubChar - %s\n", publicKeyChar);
     publicKeyLong = key_digits_2_long_char(publicKeyChar);
     //printf("PubLong - %llu\n", publicKeyLong);
