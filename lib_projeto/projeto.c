@@ -830,3 +830,125 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
         }
     }
 }
+
+void sort_matrix_char(char **matrix, int lines, int order){
+    shellSort(matrix, lines, order);
+}
+
+void sort_all_matrices_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, int order){
+    shellSort(matrix_kpub, lines, order);
+    shellSort(matrix_kpriv, lines, order);
+    shellSort(matrix_kcod, lines, order);
+}
+
+void shellSort(char** a, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            if(strcmp(a[i], "\0") == 0) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && atoll(a[j]) < atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swap(a, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && atoll(a[j]) > atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swap(a, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+void shellSortDigits(char** a, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            if(strcmp(a[i], "\0") == 0) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swap(a, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swap(a, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+void swap(char** a, int i, int min){
+
+    char* temp = (char *) calloc(strlen(a[min]) * sizeof (char), sizeof (char));
+    strcpy(temp, a[min]);
+    strcpy(a[min], a[i]);
+    strcpy(a[i], temp);
+}
+
+void list_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, int order){
+    shellSortDigits(matrix_kpub, lines, order);
+    shellSortDigits(matrix_kpriv, lines, order);
+    shellSortDigits(matrix_kcod, lines, order);
+}
+
+void save_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]){
+    FILE *fileChavesPubWrite;
+    fileChavesPubWrite = fopen(filename, "r+");
+
+    if(fileChavesPubWrite == NULL){
+        printf("Ficheiro nao existe\n");
+        return;
+    }
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kpub[i], "\0") != 0){
+            fprintf(fileChavesPubWrite,"%llu" , atoll(matrix_kpub[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kpriv[i], "\0") != 0){
+            fprintf(fileChavesPubWrite,"%llu" , atoll(matrix_kpriv[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kcod[i], "\0") != 0){
+            fprintf(fileChavesPubWrite,"%llu" , atoll(matrix_kcod[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }
+
+    fclose(fileChavesPubWrite);
+}
+
+void load_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]){
+    FILE *fileChavesPubRead;
+    fileChavesPubRead = fopen(filename, "r");
+    int i = 1;
+    unsigned long long privKey = 0, codKey = 0, t = 0;
+    unsigned long long value;
+    char str[lines][200];
+
+    if(fileChavesPubRead == NULL){
+        printf("Ficheiro nao existe\n");
+        return;
+    }
+
+    while (fscanf (fileChavesPubRead, "%llu", &value) == 1 && i < lines){
+        privKey = calc_private_key_char(value);
+        codKey = calc_runlength_char(privKey);
+        store_key_char(matrix_kpub, lines, value);
+        store_key_char(matrix_kpriv, lines, privKey);
+        store_key_char(matrix_kcod, lines, codKey);
+        i++;
+    }
+
+    fclose(fileChavesPubRead);
+}

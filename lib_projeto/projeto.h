@@ -75,6 +75,10 @@ char* randomKeyValue(char* r);
 
 struct matrixString removeKey(struct matrixString mString, char *key, int lines);
 
+void shellSort(char** a, int N, int order);
+void shellSortDigits(char** a, int N, int order);
+void swap(char** a, int i, int min);
+
 void cliente0();
 void cliente1();
 void cliente2();
