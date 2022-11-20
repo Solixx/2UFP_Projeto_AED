@@ -18,8 +18,8 @@ int main_test(){
     time_t t1;
     srand((unsigned ) time(&t1));
 
-    //clienteString(mString);
-    clienteInt(mInts);
+    clienteString(mString);
+    //clienteInt(mInts);
 
     return 0;
 }
@@ -28,7 +28,7 @@ void clienteString(struct matrixString mString){
     char filename[] = "../data/chaves_publicas.txt";
     char *publicKeyChar, *privKeyChar, *codKeyChar;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
-    int lines = 1, columns = 10000;
+    int lines = 3, columns = 10000;
 
     privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
@@ -48,6 +48,44 @@ void clienteString(struct matrixString mString){
     mString.matrixPub = alloc_matrix_char(lines, columns);
     mString.matrixPriv = alloc_matrix_char(lines, columns);
     mString.matrixCod = alloc_matrix_char(lines, columns);
+
+    store_key_char(mString.matrixPub, lines, publicKeyLong);
+    store_key_char(mString.matrixPriv, lines, privKeyLong);
+    store_key_char(mString.matrixCod, lines, codKeyLong);
+
+    privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
+    codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
+    publicKeyChar = key_long_2_digits_char(8);
+    //printf("PubChar - %s\n", publicKeyChar);
+    publicKeyLong = key_digits_2_long_char(publicKeyChar);
+    //printf("PubLong - %llu\n", publicKeyLong);
+    privKeyLong = calc_private_key_char(publicKeyLong);
+    //printf("PrivLong - %llu\n", privKeyLong);
+    sprintf(privKeyChar, "%llu", privKeyLong);
+    //printf("PrivChar - %s\n", privKeyChar);
+    codKeyLong = calc_runlength_char(privKeyLong);
+    //printf("CodLong - %llu\n", codKeyLong);
+    sprintf(codKeyChar, "%llu", codKeyLong);
+    //printf("CodChar - %s\n", codKeyChar);
+
+    store_key_char(mString.matrixPub, lines, publicKeyLong);
+    store_key_char(mString.matrixPriv, lines, privKeyLong);
+    store_key_char(mString.matrixCod, lines, codKeyLong);
+
+    privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
+    codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
+    publicKeyChar = key_long_2_digits_char(200);
+    //printf("PubChar - %s\n", publicKeyChar);
+    publicKeyLong = key_digits_2_long_char(publicKeyChar);
+    //printf("PubLong - %llu\n", publicKeyLong);
+    privKeyLong = calc_private_key_char(publicKeyLong);
+    //printf("PrivLong - %llu\n", privKeyLong);
+    sprintf(privKeyChar, "%llu", privKeyLong);
+    //printf("PrivChar - %s\n", privKeyChar);
+    codKeyLong = calc_runlength_char(privKeyLong);
+    //printf("CodLong - %llu\n", codKeyLong);
+    sprintf(codKeyChar, "%llu", codKeyLong);
+    //printf("CodChar - %s\n", codKeyChar);
 
     store_key_char(mString.matrixPub, lines, publicKeyLong);
     store_key_char(mString.matrixPriv, lines, privKeyLong);
@@ -100,9 +138,10 @@ void clienteString(struct matrixString mString){
 
     //printf("Chave Publica Apagada %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, 5, '8'));
 
-    //sort_matrix_char(mString.matrixPub, 5, 1);
-    //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, 5, 1);
-    //list_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, 5, 1);
+
+    //sort_matrix_char(mString.matrixPub, lines, 1);
+    //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
+    //list_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
     /* for (int i = 0; i < 3; ++i) {
         printf("Chave Publica %s\n", mString.matrixPub[i]);
     }*/
@@ -154,12 +193,13 @@ void clienteString(struct matrixString mString){
 
 void clienteInt(struct matrixInts mInts){
 
+    char filename[] = "../data/chaves_publicas_ints.txt";
     unsigned long long pubKey = 0, privKey = 0, codKey = 0;
     short *allD = NULL;
-    int lines = 1, columns = 1;
+    int lines = 2, columns = 1;
 
     pubKey = new_public_key_int();
-    pubKey = 130;
+    pubKey = 2014;
     allD = key_long_2_digits_int(pubKey);
     pubKey = key_digits_2_long_int(allD);
     privKey = calc_private_key_int(pubKey);
@@ -171,7 +211,7 @@ void clienteInt(struct matrixInts mInts){
     }
      */
     //printf("PubKey Por Digitos - %llu\n", pubKey);
-    printf("PrivKey - %llu\n", privKey);
+    //printf("PrivKey - %llu\n", privKey);
     //printf("CodKey - %llu\n", codKey);
 
     mInts.matrixPub = alloc_matrix_int(lines, columns);
@@ -182,14 +222,14 @@ void clienteInt(struct matrixInts mInts){
     store_key_int(mInts.matrixPriv, lines, privKey);
     store_key_int(mInts.matrixCod, lines, codKey);
 
-
+    /*
     for (int i = 0; i < lines; ++i) {
         printf("PubKey - %hi\n", mInts.matrixPub[i][0]);
         printf("PrivKey - %hi\n", mInts.matrixPriv[i][0]);
         printf("CodKey - %hi\n", mInts.matrixCod[i][0]);
     }
     printf("\n");
-
+    */
 
     //printf("Exists - %d\n", exists_key_int(mInts.matrixPub, lines, pubKey));
     //printf("PrivKey da PubKey - %llu\n", get_private_key_int(mInts.matrixPub, mInts.matrixPriv, lines, pubKey));
@@ -197,14 +237,31 @@ void clienteInt(struct matrixInts mInts){
 
     //printf("PubKey Apagada - %llu\n", delete_key_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, pubKey));
 
+
+    //bulk_populate_public_keys_int(mInts.matrixPub, lines);
+    //bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines);
+    //bulk_compute_runlengths_int(mInts.matrixPriv, mInts.matrixCod, lines);
+
+    //load_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
     /*
-    bulk_populate_public_keys_int(mInts.matrixPub, 5);
-    bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, 5);
-    bulk_compute_runlengths_int(mInts.matrixPriv, mInts.matrixCod, 5);
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < lines; ++i) {
+        printf("PubKey - %hi\n", mInts.matrixPub[i][0]);
+        printf("PrivKey - %hi\n", mInts.matrixPriv[i][0]);
+        printf("CodKey - %hi\n", mInts.matrixCod[i][0]);
+    }
+    printf("\n");
+     */
+
+    //sort_matrix_int(mInts.matrixPub, lines, 1);
+    //sort_all_matrices_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
+    //list_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
+    /*
+    for (int i = 0; i < lines; ++i) {
         printf("PubKey - %hi\n", mInts.matrixPub[i][0]);
         printf("PrivKey - %hi\n", mInts.matrixPriv[i][0]);
         printf("CodKey - %hi\n", mInts.matrixCod[i][0]);
     }
      */
+
+    //save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 }

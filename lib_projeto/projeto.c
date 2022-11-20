@@ -640,6 +640,110 @@ struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int 
     return mString;
 }
 
+void shellSortChar(char** a, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            if(strcmp(a[i], "\0") == 0) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && atoll(a[j]) < atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapChar(a, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && atoll(a[j]) > atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapChar(a, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+void shellSortCharDigits(char** a, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            if(strcmp(a[i], "\0") == 0) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapChar(a, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapChar(a, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+void swapChar(char** a, int i, int min){
+
+    char* temp = (char *) calloc(strlen(a[min]) * sizeof (char), sizeof (char));
+    strcpy(temp, a[min]);
+    strcpy(a[min], a[i]);
+    strcpy(a[i], temp);
+}
+
+void shellSortInt(short** a, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            if(a[i][0] == 0) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && a[j][0] < a[j-h][0]; j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && a[j][0] > a[j-h][0]; j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+void shellSortIntDigits(short** a, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            if(a[i][0] == 0) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && numDigitsLong(a[j][0]) < numDigitsLong(a[j-h][0]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && numDigitsLong(a[j][0]) > numDigitsLong(a[j-h][0]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+void swapInt(short** a, int i, int min){
+
+    short temp = a[min][0];
+    a[min][0] = a[i][0];
+    a[i][0] = temp;
+}
+
+
 
 //Funcoes Strings do ficheiro dos professores
 char* key_long_2_digits_char(unsigned long long key){
@@ -715,7 +819,7 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
         allDigitsLong(privkey, allD);
         runLess[runLessPos] = 1;
         runLess[runLessPos+1] = allD[digits-1];
-        for (int i = digits-1; i >= 0; i--) {
+        for (int i = digits-1; i > 0; i--) {
             if(allD[i] != allD[i-1]){
                 runLessPos += 2;
                 runLess[runLessPos+1] = allD[i-1];
@@ -845,71 +949,19 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
 }
 
 void sort_matrix_char(char **matrix, int lines, int order){
-    shellSort(matrix, lines, order);
+    shellSortChar(matrix, lines, order);
 }
 
 void sort_all_matrices_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, int order){
-    shellSort(matrix_kpub, lines, order);
-    shellSort(matrix_kpriv, lines, order);
-    shellSort(matrix_kcod, lines, order);
-}
-
-void shellSort(char** a, int N, int order){
-    int h = 1;
-    while (h < N/3){
-        h = 3*h + 1;
-    }
-    while (h >= 1){
-        for (int i = 0; i < N; ++i) {
-            if(strcmp(a[i], "\0") == 0) return;
-            if(order == 1){ // 1 -> ascendente
-                for (int j = i; j >= h && atoll(a[j]) < atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swap(a, j, j-h);
-                }
-            } else{ // 0 -> descendente
-                for (int j = i; j >= h && atoll(a[j]) > atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swap(a, j, j-h);
-                }
-            }
-        }
-        h /= 3;
-    }
-}
-
-void shellSortDigits(char** a, int N, int order){
-    int h = 1;
-    while (h < N/3){
-        h = 3*h + 1;
-    }
-    while (h >= 1){
-        for (int i = 0; i < N; ++i) {
-            if(strcmp(a[i], "\0") == 0) return;
-            if(order == 1){ // 1 -> ascendente
-                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swap(a, j, j-h);
-                }
-            } else{ // 0 -> descendente
-                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swap(a, j, j-h);
-                }
-            }
-        }
-        h /= 3;
-    }
-}
-
-void swap(char** a, int i, int min){
-
-    char* temp = (char *) calloc(strlen(a[min]) * sizeof (char), sizeof (char));
-    strcpy(temp, a[min]);
-    strcpy(a[min], a[i]);
-    strcpy(a[i], temp);
+    shellSortChar(matrix_kpub, lines, order);
+    shellSortChar(matrix_kpriv, lines, order);
+    shellSortChar(matrix_kcod, lines, order);
 }
 
 void list_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, int order){
-    shellSortDigits(matrix_kpub, lines, order);
-    shellSortDigits(matrix_kpriv, lines, order);
-    shellSortDigits(matrix_kcod, lines, order);
+    shellSortCharDigits(matrix_kpub, lines, order);
+    shellSortCharDigits(matrix_kpriv, lines, order);
+    shellSortCharDigits(matrix_kcod, lines, order);
 }
 
 void save_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]){
@@ -1090,7 +1142,7 @@ unsigned long long calc_runlength_int(unsigned long long privkey){
         allDigitsLong(privkey, allD);
         runLess[runLessPos] = 1;
         runLess[runLessPos+1] = allD[digits-1];
-        for (int i = digits-1; i >= 0; i--) {
+        for (int i = digits-1; i > 0; i--) {
             if(allD[i] != allD[i-1]){
                 runLessPos += 2;
                 runLess[runLessPos+1] = allD[i-1];
@@ -1198,7 +1250,7 @@ void bulk_populate_public_keys_int(short **matrix_kpub, int lines){
     short r;
     matrix_kpub = (short **) realloc(matrix_kpub, lines * sizeof (short *));
     for (int i = 0; i < lines; ++i) {
-        if(matrix_kpub[i] == NULL){
+        if(matrix_kpub[i][0] == NULL){
             matrix_kpub[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
             r = randomKeyValueShort(matrix_kpub[i][0]);
             store_key_int(matrix_kpub, lines, r);
@@ -1210,7 +1262,7 @@ void bulk_compute_private_keys_int(short **matrix_kpub, short **matrix_kpriv, in
     unsigned long long val;
     matrix_kpriv = (short **) realloc(matrix_kpriv, lines * sizeof (short *));
     for (int i = 0; i < lines; ++i) {
-        if(matrix_kpriv[i] == NULL){
+        if(matrix_kpriv[i][0] == NULL){
             matrix_kpriv[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
             val = calc_private_key_int(matrix_kpub[i][0]);
             store_key_int(matrix_kpriv, lines, val);
@@ -1222,10 +1274,82 @@ void bulk_compute_runlengths_int(short **matrix_kpriv, short **matrix_kcod, int 
     unsigned long long val;
     matrix_kcod = (short **) realloc(matrix_kcod, lines * sizeof (short *));
     for (int i = 0; i < lines; ++i) {
-        if(matrix_kcod[i] == NULL){
+        if(matrix_kcod[i][0] == NULL){
             matrix_kcod[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
             val = calc_runlength_int(matrix_kpriv[i][0]);
             store_key_int(matrix_kcod, lines, val);
         }
     }
+}
+
+short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long partialpubkey){} //TODO search privKey com uma parte de uma pubKey
+
+void sort_matrix_int(short **matrix, int lines, int order){
+    shellSortInt(matrix, lines, order);
+}
+
+void sort_all_matrices_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, int order){
+    shellSortInt(matrix_kpub, lines, order);
+    shellSortInt(matrix_kpriv, lines, order);
+    shellSortInt(matrix_kcod, lines, order);
+}
+
+void list_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, int order){
+    shellSortIntDigits(matrix_kpub, lines, order);
+    shellSortIntDigits(matrix_kpriv, lines, order);
+    shellSortIntDigits(matrix_kcod, lines, order);
+}
+
+void save_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){
+
+    FILE *fileChavesPubWrite;
+    fileChavesPubWrite = fopen(filename, "r+");
+
+    if(fileChavesPubWrite == NULL){
+        printf("Ficheiro nao existe\n");
+        return;
+    }
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpub[i][0] != NULL){
+            fprintf(fileChavesPubWrite,"%hi" , matrix_kpub[i][0]);
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpriv[i][0] != NULL){
+            fprintf(fileChavesPubWrite,"%hi" , matrix_kpriv[i][0]);
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }for (int i = 0; i < lines; ++i) {
+        if(matrix_kcod[i][0] != NULL){
+            fprintf(fileChavesPubWrite,"%hi" , matrix_kcod[i][0]);
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }
+
+    fclose(fileChavesPubWrite);
+}
+
+void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){
+
+    FILE *fileChavesPubRead;
+    fileChavesPubRead = fopen(filename, "r");
+    int i = 0;
+    unsigned long long privKey = 0, codKey = 0, value = 0;
+
+    if(fileChavesPubRead == NULL){
+        printf("Ficheiro nao existe\n");
+        return;
+    }
+
+    while (fscanf (fileChavesPubRead, "%llu", &value) == 1 && i < lines){
+        privKey = calc_private_key_int(value);
+        codKey = calc_runlength_int(privKey);
+        store_key_int(matrix_kpub, lines, value);
+        store_key_int(matrix_kpriv, lines, privKey);
+        store_key_int(matrix_kcod, lines, codKey);
+        i++;
+    }
+
+    fclose(fileChavesPubRead);
 }
