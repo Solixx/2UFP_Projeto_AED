@@ -617,6 +617,15 @@ char* randomKeyValue(char* r){
     return r;
 }
 
+short randomKeyValueShort(short r){
+    int digits = 0;
+    for (int i = 0; i < 1; ++i) {
+        r = rand()%250;
+        digits = numDigits(r);
+    }
+    return r;
+}
+
 struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int lines){
     for (int i = 0; i < lines; ++i) {
         if(strcmp(mString.matrixPub[i], key) == 0){
@@ -1108,3 +1117,115 @@ unsigned long long calc_runlength_int(unsigned long long privkey){
 }
 
 unsigned long long private_key_from_runlength_int(unsigned long long runlengthkey); //TODO como descobrir a chave privada com a chave cod quando o numero de digitos da cod é maior que 4
+
+short** alloc_matrix_int(int nlines, int ncolumns){
+    short **matrix;
+    matrix = (short **) calloc(nlines * sizeof (short *), sizeof (short *));
+    for (int i = 0; i < nlines; ++i) {
+        matrix[i] = (short *) calloc(ncolumns * sizeof (short), sizeof (short));
+    }
+    return matrix;
+}
+
+void store_key_int(short **matrix, int lines, unsigned long long key){
+    for (int i = 0; i < lines; ++i) {
+        if(matrix[i][0] == 0){
+            matrix[i][0] = key;
+            return;
+        }
+        /*
+        for (int j = 0; j < lines; ++j) {
+            if(matrix[i][j] == 0){
+                matrix[i][j] = key;
+                return;
+            }
+        }
+         */
+    }
+}
+
+int exists_key_int(short **matrix, int lines, unsigned long long key){
+    for (int i = 0; i < lines; ++i) {
+        if(matrix[i][0] == key){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+unsigned long long get_private_key_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long pubkey){
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpub[i][0] == pubkey){
+            return matrix_kpriv[i][0];
+        }
+    }
+    return 0;
+}
+
+unsigned long long get_runlength_int(short **matrix_kpriv, short **matrix_kcod, int lines, unsigned long long privkey){
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpriv[i][0] == privkey){
+            return matrix_kcod[i][0];
+        }
+    }
+    return 0;
+}
+
+unsigned long long delete_key_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, short pubkey){
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpub[i][0] == pubkey){
+            for (int j = i; j < lines; ++j) {
+                if(j == lines-1){
+                    free(matrix_kpub[i]);
+                    free(matrix_kpriv[i]);
+                    free(matrix_kcod[i]);
+                    matrix_kpub = (short **) realloc(matrix_kpub, (lines-1) * sizeof (short *));
+                    matrix_kpriv = (short **) realloc(matrix_kpriv, (lines-1) * sizeof (short *));
+                    matrix_kcod = (short **) realloc(matrix_kcod, (lines-1) * sizeof (short *));
+                    break;
+                }
+                matrix_kpub[j][0] = matrix_kpub[j+1][0];
+                matrix_kpriv[j][0] = matrix_kpriv[j+1][0];
+                matrix_kcod[j][0] = matrix_kcod[j+1][0];
+            }
+            lines--;
+        }
+    }
+    return pubkey;
+} //TODO ao dar free() e reallocar a memoria fica um valor aleatorio da posição
+
+void bulk_populate_public_keys_int(short **matrix_kpub, int lines){
+    short r;
+    matrix_kpub = (short **) realloc(matrix_kpub, lines * sizeof (short *));
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpub[i] == NULL){
+            matrix_kpub[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
+            r = randomKeyValueShort(matrix_kpub[i][0]);
+            store_key_int(matrix_kpub, lines, r);
+        }
+    }
+}
+
+void bulk_compute_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines){
+    unsigned long long val;
+    matrix_kpriv = (short **) realloc(matrix_kpriv, lines * sizeof (short *));
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpriv[i] == NULL){
+            matrix_kpriv[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
+            val = calc_private_key_int(matrix_kpub[i][0]);
+            store_key_int(matrix_kpriv, lines, val);
+        }
+    }
+}
+
+void bulk_compute_runlengths_int(short **matrix_kpriv, short **matrix_kcod, int lines){
+    unsigned long long val;
+    matrix_kcod = (short **) realloc(matrix_kcod, lines * sizeof (short *));
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kcod[i] == NULL){
+            matrix_kcod[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
+            val = calc_runlength_int(matrix_kpriv[i][0]);
+            store_key_int(matrix_kcod, lines, val);
+        }
+    }
+}

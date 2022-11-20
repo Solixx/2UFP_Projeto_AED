@@ -19,9 +19,9 @@ struct matrixString{
 };
 
 struct matrixInts{
-    int **matrixPub;
-    int **matrixPriv;
-    int **matrixCod;
+    short **matrixPub;
+    short **matrixPriv;
+    short **matrixCod;
 };
 
 int bipolar_number(char *text);

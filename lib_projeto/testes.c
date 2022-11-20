@@ -142,23 +142,69 @@ void clienteString(struct matrixString mString){
 
     //char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long partialpubkey); //TODO nao percebi muito bem
 
+    for (int i = 0; i < lines; ++i) {
+        free(mString.matrixPub[i]);
+        free(mString.matrixPriv[i]);
+        free(mString.matrixCod[i]);
+    }
+    free(mString.matrixPub);
+    free(mString.matrixPriv);
+    free(mString.matrixCod);
 }
 
 void clienteInt(struct matrixInts mInts){
 
-    unsigned long long pubKey, privKey, codKey;
+    unsigned long long pubKey = 0, privKey = 0, codKey = 0;
     short *allD = NULL;
+    int lines = 1, columns = 1;
+
     pubKey = new_public_key_int();
-    pubKey = 2014;
-    printf("PubKey Random - %llu\n", pubKey);
+    pubKey = 130;
     allD = key_long_2_digits_int(pubKey);
+    pubKey = key_digits_2_long_int(allD);
+    privKey = calc_private_key_int(pubKey);
+    codKey = calc_runlength_int(privKey);
+    //printf("PubKey Random - %llu\n", pubKey);
+    /*
     for (int i = 0; i < numDigitsLong(pubKey)+1; ++i) {
         printf("Digits PubKey - %hi\n", allD[i]);
     }
-    pubKey = key_digits_2_long_int(allD);
-    printf("PubKey Por Digitos - %llu\n", pubKey);
-    privKey = calc_private_key_int(pubKey);
+     */
+    //printf("PubKey Por Digitos - %llu\n", pubKey);
     printf("PrivKey - %llu\n", privKey);
-    codKey = calc_runlength_int(privKey);
-    printf("CodKey - %llu\n", codKey);
+    //printf("CodKey - %llu\n", codKey);
+
+    mInts.matrixPub = alloc_matrix_int(lines, columns);
+    mInts.matrixPriv = alloc_matrix_int(lines, columns);
+    mInts.matrixCod = alloc_matrix_int(lines, columns);
+
+    store_key_int(mInts.matrixPub, lines, pubKey);
+    store_key_int(mInts.matrixPriv, lines, privKey);
+    store_key_int(mInts.matrixCod, lines, codKey);
+
+
+    for (int i = 0; i < lines; ++i) {
+        printf("PubKey - %hi\n", mInts.matrixPub[i][0]);
+        printf("PrivKey - %hi\n", mInts.matrixPriv[i][0]);
+        printf("CodKey - %hi\n", mInts.matrixCod[i][0]);
+    }
+    printf("\n");
+
+
+    //printf("Exists - %d\n", exists_key_int(mInts.matrixPub, lines, pubKey));
+    //printf("PrivKey da PubKey - %llu\n", get_private_key_int(mInts.matrixPub, mInts.matrixPriv, lines, pubKey));
+    //printf("CodKey da PrivKey - %llu\n", get_runlength_int(mInts.matrixPriv, mInts.matrixCod, lines, privKey));
+
+    //printf("PubKey Apagada - %llu\n", delete_key_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, pubKey));
+
+    /*
+    bulk_populate_public_keys_int(mInts.matrixPub, 5);
+    bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, 5);
+    bulk_compute_runlengths_int(mInts.matrixPriv, mInts.matrixCod, 5);
+    for (int i = 0; i < 5; ++i) {
+        printf("PubKey - %hi\n", mInts.matrixPub[i][0]);
+        printf("PrivKey - %hi\n", mInts.matrixPriv[i][0]);
+        printf("CodKey - %hi\n", mInts.matrixCod[i][0]);
+    }
+     */
 }

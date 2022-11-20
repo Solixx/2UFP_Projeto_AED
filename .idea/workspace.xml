@@ -19,13 +19,22 @@
   <component name="ChangeListManager">
     <list default="true" id="4d660894-d3c2-4f74-9e1c-aab11e66193d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-2fef0b392e95ed517e14.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-11-19T19-52-43-0817.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/main.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdC/a.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdC/a.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/testes.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/testes.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -68,12 +77,12 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration name="2UFP_Projeto_AED" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="2UFP_Projeto_AED" TARGET_NAME="2UFP_Projeto_AED" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="2UFP_Projeto_AED" RUN_TARGET_NAME="2UFP_Projeto_AED">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="2UFP_Projeto_AED" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="2UFP_Projeto_AED" TARGET_NAME="2UFP_Projeto_AED" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="2UFP_Projeto_AED" RUN_TARGET_NAME="2UFP_Projeto_AED">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -132,6 +141,9 @@
       <workItem from="1668874873882" duration="437000" />
       <workItem from="1668876643124" duration="14205000" />
       <workItem from="1668893069700" duration="1352000" />
+      <workItem from="1668894889680" duration="5786000" />
+      <workItem from="1668900740247" duration="857000" />
+      <workItem from="1668901613502" duration="1975000" />
     </task>
     <servers />
   </component>
@@ -148,5 +160,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/lib_projeto/testes.c</url>
+          <line>160</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
