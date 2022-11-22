@@ -24,6 +24,14 @@ struct matrixInts{
     short **matrixCod;
 };
 
+typedef struct KEY_HOLDER{
+    struct matrixString khString;
+    struct matrixInts khInts;
+    int data_criacao;
+    int data_modificacao;
+    struct KEY_HOLDER *next;
+} KEY_HOLDER;
+
 int bipolar_number(char *text);
 
 void print_bipolar_numbers(int k);
@@ -82,6 +90,8 @@ void swapChar(char** a, int i, int min);
 void shellSortInt(short** a, int N, int order);
 void shellSortIntDigits(short** a, int N, int order);
 void swapInt(short** a, int i, int min);
+
+void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts);
 
 void cliente0();
 void cliente1();

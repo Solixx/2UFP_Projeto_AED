@@ -1353,3 +1353,28 @@ void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 
     fclose(fileChavesPubRead);
 }
+
+
+// Funcoes para porta-chaves
+
+void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts){
+    KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
+
+    if(new_keyHolder == NULL){
+        exit(1);
+    }
+    new_keyHolder->next = NULL;
+    new_keyHolder->khString = mString;
+    new_keyHolder->khInts = mInts;
+
+    if(*portaChaves == NULL){
+        *portaChaves = new_keyHolder;
+        return;
+    }
+
+    KEY_HOLDER * curr = *portaChaves;
+    while (curr->next != NULL){
+        curr = curr->next;
+    }
+    curr->next = new_keyHolder;
+}
