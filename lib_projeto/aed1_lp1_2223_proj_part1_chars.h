@@ -94,7 +94,7 @@ unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, i
  * @param pubkey - public key to delete
  * @return pubkey that was deleted
  */
-unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char pubkey);
+unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char* pubkey);
 
 /**
  * Automatically generate and save a given amount (<lines>) of public keys.

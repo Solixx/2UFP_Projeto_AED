@@ -37,7 +37,7 @@ struct matrixString clienteString(struct matrixString mString){
     char filename[] = "../data/chaves_publicas.txt";
     char *publicKeyChar, *privKeyChar, *codKeyChar;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
-    int lines = 2, columns = 10000;
+    int lines = 5, columns = 10000;
 
     privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));

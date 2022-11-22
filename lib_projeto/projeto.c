@@ -900,7 +900,7 @@ unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, i
     return 0;
 }
 
-unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char pubkey){
+unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char* pubkey){
     char *keyChar = malloc(numDigitsLong(pubkey) * sizeof (char));
     sprintf(keyChar, "%llu", pubkey);
     for (int i = 0; i < lines; ++i) {
@@ -1180,9 +1180,11 @@ short** alloc_matrix_int(int nlines, int ncolumns){
 }
 
 void store_key_int(short **matrix, int lines, unsigned long long key){
+    short *allD = key_long_2_digits_int(key);
     for (int i = 0; i < lines; ++i) {
-        if(matrix[i][0] == 0){
-            matrix[i][0] = key;
+        if(matrix[i] == NULL){
+            matrix[i] = (short *) calloc(numDigitsLong(key), sizeof (short));
+            matrix[i] = allD;
             return;
         }
         /*
