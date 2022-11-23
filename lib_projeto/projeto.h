@@ -12,6 +12,8 @@
 #include <ctype.h>
 #include <time.h>
 
+#define FIRST_NUMBER '0'
+
 struct matrixString{
     char **matrixPub;
     char **matrixPriv;
@@ -90,6 +92,7 @@ void swapChar(char** a, int i, int min);
 void shellSortInt(short** a, int N, int order);
 void shellSortIntDigits(short** a, int N, int order);
 void swapInt(short** a, int i, int min);
+
 
 void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts);
 

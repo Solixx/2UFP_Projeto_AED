@@ -744,7 +744,6 @@ void swapInt(short** a, int i, int min){
 }
 
 
-
 //Funcoes Strings do ficheiro dos professores
 char* key_long_2_digits_char(unsigned long long key){
     int digits = numDigits(key);
@@ -958,7 +957,33 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
 
 char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long partialpubkey){
 
-    
+    char **result = malloc(sizeof (char *));
+    char *partialPubKeyChar = (char *) malloc(numDigitsLong(partialpubkey) * sizeof (char));
+    sprintf(partialPubKeyChar, "%llu", partialpubkey);
+    int partialPubKeySize = strlen(partialPubKeyChar);
+    int sizeResult = 0, posResult = 0;
+    unsigned long long val = 0;
+
+    for (int i = 0; i < lines; ++i) {
+        int k = 0;
+        for (int j = 0; j < strlen(matrix_kpub[i]); ++j) {
+            if(matrix_kpub[i][j] == partialPubKeyChar[k]){
+                k++;
+            } else{
+                k = 0;
+            }
+            if(k == strlen(partialPubKeyChar)){
+                sizeResult++;
+                result = (char **) realloc(result, sizeResult * sizeof (char *));
+                val = get_private_key_char(matrix_kpub, matrix_kpriv, lines, atoll(matrix_kpub[i]));
+                result[posResult] = (char *) malloc(numDigitsLong(val) * sizeof (char));
+                sprintf(result[posResult], "%llu", val);
+                posResult++;
+            }
+        }
+    }
+
+    return result;
 
 } //TODO serach char
 
@@ -1315,7 +1340,39 @@ void bulk_compute_runlengths_int(short **matrix_kpriv, short **matrix_kcod, int 
     }
 }
 
-short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long partialpubkey){} //TODO search privKey com uma parte de uma pubKey
+short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long partialpubkey){
+    short **result = malloc(sizeof (short *));
+    int sizeResult = 0, posResult = 0;
+    unsigned long long val = 0;
+    short * valArray = NULL, *partialKeyArray = (short *) malloc(numDigitsLong(partialpubkey));
+    partialKeyArray = key_long_2_digits_int(partialpubkey);
+
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpub[i][0] == NULL) break;
+        int k = 0;
+        for (int j = 0; j < numDigitsLong(key_digits_2_long_int(matrix_kpub[i])); ++j) {
+            if(matrix_kpub[i][j] == partialKeyArray[k]){
+                k++;
+            } else{
+                k = 0;
+            }
+            if(k == numDigitsLong(partialpubkey)){
+                sizeResult++;
+                result = (short **) realloc(result, sizeResult * sizeof (short *));
+                val = get_private_key_int(matrix_kpub, matrix_kpriv, lines, key_digits_2_long_int(matrix_kpub[i]));
+                valArray = (short *) malloc(numDigitsLong(val) * sizeof (short));
+                valArray = key_long_2_digits_int(val);
+                result[posResult] = (short *) malloc(numDigitsLong(val) * sizeof (short));
+                for (int l = 0; l <= numDigitsLong(val); ++l) {
+                    result[posResult][l] = valArray[l];
+                }
+                posResult++;
+            }
+        }
+    }
+
+    return result;
+}
 
 void sort_matrix_int(short **matrix, int lines, int order){
     shellSortInt(matrix, lines, order);

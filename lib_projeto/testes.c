@@ -20,8 +20,8 @@ int main_test(){
     time_t t1;
     srand((unsigned ) time(&t1));
 
-    mString = clienteString(mString);
-    //mInts = clienteInt(mInts);
+    //mString = clienteString(mString);
+    mInts = clienteInt(mInts);
 
     /*
     printf("Ints - %hi\n", mInts.matrixPub[1][0]);
@@ -38,12 +38,13 @@ int main_test(){
 struct matrixString clienteString(struct matrixString mString){
     char filename[] = "../data/chaves_publicas.txt";
     char *publicKeyChar, *privKeyChar, *codKeyChar;
+    char **privKeySearch = NULL;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
     int lines = 10, columns = 1;
 
     privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
-    publicKeyChar = key_long_2_digits_char(312);
+    publicKeyChar = key_long_2_digits_char(201);
     //printf("PubChar - %s\n", publicKeyChar);
     publicKeyLong = key_digits_2_long_char(publicKeyChar);
     //printf("PubLong - %llu\n", publicKeyLong);
@@ -106,16 +107,27 @@ struct matrixString clienteString(struct matrixString mString){
     //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
     //list_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
 
+    privKeySearch = search_private_keys_char(mString.matrixPub, mString.matrixPriv, lines, 20);
+
+    int j = 0;
+    while (strcmp(privKeySearch[j], "\0") != 0){
+        printf("Priv Encontrada - %s\n", privKeySearch[j]);
+        j++;
+    }
+
+    /*
     for (int i = 0; i < lines; ++i) {
         if(strcmp(mString.matrixPub[i], "\0") != 0)printf("Pub - %s\n", mString.matrixPub[i]);
         if(strcmp(mString.matrixPriv[i], "\0") != 0) printf("Priv - %s\n", mString.matrixPriv[i]);
         if(strcmp(mString.matrixCod[i], "\0") != 0) printf("Cod - %s\n", mString.matrixCod[i]);
     }
+     */
 
     //save_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
 
     //load_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
 
+    /*
     bulk_populate_public_keys_char(mString.matrixPub, lines);
 
     for (int i = 0; i < lines; ++i) {
@@ -133,6 +145,7 @@ struct matrixString clienteString(struct matrixString mString){
     for (int i = 0; i < lines; ++i) {
         printf("mString CodMatrix de %d - %s\n", i, mString.matrixCod[i]);
     }
+     */
 
     //char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long partialpubkey); //TODO nao percebi muito bem
 
@@ -143,7 +156,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 
     char filename[] = "../data/chaves_publicas_ints.txt";
     unsigned long long pubKey = 0, privKey = 0, codKey = 0;
-    short *allD = NULL;
+    short *allD = NULL, **privKeySearch = NULL;
     int lines = 5, columns = 1;
 
     pubKey = new_public_key_int();
@@ -171,6 +184,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     store_key_int(mInts.matrixCod, lines, codKey);
 
     pubKey = new_public_key_int();
+    pubKey = 20;
     allD = key_long_2_digits_int(pubKey);
     pubKey = key_digits_2_long_int(allD);
     privKey = calc_private_key_int(pubKey);
@@ -222,6 +236,16 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     //bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines);
     //bulk_compute_runlengths_int(mInts.matrixPriv, mInts.matrixCod, lines);
 
+    privKeySearch = search_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines, 20);
+
+    for (int i = 0; i < lines; ++i) {
+        if(privKeySearch[i][0] != NULL){
+            printf("Priv Encontrada - %llu", key_digits_2_long_int(privKeySearch[i]));
+            printf("\n");
+        }
+    }
+
+    /*
     for (int i = 0; i < lines; ++i) {
         if(mInts.matrixPub[i][0] != NULL){
             int j = 0;
@@ -251,6 +275,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
             printf("\n");
         }
     }
+     */
 
     //load_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
     /*
