@@ -920,7 +920,7 @@ unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char
         }
     }
     return atoll(pubkey);
-} //TODO a chave publica não deveria ser *char ou invés de char porque assim só posso por 1 carater sendo que as chaves publicas podem ter mais de 1 carater
+}
 
 void bulk_populate_public_keys_char(char **matrix_kpub, int lines){
     time_t t1;
@@ -955,6 +955,12 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
         }
     }
 }
+
+char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long partialpubkey){
+
+    
+
+} //TODO serach char
 
 void sort_matrix_char(char **matrix, int lines, int order){
     shellSortChar(matrix, lines, order);
@@ -1014,7 +1020,7 @@ void load_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_k
         return;
     }
 
-    while (fscanf (fileChavesPubRead, "%llu", &value) == 1 && i < lines){
+    while (fscanf (fileChavesPubRead, "%llu", &value) == 1 && i <= lines){
         privKey = calc_private_key_char(value);
         codKey = calc_runlength_char(privKey);
         store_key_char(matrix_kpub, lines, value);
