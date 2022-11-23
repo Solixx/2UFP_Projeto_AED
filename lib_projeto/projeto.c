@@ -901,17 +901,25 @@ unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, i
 }
 
 unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char* pubkey){
-    char *keyChar = malloc(numDigitsLong(pubkey) * sizeof (char));
-    sprintf(keyChar, "%llu", pubkey);
     for (int i = 0; i < lines; ++i) {
-        if(strcmp(matrix_kpub[i], keyChar) == 0){
-            free(matrix_kpub[i]);
-            free(matrix_kpriv[i]);
-            free(matrix_kcod[i]);
-            break;
+        if(strcmp(matrix_kpub[i], pubkey) == 0){
+            for (int j = i; j < lines; ++j) {
+                if(j == lines-1){
+                    matrix_kpub = (char **) realloc(matrix_kpub, (lines-1) * sizeof (char *));
+                    matrix_kpriv = (char **) realloc(matrix_kpriv, (lines-1) * sizeof (char *));
+                    matrix_kcod = (char **) realloc(matrix_kcod, (lines-1) * sizeof (char *));
+                    matrix_kpub[j] = NULL;
+                    matrix_kpriv[j] = NULL;
+                    matrix_kcod[j] = NULL;
+                }
+                matrix_kpub[j] = matrix_kpub[j+1];
+                matrix_kpriv[j] = matrix_kpriv[j+1];
+                matrix_kcod[j] = matrix_kcod[j+1];
+            }
+            lines--;
         }
     }
-    return pubkey-'0';
+    return atoll(pubkey);
 } //TODO a chave publica não deveria ser *char ou invés de char porque assim só posso por 1 carater sendo que as chaves publicas podem ter mais de 1 carater
 
 void bulk_populate_public_keys_char(char **matrix_kpub, int lines){
@@ -1183,7 +1191,7 @@ void store_key_int(short **matrix, int lines, unsigned long long key){
     short *allD = key_long_2_digits_int(key);
     for (int i = 0; i < lines; ++i) {
         if(matrix[i][0] == NULL){
-            matrix[i] = (short *) calloc(numDigitsLong(key), sizeof (short));
+            matrix[i] = (short *) calloc(numDigitsLong(key)+1, sizeof (short));
             matrix[i] = allD;
             return;
         }
@@ -1199,18 +1207,35 @@ void store_key_int(short **matrix, int lines, unsigned long long key){
 }
 
 int exists_key_int(short **matrix, int lines, unsigned long long key){
+    short *allD = key_long_2_digits_int(key);
     for (int i = 0; i < lines; ++i) {
-        if(matrix[i][0] == key){
+        if(matrix[i][0] == NULL){
+            break;
+        }
+        if(key_digits_2_long_int(matrix[i]) == key_digits_2_long_int(allD)){
             return 1;
         }
+        /*
+        int j = 0;
+        while (matrix[i][j] != -1){
+            if(matrix[i][j] != allD[j]){
+                break;
+            } else{
+                if(matrix[i][j+1] == -1 && allD[j+1] == -1){
+                    return 1;
+                }
+            }
+            j++;
+        }
+        */
     }
     return 0;
 }
 
 unsigned long long get_private_key_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long pubkey){
     for (int i = 0; i < lines; ++i) {
-        if(matrix_kpub[i][0] == pubkey){
-            return matrix_kpriv[i][0];
+        if(key_digits_2_long_int(matrix_kpub[i]) == pubkey){
+            return key_digits_2_long_int(matrix_kpriv[i]);
         }
     }
     return 0;
@@ -1218,8 +1243,8 @@ unsigned long long get_private_key_int(short **matrix_kpub, short **matrix_kpriv
 
 unsigned long long get_runlength_int(short **matrix_kpriv, short **matrix_kcod, int lines, unsigned long long privkey){
     for (int i = 0; i < lines; ++i) {
-        if(matrix_kpriv[i][0] == privkey){
-            return matrix_kcod[i][0];
+        if(key_digits_2_long_int(matrix_kpriv[i]) == privkey){
+            return key_digits_2_long_int(matrix_kcod[i]);
         }
     }
     return 0;
@@ -1227,34 +1252,34 @@ unsigned long long get_runlength_int(short **matrix_kpriv, short **matrix_kcod, 
 
 unsigned long long delete_key_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, short pubkey){
     for (int i = 0; i < lines; ++i) {
-        if(matrix_kpub[i][0] == pubkey){
+        if(key_digits_2_long_int(matrix_kpub[i]) == pubkey){
             for (int j = i; j < lines; ++j) {
                 if(j == lines-1){
-                    free(matrix_kpub[i]);
-                    free(matrix_kpriv[i]);
-                    free(matrix_kcod[i]);
                     matrix_kpub = (short **) realloc(matrix_kpub, (lines-1) * sizeof (short *));
                     matrix_kpriv = (short **) realloc(matrix_kpriv, (lines-1) * sizeof (short *));
                     matrix_kcod = (short **) realloc(matrix_kcod, (lines-1) * sizeof (short *));
+                    matrix_kpub[j] = NULL;
+                    matrix_kpriv[j] = NULL;
+                    matrix_kcod[j] = NULL;
                     break;
                 }
-                matrix_kpub[j][0] = matrix_kpub[j+1][0];
-                matrix_kpriv[j][0] = matrix_kpriv[j+1][0];
-                matrix_kcod[j][0] = matrix_kcod[j+1][0];
+                matrix_kpub[j] = matrix_kpub[j+1];
+                matrix_kpriv[j] = matrix_kpriv[j+1];
+                matrix_kcod[j] = matrix_kcod[j+1];
             }
             lines--;
         }
     }
     return pubkey;
-} //TODO ao dar free() e reallocar a memoria fica um valor aleatorio da posição
+}
 
 void bulk_populate_public_keys_int(short **matrix_kpub, int lines){
     short r;
     matrix_kpub = (short **) realloc(matrix_kpub, lines * sizeof (short *));
     for (int i = 0; i < lines; ++i) {
         if(matrix_kpub[i][0] == NULL){
-            matrix_kpub[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
             r = randomKeyValueShort(matrix_kpub[i][0]);
+            matrix_kpub[i] = (short *) calloc(numDigitsLong(r), sizeof (short ));
             store_key_int(matrix_kpub, lines, r);
         }
     }
@@ -1265,8 +1290,8 @@ void bulk_compute_private_keys_int(short **matrix_kpub, short **matrix_kpriv, in
     matrix_kpriv = (short **) realloc(matrix_kpriv, lines * sizeof (short *));
     for (int i = 0; i < lines; ++i) {
         if(matrix_kpriv[i][0] == NULL){
-            matrix_kpriv[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
-            val = calc_private_key_int(matrix_kpub[i][0]);
+            val = calc_private_key_int(key_digits_2_long_int(matrix_kpub[i]));
+            matrix_kpriv[i] = (short *) calloc(numDigitsLong(val), sizeof (short ));
             store_key_int(matrix_kpriv, lines, val);
         }
     }
@@ -1277,8 +1302,8 @@ void bulk_compute_runlengths_int(short **matrix_kpriv, short **matrix_kcod, int 
     matrix_kcod = (short **) realloc(matrix_kcod, lines * sizeof (short *));
     for (int i = 0; i < lines; ++i) {
         if(matrix_kcod[i][0] == NULL){
-            matrix_kcod[i] = (short *) calloc(lines * sizeof (short), sizeof (short ));
-            val = calc_runlength_int(matrix_kpriv[i][0]);
+            val = calc_runlength_int(key_digits_2_long_int(matrix_kpriv[i]));
+            matrix_kcod[i] = (short *) calloc(numDigitsLong(val), sizeof (short ));
             store_key_int(matrix_kcod, lines, val);
         }
     }
@@ -1313,18 +1338,18 @@ void save_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
     }
     for (int i = 0; i < lines; ++i) {
         if(matrix_kpub[i][0] != NULL){
-            fprintf(fileChavesPubWrite,"%hi" , matrix_kpub[i][0]);
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kpub[i]));
             fprintf(fileChavesPubWrite,"\n");
         }
     }
     for (int i = 0; i < lines; ++i) {
         if(matrix_kpriv[i][0] != NULL){
-            fprintf(fileChavesPubWrite,"%hi" , matrix_kpriv[i][0]);
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kpriv[i]));
             fprintf(fileChavesPubWrite,"\n");
         }
     }for (int i = 0; i < lines; ++i) {
         if(matrix_kcod[i][0] != NULL){
-            fprintf(fileChavesPubWrite,"%hi" , matrix_kcod[i][0]);
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kcod[i]));
             fprintf(fileChavesPubWrite,"\n");
         }
     }
@@ -1358,7 +1383,6 @@ void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 
 
 // Funcoes para porta-chaves
-
 void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts){
     KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
 
