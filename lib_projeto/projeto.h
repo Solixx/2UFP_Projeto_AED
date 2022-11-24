@@ -95,6 +95,7 @@ void swapInt(short** a, int i, int min);
 
 
 void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int pos);
+void print_keyHolders(KEY_HOLDER* portaChaves);
 
 void cliente0();
 void cliente1();

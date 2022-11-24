@@ -763,9 +763,9 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
 
     n = (char *) calloc(digitos, sizeof (char));
     while (1){
-        n = (char *) realloc(n, (digitos+1) *  sizeof (char ));
         if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
             digitos++;
+            n = (char *) calloc((digitos+1), sizeof (char));
             changePos--;
             leftNum = '1';
             rightNum = '0';
@@ -798,7 +798,6 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
                 }
                 changePos++;
                 j = 0;
-
         } else{
             j++;
         }
@@ -939,8 +938,7 @@ void bulk_compute_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int
     matrix_kpriv = (char **) realloc(matrix_kpriv, lines * sizeof (char *));
     for (int i = 0; i < lines; ++i) {
         if(strcmp(matrix_kpriv[i], "\0") == 0){
-            val = calc_private_key_char(168);
-            printf("Val - %llu\n", val);
+            val = calc_private_key_char(atoll(matrix_kpub[i]));
             matrix_kpriv[i] = (char *) calloc(numDigitsLong(val), sizeof (char));
             store_key_char(matrix_kpriv, lines, val);
         }
@@ -1130,9 +1128,9 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
 
     n = (short *) calloc(digitos, sizeof (short));
     while (1){
-        n = (short *) realloc(n, (digitos+1) * sizeof (short));
         if(leftNum == 9 && changePos == digitos -1 && rightNum == 8){
             digitos++;
+            n = (short *) calloc((digitos+1), sizeof (short));
             changePos--;
             leftNum = 1;
             rightNum = 0;
@@ -1494,4 +1492,18 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
         curr = curr->next;
     }
     curr->next = new_keyHolder;
+}
+
+void print_keyHolders(KEY_HOLDER* portaChaves){
+    for (KEY_HOLDER *curr = portaChaves; curr != NULL ; curr = curr->next) {
+        for (int i = 0; i < 6; ++i) {
+            printf("Porta Chaves String - %s\n", curr->khString.matrixPub[i]);
+            int j = 0;
+            while (curr->khInts.matrixPub[i][j] != -1){
+                printf("Porta Chaves Ints - %hi\n", curr->khInts.matrixPub[i][j]);
+                j++;
+            }
+            printf("\n");
+        }
+    }
 }
