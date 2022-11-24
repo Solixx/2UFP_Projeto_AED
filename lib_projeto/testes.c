@@ -23,6 +23,7 @@ int main_test(){
     mString = clienteString(mString);
     mInts = clienteInt(mInts);
 
+    /*
     for (int i = 0; i < 6; ++i) {
         printf("Pub String - %s\n", mString.matrixPub[i]);
         int j = 0;
@@ -32,7 +33,7 @@ int main_test(){
         }
         printf("\n");
     }
-
+    */
 
     clienteKeyHolder(portaChaves, mString, mInts);
 
@@ -137,23 +138,23 @@ struct matrixString clienteString(struct matrixString mString){
 
 
     bulk_populate_public_keys_char(mString.matrixPub, lines);
-    /*
+
     for (int i = 0; i < lines; ++i) {
         printf("mString PubMatrix de %d - %s\n", i, mString.matrixPub[i]);
     }
-    */
+
     bulk_compute_private_keys_char(mString.matrixPub, mString.matrixPriv, lines);
-    /*
+
     for (int i = 0; i < lines; ++i) {
         printf("mString PrivMatrix de %d - %s\n", i, mString.matrixPriv[i]);
     }
-    */
+
     bulk_compute_runlengths_char(mString.matrixPriv, mString.matrixCod, lines); //TODO recebe mas não imprime nos printf
-    /*
+
     for (int i = 0; i < lines; ++i) {
         printf("mString CodMatrix de %d - %s\n", i, mString.matrixCod[i]);
     }
-     */
+
 
     //char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long partialpubkey); //TODO nao percebi muito bem
 
@@ -244,6 +245,37 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     bulk_populate_public_keys_int(mInts.matrixPub, lines);
     bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines);
     bulk_compute_runlengths_int(mInts.matrixPriv, mInts.matrixCod, lines);
+
+    for (int i = 0; i < lines; ++i) {
+        if(mInts.matrixPub[i][0] != NULL){
+            int j = 0;
+            printf("Pub - ");
+            while (mInts.matrixPub[i][j] != -1){
+                printf("%hi", mInts.matrixPub[i][j]);
+                j++;
+            }
+            printf("\n");
+        }
+        if(mInts.matrixPriv[i][0] != NULL){
+            int j = 0;
+            printf("Priv - ");
+            while (mInts.matrixPriv[i][j] != -1){
+                printf("%hi", mInts.matrixPriv[i][j]);
+                j++;
+            }
+            printf("\n");
+        }
+        if(mInts.matrixCod[i][0] != NULL){
+            int j = 0;
+            printf("Cod - ");
+            while (mInts.matrixCod[i][j] != -1){
+                printf("%hi", mInts.matrixCod[i][j]);
+                j++;
+            }
+            printf("\n");
+        }
+    }
+    printf("\n");
 
     //privKeySearch = search_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines, 20);
 

@@ -763,7 +763,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
 
     n = (char *) calloc(digitos, sizeof (char));
     while (1){
-        n = (char *) realloc(n, digitos);
+        n = (char *) realloc(n, (digitos+1) *  sizeof (char ));
         if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
             digitos++;
             changePos--;
@@ -922,23 +922,26 @@ unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char
 }
 
 void bulk_populate_public_keys_char(char **matrix_kpub, int lines){
-    time_t t1;
-    srand((unsigned ) time(&t1));
-    char** r = (char **) malloc(sizeof (char *));
+    char* r = NULL;
     matrix_kpub = (char **) realloc(matrix_kpub, lines * sizeof (char *));
     for (int i = 0; i < lines; ++i) {
         if(strcmp(matrix_kpub[i], "\0") == 0){
-            matrix_kpub[i] = randomKeyValue(matrix_kpub[i]);
+            r = randomKeyValue(matrix_kpub[i]);
+            matrix_kpub[i] = (char *) calloc(strlen(r), sizeof (char));
+            store_key_char(matrix_kpub, lines, atoll(r));
+            //matrix_kpub[i] = randomKeyValue(matrix_kpub[i]);
         }
     }
 }
 
 void bulk_compute_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines){
-    unsigned long long val;
+    unsigned long long val = 0;
     matrix_kpriv = (char **) realloc(matrix_kpriv, lines * sizeof (char *));
     for (int i = 0; i < lines; ++i) {
         if(strcmp(matrix_kpriv[i], "\0") == 0){
-            val = calc_private_key_char(atoll(matrix_kpub[i]));
+            val = calc_private_key_char(168);
+            printf("Val - %llu\n", val);
+            matrix_kpriv[i] = (char *) calloc(numDigitsLong(val), sizeof (char));
             store_key_char(matrix_kpriv, lines, val);
         }
     }
@@ -950,6 +953,7 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
     for (int i = 0; i < lines; ++i) {
         if(strcmp(matrix_kcod[i], "\0") == 0){
             val = calc_runlength_char(atoll(matrix_kpriv[i]));
+            matrix_kcod[i] = (char *) calloc(numDigitsLong(val), sizeof (char));
             store_key_char(matrix_kcod, lines, val);
         }
     }
