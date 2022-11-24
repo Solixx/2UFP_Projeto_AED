@@ -987,7 +987,7 @@ char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lin
 
     return result;
 
-} //TODO serach char
+} //TODO escreve o ultimo valor +1 dq devia
 
 void sort_matrix_char(char **matrix, int lines, int order){
     shellSortChar(matrix, lines, order);
