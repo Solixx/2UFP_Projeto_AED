@@ -1446,15 +1446,39 @@ void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 
 
 // Funcoes para porta-chaves
-void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts){
+void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int pos){
     KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
 
     if(new_keyHolder == NULL){
         exit(1);
     }
     new_keyHolder->next = NULL;
+    new_keyHolder->khString.matrixPub = alloc_matrix_char(6, 1);
+    new_keyHolder->khString.matrixPriv = alloc_matrix_char(6, 1);
+    new_keyHolder->khString.matrixCod = alloc_matrix_char(6, 1);
+    new_keyHolder->khInts.matrixPub = alloc_matrix_int(6, 1);
+    new_keyHolder->khInts.matrixPriv = alloc_matrix_int(6, 1);
+    new_keyHolder->khInts.matrixCod = alloc_matrix_int(6, 1);
+    for (int i = pos; i < pos+6; ++i) {
+        store_key_char(new_keyHolder->khString.matrixPub, 6, atoll(mString.matrixPub[i]));
+        store_key_char(new_keyHolder->khString.matrixPriv, 6, atoll(mString.matrixPriv[i]));
+        store_key_char(new_keyHolder->khString.matrixCod, 6, atoll(mString.matrixCod[i]));
+        store_key_int(new_keyHolder->khInts.matrixPub, 6, key_digits_2_long_int(mInts.matrixPub[i]));
+        store_key_int(new_keyHolder->khInts.matrixPriv, 6, key_digits_2_long_int(mInts.matrixPriv[i]));
+        store_key_int(new_keyHolder->khInts.matrixCod, 6, key_digits_2_long_int(mInts.matrixCod[i]));
+        /*
+        new_keyHolder->khString.matrixPub[i] = mString.matrixPub[i];
+        new_keyHolder->khString.matrixPriv[i] = mString.matrixPriv[i];
+        new_keyHolder->khString.matrixCod[i] = mString.matrixCod[i];
+        new_keyHolder->khInts.matrixPub[i] = mInts.matrixPub[i];
+        new_keyHolder->khInts.matrixPriv[i] = mInts.matrixPriv[i];
+        new_keyHolder->khInts.matrixCod[i] = mInts.matrixCod[i];
+         */
+    }
+    /*
     new_keyHolder->khString = mString;
     new_keyHolder->khInts = mInts;
+     */
 
     if(*portaChaves == NULL){
         *portaChaves = new_keyHolder;

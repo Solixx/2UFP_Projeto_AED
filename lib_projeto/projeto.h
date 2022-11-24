@@ -94,7 +94,7 @@ void shellSortIntDigits(short** a, int N, int order);
 void swapInt(short** a, int i, int min);
 
 
-void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts);
+void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int pos);
 
 void cliente0();
 void cliente1();
