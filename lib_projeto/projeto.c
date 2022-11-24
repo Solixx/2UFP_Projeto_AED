@@ -1450,6 +1450,10 @@ void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 // Funcoes para porta-chaves
 void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int pos){
     KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
+    time_t data_criacao;
+    time(&data_criacao);
+    time_t data_modificacao;
+    time(&data_modificacao);
 
     if(new_keyHolder == NULL){
         exit(1);
@@ -1477,6 +1481,8 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
         new_keyHolder->khInts.matrixCod[i] = mInts.matrixCod[i];
          */
     }
+    new_keyHolder->data_criacao = ctime(&data_criacao);
+    new_keyHolder->data_modificacao = ctime(&data_modificacao);
     /*
     new_keyHolder->khString = mString;
     new_keyHolder->khInts = mInts;
@@ -1494,16 +1500,52 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
     curr->next = new_keyHolder;
 }
 
-void print_keyHolders(KEY_HOLDER* portaChaves){
-    for (KEY_HOLDER *curr = portaChaves; curr != NULL ; curr = curr->next) {
+void edit_keyHolder(KEY_HOLDER* portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int keyPosChange, int newKeyPos){
+    //KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
+    time_t data_modificacao;
+    time(&data_modificacao);
+    int stopPos=1;
+
+    //KEY_HOLDER * curr = *portaChaves;
+    while (stopPos != keyHolderPos){
+        portaChaves = portaChaves->next;
+        stopPos++;
+    }
+    //portaChaves->next = new_keyHolder;
+
+    portaChaves->khString.matrixPub[keyPosChange] =  mString.matrixPub[newKeyPos];
+    portaChaves->khString.matrixPriv[keyPosChange] = mString.matrixPriv[newKeyPos];
+    portaChaves->khString.matrixCod[keyPosChange] = mString.matrixCod[newKeyPos];
+    for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1; ++i) {
+        portaChaves->khInts.matrixPub[keyPosChange][i] = mInts.matrixPub[newKeyPos][i];
+    }
+    for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1; ++i) {
+        portaChaves->khInts.matrixPriv[keyPosChange][i] = mInts.matrixPriv[newKeyPos][i];
+    }
+    for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1; ++i) {
+        portaChaves->khInts.matrixCod[keyPosChange][i] = mInts.matrixCod[newKeyPos][i];
+    }
+    //new_keyHolder->khInts.matrixPub[posChange] = key_digits_2_long_int(mInts.matrixPub[keyPos]);
+    //new_keyHolder->khInts.matrixPriv[posChange] = key_digits_2_long_int(mInts.matrixPriv[keyPos]);
+    //new_keyHolder->khInts.matrixCod[posChange] = key_digits_2_long_int(mInts.matrixCod[keyPos]);
+
+    portaChaves->data_modificacao = ctime(&data_modificacao);
+}
+
+void print_keyHolders(KEY_HOLDER** portaChaves){
+    for (KEY_HOLDER *curr = *portaChaves; curr != NULL ; curr = curr->next) {
         for (int i = 0; i < 6; ++i) {
             printf("Porta Chaves String - %s\n", curr->khString.matrixPub[i]);
             int j = 0;
+            printf("Porta Chaves Ints - ");
             while (curr->khInts.matrixPub[i][j] != -1){
-                printf("Porta Chaves Ints - %hi\n", curr->khInts.matrixPub[i][j]);
+                printf("%hi", curr->khInts.matrixPub[i][j]);
                 j++;
             }
             printf("\n");
         }
+        printf("Data Criacao: %s", curr->data_criacao);
+        printf("Data Modificacao: %s", curr->data_modificacao);
+        printf("\n");
     }
 }
