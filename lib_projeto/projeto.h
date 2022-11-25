@@ -29,8 +29,8 @@ struct matrixInts{
 typedef struct KEY_HOLDER{
     struct matrixString khString;
     struct matrixInts khInts;
-    int data_criacao;
-    int data_modificacao;
+    char* data_criacao;
+    char* data_modificacao;
     struct KEY_HOLDER *next;
 } KEY_HOLDER;
 
@@ -95,7 +95,8 @@ void swapInt(short** a, int i, int min);
 
 
 void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int pos);
-void print_keyHolders(KEY_HOLDER* portaChaves);
+void edit_keyHolder(KEY_HOLDER* portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int posChange, int keyPos);
+void print_keyHolders(KEY_HOLDER** portaChaves);
 
 void cliente0();
 void cliente1();
