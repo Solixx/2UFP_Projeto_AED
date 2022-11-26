@@ -1495,7 +1495,7 @@ void edit_keyHolder(KEY_HOLDER* portaChaves, struct matrixString mString, struct
     //KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
     time_t data_modificacao;
     time(&data_modificacao);
-    int stopPos=1, isAdd = 0;
+    int stopPos=1, isAdd = 0, size = 0;
 
     //KEY_HOLDER * curr = *portaChaves;
     while (stopPos != keyHolderPos){
@@ -1542,14 +1542,22 @@ void edit_keyHolder(KEY_HOLDER* portaChaves, struct matrixString mString, struct
             isAdd = 1;
         }
         if(isAdd == 1) break;
+        size++;
     }
     if(isAdd == 0){
-        portaChaves->khString.matrixPub[keyPosChange] = realloc(portaChaves->khString.matrixPub[keyPosChange],numDigitsLong(atoll(mString.matrixPub[newKeyPos])));
-        portaChaves->khString.matrixPriv[keyPosChange] = realloc(portaChaves->khString.matrixPriv[keyPosChange],numDigitsLong(atoll(mString.matrixPriv[newKeyPos])));
-        portaChaves->khString.matrixCod[keyPosChange] = realloc(portaChaves->khString.matrixCod[keyPosChange],numDigitsLong(atoll(mString.matrixCod[newKeyPos])));
-        portaChaves->khInts.matrixPub[keyPosChange] = realloc(portaChaves->khInts.matrixPub[keyPosChange],numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos])));
-        portaChaves->khInts.matrixPriv[keyPosChange] = realloc(portaChaves->khInts.matrixPriv[keyPosChange],numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos])));
-        portaChaves->khInts.matrixCod[keyPosChange] = realloc(portaChaves->khInts.matrixCod[keyPosChange],numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos])));
+        portaChaves->khString.matrixPub = realloc(portaChaves->khString.matrixPub, size+1);
+        portaChaves->khString.matrixPriv = realloc(portaChaves->khString.matrixPriv, size+1);
+        portaChaves->khString.matrixCod = realloc(portaChaves->khString.matrixCod, size+1);
+        portaChaves->khInts.matrixPub = realloc(portaChaves->khInts.matrixPub, size+1);
+        portaChaves->khInts.matrixPriv = realloc(portaChaves->khInts.matrixPriv, size+1);
+        portaChaves->khInts.matrixCod = realloc(portaChaves->khInts.matrixCod, size+1);
+
+        portaChaves->khString.matrixPub[keyPosChange] = malloc(numDigitsLong(atoll(mString.matrixPub[newKeyPos])));
+        portaChaves->khString.matrixPriv[keyPosChange] = malloc(numDigitsLong(atoll(mString.matrixPriv[newKeyPos])));
+        portaChaves->khString.matrixCod[keyPosChange] = malloc(numDigitsLong(atoll(mString.matrixCod[newKeyPos])));
+        portaChaves->khInts.matrixPub[keyPosChange] = malloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1);
+        portaChaves->khInts.matrixPriv[keyPosChange] = malloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1);
+        portaChaves->khInts.matrixCod[keyPosChange] = malloc(numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1);
 
         portaChaves->khString.matrixPub[keyPosChange] =  mString.matrixPub[newKeyPos];
         portaChaves->khString.matrixPriv[keyPosChange] = mString.matrixPriv[newKeyPos];
@@ -1595,30 +1603,135 @@ void remove_keyHolder(KEY_HOLDER** portaChaves, int keyHolderPos){
     }
 }
 
+void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, char* keyToSeach, int type){
+    int stopPos = 1, exist = 0;
+    while (stopPos != keyHolderPos){
+        portaChaves = portaChaves->next;
+        stopPos++;
+    }
+
+        if(type == 1){
+            for (int i = 0; portaChaves->khString.matrixPub[i] ; ++i) {
+                if(strcmp(portaChaves->khString.matrixPub[i], keyToSeach) == 0){
+                    printf("A chave %s existe na matrix de chaves publicas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    exist = 1;
+                }
+            }
+            if(exist == 0){
+                printf("A chave %s nao existe na matrix de chaves publicas de Strings\n", keyToSeach);
+            }
+            exist = 0;
+            for (int i = 0; portaChaves->khInts.matrixPub[i] ; ++i) {
+                if(key_digits_2_long_int(portaChaves->khInts.matrixPub[i]) == atoll(keyToSeach)){
+                    printf("A chave %s existe na matrix de chaves publicas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    exist = 1;
+                }
+            }
+            if(exist == 0){
+                printf("A chave %s nao existe na matrix de chaves publicas de Inteiros\n", keyToSeach);
+            }
+            exist = 0;
+        }
+        else if(type == 2){
+            for (int i = 0; portaChaves->khString.matrixPriv[i] ; ++i) {
+                if(strcmp(portaChaves->khString.matrixPriv[i], keyToSeach) == 0){
+                    printf("A chave %s existe na matrix de chaves privadas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    exist = 1;
+                }
+            }
+            if(exist == 0){
+                printf("A chave %s nao existe na matrix de chaves privadas de Strings\n", keyToSeach);
+            }
+            exist = 0;
+            for (int i = 0; portaChaves->khInts.matrixPriv[i] ; ++i) {
+                if(key_digits_2_long_int(portaChaves->khInts.matrixPriv[i]) == atoll(keyToSeach)){
+                    printf("A chave %s existe na matrix de chaves privadas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    exist = 1;
+                }
+            }
+            if(exist == 0){
+                printf("A chave %s nao existe na matrix de chaves privadas de Inteiros\n", keyToSeach);
+            }
+            exist = 0;
+        }
+        else if(type == 3){
+            for (int i = 0; portaChaves->khString.matrixCod[i] ; ++i) {
+                if(strcmp(portaChaves->khString.matrixCod[i], keyToSeach) == 0){
+                    printf("A chave %s existe na matrix de chaves codificada de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    exist = 1;
+                }
+            }
+            if(exist == 0){
+                printf("A chave %s nao existe na matrix de chaves codificadas de Strings\n", keyToSeach);
+            }
+            exist = 0;
+            for (int i = 0; portaChaves->khInts.matrixCod[i] ; ++i) {
+                if(key_digits_2_long_int(portaChaves->khInts.matrixCod[i]) == atoll(keyToSeach)){
+                    printf("A chave %s existe na matrix de chaves codificada de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    exist = 1;
+                }
+            }
+            if(exist == 0){
+                printf("A chave %s nao existe na matrix de chaves codificadas de Inteiros\n", keyToSeach);
+            }
+            exist = 0;
+        }
+}
+
 void print_keyHolders(KEY_HOLDER** portaChaves){
-    int sair = 0;
+    int sair = 0, numPortaChaves = 1;
     for (KEY_HOLDER *curr = *portaChaves; curr != NULL ; curr = curr->next) {
         int i = 0;
+        printf("Porta Chaves - %d\n", numPortaChaves);
         while (1){
             if(curr->khString.matrixPub[i]) {
-                printf("Porta Chaves String - %s\n", curr->khString.matrixPub[i]);
+                printf("Porta Chaves PubKey String - %s\n", curr->khString.matrixPub[i]);
+                sair = 0;
+            } else sair = 1;
+            if(curr->khString.matrixPriv[i]) {
+                printf("Porta Chaves PrivKey String - %s\n", curr->khString.matrixPriv[i]);
+                sair = 0;
+            } else sair = 1;
+            if(curr->khString.matrixCod[i]) {
+                printf("Porta Chaves CodKey String - %s\n", curr->khString.matrixCod[i]);
                 sair = 0;
             } else sair = 1;
             int j = 0;
             if(curr->khInts.matrixPub[i]){
-                printf("Porta Chaves Ints - ");
+                printf("Porta Chaves PubKey Ints - ");
                 while (curr->khInts.matrixPub[i][j] != -1){
                     printf("%hi", curr->khInts.matrixPub[i][j]);
                     j++;
                 }
                 sair = 0;
             } else sair = 1;
-            if(sair == 1) break;
             printf("\n");
+            j = 0;
+            if(curr->khInts.matrixPriv[i]){
+                printf("Porta Chaves PrivKey Ints - ");
+                while (curr->khInts.matrixPriv[i][j] != -1){
+                    printf("%hi", curr->khInts.matrixPriv[i][j]);
+                    j++;
+                }
+                sair = 0;
+            } else sair = 1;
+            printf("\n");
+            j = 0;
+            if(curr->khInts.matrixCod[i]){
+                printf("Porta Chaves CodKey Ints - ");
+                while (curr->khInts.matrixCod[i][j] != -1){
+                    printf("%hi", curr->khInts.matrixCod[i][j]);
+                    j++;
+                }
+                sair = 0;
+            } else sair = 1;
+            if(sair == 1) break;
             i++;
+            printf("\n");
         }
         printf("Data Criacao: %s", curr->data_criacao);
         printf("Data Modificacao: %s", curr->data_modificacao);
         printf("\n");
+        numPortaChaves++;
     }
 }

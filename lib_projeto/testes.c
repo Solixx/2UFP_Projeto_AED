@@ -370,12 +370,16 @@ void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, stru
 
     print_keyHolders(&portaChaves);
 
+    searchSingleKey_inKeyHolder(portaChaves, 2, "2014", 1);
+
     remove_keyHolder(&portaChaves, 2);
 
-    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 10, 1);
-    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 10, 5);
+    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 0, 3);
+    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 1, 1);
 
     print_keyHolders(&portaChaves);
+
+    search_inKeyHolder(portaChaves, 1, "2014", 1);
 
     remove_keyHolder(&portaChaves, 1);
 
