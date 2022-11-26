@@ -364,13 +364,13 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 
 void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, struct matrixInts mInts){
 
-    int stopPos = 1, keyHolderPos = 2;
+    int stopPos = 1, keyHolderPos = 1;
     insert_keyHolder(&portaChaves, mString, mInts, 0);
-    insert_keyHolder(&portaChaves, mString, mInts, 6);
 
     print_keyHolders(&portaChaves);
 
-    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 1, 1);
+    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 10, 1);
+    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 10, 5);
 
     print_keyHolders(&portaChaves);
 }

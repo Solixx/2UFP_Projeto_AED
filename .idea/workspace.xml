@@ -26,7 +26,6 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/testes.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/testes.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -149,7 +148,7 @@
       <workItem from="1669303363106" duration="657000" />
       <workItem from="1669304033094" duration="577000" />
       <workItem from="1669304788376" duration="1001000" />
-      <workItem from="1669418475985" duration="467000" />
+      <workItem from="1669418475985" duration="4064000" />
     </task>
     <servers />
   </component>
