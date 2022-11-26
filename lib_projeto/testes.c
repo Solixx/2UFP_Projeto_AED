@@ -366,11 +366,18 @@ void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, stru
 
     int stopPos = 1, keyHolderPos = 1;
     insert_keyHolder(&portaChaves, mString, mInts, 0);
+    insert_keyHolder(&portaChaves, mString, mInts, 1);
 
     print_keyHolders(&portaChaves);
 
+    remove_keyHolder(&portaChaves, 2);
+
     edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 10, 1);
     edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 10, 5);
+
+    print_keyHolders(&portaChaves);
+
+    remove_keyHolder(&portaChaves, 1);
 
     print_keyHolders(&portaChaves);
 }

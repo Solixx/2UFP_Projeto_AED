@@ -1572,6 +1572,29 @@ void edit_keyHolder(KEY_HOLDER* portaChaves, struct matrixString mString, struct
     portaChaves->data_modificacao = ctime(&data_modificacao);
 }
 
+void remove_keyHolder(KEY_HOLDER** portaChaves, int keyHolderPos){
+    int removePos = 1;
+
+    if(*portaChaves == NULL) return;
+
+    if(keyHolderPos == 1){
+        KEY_HOLDER *temp_remove = *portaChaves;
+        *portaChaves = (*portaChaves)->next;
+    }
+
+    KEY_HOLDER *curr = *portaChaves;
+    while (curr->next != NULL){
+        if(removePos+1 == keyHolderPos){
+            KEY_HOLDER *temp_remove = curr->next;
+            curr->next = curr->next->next;
+            free(temp_remove);
+            break;
+        }
+        removePos++;
+        curr = curr->next;
+    }
+}
+
 void print_keyHolders(KEY_HOLDER** portaChaves){
     int sair = 0;
     for (KEY_HOLDER *curr = *portaChaves; curr != NULL ; curr = curr->next) {
