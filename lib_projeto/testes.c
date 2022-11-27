@@ -365,23 +365,26 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, struct matrixInts mInts){
 
     int stopPos = 1, keyHolderPos = 1;
-    insert_keyHolder(&portaChaves, mString, mInts, 0);
-    insert_keyHolder(&portaChaves, mString, mInts, 1);
+    insert_keyHolder(&portaChaves, mString, mInts, 0); //201
+    insert_keyHolder(&portaChaves, mString, mInts, 1); //2014
 
     print_keyHolders(&portaChaves);
 
-    searchSingleKey_inKeyHolder(portaChaves, 2, "2014", 1);
+    //searchSingleKey_inKeyHolder(portaChaves, 2, "2014", 1);
 
-    remove_keyHolder(&portaChaves, 2);
+    //remove_keyHolder(&portaChaves, 1);
 
-    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 0, 3);
-    edit_keyHolder(portaChaves, mString, mInts, keyHolderPos, 1, 1);
+    edit_keyHolder(&portaChaves, mString, mInts, keyHolderPos, 1, 3);
+
+    print_keyHolders(&portaChaves);
+
+    edit_keyHolder(&portaChaves, mString, mInts, 2, 1, 1);
 
     print_keyHolders(&portaChaves);
 
-    search_inKeyHolder(portaChaves, 1, "2014", 1);
+    //searchSingleKey_inKeyHolder(portaChaves, 1, "2014", 1);
 
-    remove_keyHolder(&portaChaves, 1);
+    //remove_keyHolder(&portaChaves, 1);
 
-    print_keyHolders(&portaChaves);
+    //print_keyHolders(&portaChaves);
 }
