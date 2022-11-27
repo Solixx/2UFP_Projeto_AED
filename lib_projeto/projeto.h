@@ -99,6 +99,8 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
 void remove_keyHolder(KEY_HOLDER** portaChaves, int keyHolderPos);
 //Type -> 1 = PubKey / Type -> 2 = PrivKey / Type -> 3 = CodKey
 void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, char* keyToSeach, int type);
+void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, char filename[]);
+void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int newKeysPos, char filename[]);
 void print_keyHolders(KEY_HOLDER** portaChaves);
 
 void cliente0();

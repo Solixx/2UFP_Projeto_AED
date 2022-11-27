@@ -1604,16 +1604,26 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             }
             isAdd = 1;
         }
-        if(isAdd == 1) break;
+        if(isAdd == 1){
+            if(j+1 >= sizeMax){
+                curr->khString.matrixPub[j+1] = NULL;
+                curr->khString.matrixPriv[j+1] = NULL;
+                curr->khString.matrixCod[j+1] = NULL;
+                curr->khInts.matrixPub[j+1] = NULL;
+                curr->khInts.matrixPriv[j+1] = NULL;
+                curr->khInts.matrixCod[j+1] = NULL;
+            }
+            break;
+        }
         size++;
     }
     if(isAdd == 0){
-        curr->khString.matrixPub = (char**) realloc(curr->khString.matrixPub, (sizeMax+1)*sizeof (char*));
-        curr->khString.matrixPriv = (char**) realloc(curr->khString.matrixPriv, (sizeMax+1)*sizeof (char*));
-        curr->khString.matrixCod = (char**) realloc(curr->khString.matrixCod, (sizeMax+1)*sizeof (char*));
-        curr->khInts.matrixPub = (short**) realloc(curr->khInts.matrixPub, (sizeMax+1)*sizeof (short*));
-        curr->khInts.matrixPriv = (short**) realloc(curr->khInts.matrixPriv, (sizeMax+1)*sizeof (short*));
-        curr->khInts.matrixCod = (short**) realloc(curr->khInts.matrixCod, (sizeMax+1)*sizeof (short*));
+        //curr->khString.matrixPub = (char**) realloc(curr->khString.matrixPub, (sizeMax+1)*sizeof (char*));
+        //curr->khString.matrixPriv = (char**) realloc(curr->khString.matrixPriv, (sizeMax+1)*sizeof (char*));
+        //curr->khString.matrixCod = (char**) realloc(curr->khString.matrixCod, (sizeMax+1)*sizeof (char*));
+        //curr->khInts.matrixPub = (short**) realloc(curr->khInts.matrixPub, (sizeMax+1)*sizeof (short*));
+        //curr->khInts.matrixPriv = (short**) realloc(curr->khInts.matrixPriv, (sizeMax+1)*sizeof (short*));
+        //curr->khInts.matrixCod = (short**) realloc(curr->khInts.matrixCod, (sizeMax+1)*sizeof (short*));
 
         curr->khString.matrixPub[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPub[newKeyPos])), sizeof (char ));
         curr->khString.matrixPriv[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPriv[newKeyPos])), sizeof (char ));
@@ -1621,13 +1631,13 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
         curr->khInts.matrixPub[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1, sizeof (short ));
         curr->khInts.matrixPriv[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1, sizeof (short ));
         curr->khInts.matrixCod[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1, sizeof (short ));
-        curr->khString.matrixPub[sizeMax] = NULL;
-        curr->khString.matrixPriv[sizeMax] = NULL;
-        curr->khString.matrixCod[sizeMax] = NULL;
-        curr->khInts.matrixPub[sizeMax] = NULL;
-        curr->khInts.matrixPriv[sizeMax] = NULL;
-        curr->khInts.matrixCod[sizeMax] = NULL;
 
+        curr->khString.matrixPub[keyPosChange+1] = NULL;
+        curr->khString.matrixPriv[keyPosChange+1] = NULL;
+        curr->khString.matrixCod[keyPosChange+1] = NULL;
+        curr->khInts.matrixPub[keyPosChange+1] = NULL;
+        curr->khInts.matrixPriv[keyPosChange+1] = NULL;
+        curr->khInts.matrixCod[keyPosChange+1] = NULL;
 
         curr->khString.matrixPub[keyPosChange] =  mString.matrixPub[newKeyPos];
         curr->khString.matrixPriv[keyPosChange] = mString.matrixPriv[newKeyPos];
@@ -1753,6 +1763,133 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, char
             exist = 0;
         }
 }
+
+void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, char filename[]){
+
+    FILE *fileChavesPubWrite;
+    fileChavesPubWrite = fopen(filename, "r+");
+    int stopPos = 1;
+
+    if(fileChavesPubWrite == NULL){
+        printf("Ficheiro nao existe\n");
+        return;
+    }
+
+    KEY_HOLDER * curr = *portaChaves;
+    while (stopPos != keyHolderPos){
+        curr = curr->next;
+        stopPos++;
+    }
+
+    int i = 0;
+    while (1){
+        if(curr->khString.matrixPub[i] != NULL){
+            fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixPub[i]);
+            fprintf(fileChavesPubWrite,"\n");
+        } else break;
+        if(curr->khString.matrixPriv[i] != NULL){
+            fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixPriv[i]);
+            fprintf(fileChavesPubWrite,"\n");
+        } else break;
+        if(curr->khString.matrixCod[i] != NULL){
+            fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixCod[i]);
+            fprintf(fileChavesPubWrite,"\n");
+        } else break;
+        if(curr->khInts.matrixPub[i] != NULL){
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixPub[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        } else break;
+        if(curr->khInts.matrixPriv[i] != NULL){
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixPriv[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        } else break;
+        if(curr->khInts.matrixCod[i] != NULL){
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixCod[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        } else break;
+        i++;
+    }
+
+    /*
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpub[i][0] != NULL){
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kpub[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpriv[i][0] != NULL){
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kpriv[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }for (int i = 0; i < lines; ++i) {
+        if(matrix_kcod[i][0] != NULL){
+            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kcod[i]));
+            fprintf(fileChavesPubWrite,"\n");
+        }
+    }
+     */
+
+    fclose(fileChavesPubWrite);
+}
+
+void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int newKeysPos, char filename[]){
+
+    FILE *fileChavesPubRead;
+    fileChavesPubRead = fopen(filename, "r");
+    int i = 0, stopPos = 1, valuePos = 0, sizeMax = 1;
+    unsigned long long privKey = 0, codKey = 0, count = 1;
+    unsigned long long *value = (unsigned long long *) calloc(count, sizeof (unsigned long long));
+
+    if(fileChavesPubRead == NULL){
+        printf("Ficheiro nao existe\n");
+        return;
+    }
+
+    KEY_HOLDER * curr = *portaChaves;
+    while (stopPos != keyHolderPos){
+        curr = curr->next;
+        stopPos++;
+    }
+
+    for (int j = 0; curr->khString.matrixPub[j] != NULL; ++j) {
+        sizeMax++;
+    }
+
+    while (fscanf (fileChavesPubRead, "%llu", &value[count-1]) == 1){
+        count++;
+        value = (unsigned long long *) realloc(value, count * sizeof (unsigned long long));
+    }
+
+    while (i < count/3){
+        privKey = calc_private_key_char(value[valuePos]);
+        codKey = calc_runlength_char(privKey);
+        if(!curr->khString.matrixPub[i]){
+            store_key_char(curr->khString.matrixPub, sizeMax, value[valuePos]);
+        }
+        if(!curr->khString.matrixPriv[i]){
+            store_key_char(curr->khString.matrixPriv, sizeMax, privKey);
+        }
+        if(!curr->khString.matrixCod[i]){
+            store_key_char(curr->khString.matrixCod, sizeMax, codKey);
+        }
+        privKey = calc_private_key_int(value[i]);
+        codKey = calc_runlength_int(privKey);
+        if(!curr->khInts.matrixPub[i]){
+            store_key_int(curr->khInts.matrixPub, sizeMax, value[valuePos]);
+        }
+        if(!curr->khInts.matrixPriv[i]){
+            store_key_int(curr->khInts.matrixPriv, sizeMax, privKey);
+        }
+        if(!curr->khInts.matrixCod[i]){
+            store_key_int(curr->khInts.matrixCod, sizeMax, codKey);
+        }
+        i++;
+    }
+
+    free(value);
+    fclose(fileChavesPubRead);
+} //TODO Load porta Chaves de ficheiros
 
 void print_keyHolders(KEY_HOLDER** portaChaves){
     int sair = 0, numPortaChaves = 1;

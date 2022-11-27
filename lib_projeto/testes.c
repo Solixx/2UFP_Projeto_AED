@@ -355,23 +355,31 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 
 void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, struct matrixInts mInts){
 
+    char filename[] = "../data/portaChaves.txt";
     int stopPos = 1, keyHolderPos = 1;
     insert_keyHolder(&portaChaves, mString, mInts, 0); //201
     insert_keyHolder(&portaChaves, mString, mInts, 1); //2014
-
     print_keyHolders(&portaChaves);
 
     searchSingleKey_inKeyHolder(portaChaves, 1, "2014", 1);
 
 
     edit_keyHolder(&portaChaves, mString, mInts, 2, 1, 3);
-    edit_keyHolder(&portaChaves, mString, mInts, 1, 0, 4);
+    edit_keyHolder(&portaChaves, mString, mInts, 1, 0, 2);
     edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
-    edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
+    edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
 
     print_keyHolders(&portaChaves);
 
-    remove_keyHolder(&portaChaves, 2);
+    save_txt_keyHolder(&portaChaves, mString, mInts, 1, filename);
+    save_txt_keyHolder(&portaChaves, mString, mInts, 2, filename);
 
+    //remove_keyHolder(&portaChaves, 2);
+
+    print_keyHolders(&portaChaves);
+
+    printf("Do ficheiro de texto\n");
+    insert_keyHolder(&portaChaves, mString, mInts, 0);
+    load_txt_keyHolder(&portaChaves, mString, mInts, 3, 0, filename);
     print_keyHolders(&portaChaves);
 }
