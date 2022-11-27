@@ -871,6 +871,7 @@ void store_key_char(char **matrix, int lines, unsigned long long key){
     sprintf(keyChar, "%llu", key);
     for (int i = 0; i < lines; ++i) {
         if(!matrix[i][0]){
+            //matrix[i] = (char *) realloc(matrix[i], strlen(keyChar) * sizeof (char));
             matrix[i] = keyChar;
             break;
         }
@@ -1513,19 +1514,26 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
         exit(1);
     }
     new_keyHolder->next = *portaChaves;
-    new_keyHolder->khString.matrixPub = alloc_matrix_char(1, 1);
-    new_keyHolder->khString.matrixPriv = alloc_matrix_char(1, 1);
-    new_keyHolder->khString.matrixCod = alloc_matrix_char(1, 1);
-    new_keyHolder->khInts.matrixPub = alloc_matrix_int(1, 1);
-    new_keyHolder->khInts.matrixPriv = alloc_matrix_int(1, 1);
-    new_keyHolder->khInts.matrixCod = alloc_matrix_int(1, 1);
+    new_keyHolder->khString.matrixPub = alloc_matrix_char(2, 1);
+    new_keyHolder->khString.matrixPriv = alloc_matrix_char(2, 1);
+    new_keyHolder->khString.matrixCod = alloc_matrix_char(2, 1);
+    new_keyHolder->khInts.matrixPub = alloc_matrix_int(2, 1);
+    new_keyHolder->khInts.matrixPriv = alloc_matrix_int(2, 1);
+    new_keyHolder->khInts.matrixCod = alloc_matrix_int(2, 1);
 
-    store_key_char(new_keyHolder->khString.matrixPub, 1, atoll(mString.matrixPub[pos]));
-    store_key_char(new_keyHolder->khString.matrixPriv, 1, atoll(mString.matrixPriv[pos]));
-    store_key_char(new_keyHolder->khString.matrixCod, 1, atoll(mString.matrixCod[pos]));
-    store_key_int(new_keyHolder->khInts.matrixPub, 1, key_digits_2_long_int(mInts.matrixPub[pos]));
-    store_key_int(new_keyHolder->khInts.matrixPriv, 1, key_digits_2_long_int(mInts.matrixPriv[pos]));
-    store_key_int(new_keyHolder->khInts.matrixCod, 1, key_digits_2_long_int(mInts.matrixCod[pos]));
+    store_key_char(new_keyHolder->khString.matrixPub, 2, atoll(mString.matrixPub[pos]));
+    store_key_char(new_keyHolder->khString.matrixPriv, 2, atoll(mString.matrixPriv[pos]));
+    store_key_char(new_keyHolder->khString.matrixCod, 2, atoll(mString.matrixCod[pos]));
+    store_key_int(new_keyHolder->khInts.matrixPub, 2, key_digits_2_long_int(mInts.matrixPub[pos]));
+    store_key_int(new_keyHolder->khInts.matrixPriv, 2, key_digits_2_long_int(mInts.matrixPriv[pos]));
+    store_key_int(new_keyHolder->khInts.matrixCod, 2, key_digits_2_long_int(mInts.matrixCod[pos]));
+
+    new_keyHolder->khString.matrixPub[1] = NULL;
+    new_keyHolder->khString.matrixPriv[1] = NULL;
+    new_keyHolder->khString.matrixCod[1] = NULL;
+    new_keyHolder->khInts.matrixPub[1] = NULL;
+    new_keyHolder->khInts.matrixPriv[1] = NULL;
+    new_keyHolder->khInts.matrixCod[1] = NULL;
     /*
     new_keyHolder->khString = mString;
     new_keyHolder->khInts = mInts;
@@ -1546,7 +1554,7 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
     KEY_HOLDER *temp = NULL;
     time_t data_modificacao;
     time(&data_modificacao);
-    int stopPos=1, isAdd = 0, size = 0;
+    int stopPos=1, isAdd = 0, size = 0, sizeMax = 1;
 
     KEY_HOLDER * curr = *portaChaves;
     while (stopPos != keyHolderPos){
@@ -1555,6 +1563,9 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
         stopPos++;
     }
     //portaChaves->next = new_keyHolder;
+    for (int i = 0; curr->khString.matrixPub[i] != NULL; ++i) {
+        sizeMax++;
+    }
 
     for (int j = 0; j <= keyPosChange; ++j) {
         if(!curr->khString.matrixPub[j]){
@@ -1597,19 +1608,26 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
         size++;
     }
     if(isAdd == 0){
-        curr->khString.matrixPub = realloc(curr->khString.matrixPub, size+1);
-        curr->khString.matrixPriv = realloc(curr->khString.matrixPriv, size+1);
-        curr->khString.matrixCod = realloc(curr->khString.matrixCod, size+1);
-        curr->khInts.matrixPub = realloc(curr->khInts.matrixPub, size+1);
-        curr->khInts.matrixPriv = realloc(curr->khInts.matrixPriv, size+1);
-        curr->khInts.matrixCod = realloc(curr->khInts.matrixCod, size+1);
+        curr->khString.matrixPub = (char**) realloc(curr->khString.matrixPub, (sizeMax+1)*sizeof (char*));
+        curr->khString.matrixPriv = (char**) realloc(curr->khString.matrixPriv, (sizeMax+1)*sizeof (char*));
+        curr->khString.matrixCod = (char**) realloc(curr->khString.matrixCod, (sizeMax+1)*sizeof (char*));
+        curr->khInts.matrixPub = (short**) realloc(curr->khInts.matrixPub, (sizeMax+1)*sizeof (short*));
+        curr->khInts.matrixPriv = (short**) realloc(curr->khInts.matrixPriv, (sizeMax+1)*sizeof (short*));
+        curr->khInts.matrixCod = (short**) realloc(curr->khInts.matrixCod, (sizeMax+1)*sizeof (short*));
 
-        curr->khString.matrixPub[keyPosChange] = malloc(numDigitsLong(atoll(mString.matrixPub[newKeyPos])));
-        curr->khString.matrixPriv[keyPosChange] = malloc(numDigitsLong(atoll(mString.matrixPriv[newKeyPos])));
-        curr->khString.matrixCod[keyPosChange] = malloc(numDigitsLong(atoll(mString.matrixCod[newKeyPos])));
-        curr->khInts.matrixPub[keyPosChange] = malloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1);
-        curr->khInts.matrixPriv[keyPosChange] = malloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1);
-        curr->khInts.matrixCod[keyPosChange] = malloc(numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1);
+        curr->khString.matrixPub[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPub[newKeyPos])), sizeof (char ));
+        curr->khString.matrixPriv[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPriv[newKeyPos])), sizeof (char ));
+        curr->khString.matrixCod[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixCod[newKeyPos])),  sizeof (char ));
+        curr->khInts.matrixPub[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1, sizeof (short ));
+        curr->khInts.matrixPriv[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1, sizeof (short ));
+        curr->khInts.matrixCod[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1, sizeof (short ));
+        curr->khString.matrixPub[sizeMax] = NULL;
+        curr->khString.matrixPriv[sizeMax] = NULL;
+        curr->khString.matrixCod[sizeMax] = NULL;
+        curr->khInts.matrixPub[sizeMax] = NULL;
+        curr->khInts.matrixPriv[sizeMax] = NULL;
+        curr->khInts.matrixCod[sizeMax] = NULL;
+
 
         curr->khString.matrixPub[keyPosChange] =  mString.matrixPub[newKeyPos];
         curr->khString.matrixPriv[keyPosChange] = mString.matrixPriv[newKeyPos];
@@ -1742,6 +1760,9 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
         int i = 0;
         printf("Porta Chaves - %d\n", numPortaChaves);
         while (1){
+            if(curr->khString.matrixPub[i] == NULL){
+                break;
+            }
             if(curr->khString.matrixPub[i]) {
                 printf("Porta Chaves PubKey String - %s\n", curr->khString.matrixPub[i]);
                 sair = 0;
