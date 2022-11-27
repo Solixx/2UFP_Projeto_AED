@@ -765,7 +765,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
     while (1){
         if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
             digitos++;
-            n = (char *) calloc((digitos+1), sizeof (char));
+            n = (char *) realloc(n, digitos);
             changePos--;
             leftNum = '1';
             rightNum = '0';
@@ -794,7 +794,9 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
                 n[strlen(n)] = '\0';
                 if(atoll(n) > ULONG_LONG_MAX || atoll(n) < 0) return 0;
                 if(atoll(n) > pubkey && atoll(n)%pubkey == 0){
-                    return atoll(n);
+                    unsigned long long valorFinal = atoll(n);
+                    free(n);
+                    return valorFinal;
                 }
                 changePos++;
                 j = 0;
@@ -1130,7 +1132,8 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
     while (1){
         if(leftNum == 9 && changePos == digitos -1 && rightNum == 8){
             digitos++;
-            n = (short *) calloc((digitos+1), sizeof (short));
+            n=NULL;
+            n = (short *) realloc(n, digitos);
             changePos--;
             leftNum = 1;
             rightNum = 0;
@@ -1159,6 +1162,8 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
             privKey = key_digits_2_long_int(n);
             if(privKey > ULONG_LONG_MAX || privKey < 0) return 0;
             if(privKey > pubkey && privKey%pubkey == 0){
+                n=NULL;
+                free(n);
                 return privKey;
             }
             changePos++;

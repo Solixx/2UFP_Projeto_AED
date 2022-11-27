@@ -20,7 +20,7 @@ int main_test(){
     time_t t1;
     srand((unsigned ) time(&t1));
 
-    mString = clienteString(mString);
+    //mString = clienteString(mString);
     mInts = clienteInt(mInts);
 
     /*
@@ -35,7 +35,7 @@ int main_test(){
     }
     */
 
-    clienteKeyHolder(portaChaves, mString, mInts);
+    //clienteKeyHolder(portaChaves, mString, mInts);
 
     return 0;
 }
@@ -49,7 +49,7 @@ struct matrixString clienteString(struct matrixString mString){
 
     privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
-    publicKeyChar = key_long_2_digits_char(201);
+    publicKeyChar = key_long_2_digits_char(44);
     //printf("PubChar - %s\n", publicKeyChar);
     publicKeyLong = key_digits_2_long_char(publicKeyChar);
     //printf("PubLong - %llu\n", publicKeyLong);
@@ -98,10 +98,10 @@ struct matrixString clienteString(struct matrixString mString){
 
     //printf("Delete a - %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, mString.matrixPub[0]));
 
-    /*
-    printf("Exist - %d\n", exists_key_char(mString.matrixPub, 5, 2014));
-    printf("Exist - %d\n", exists_key_char(mString.matrixPub, 5, publicKeyLong));
-    */
+
+    //printf("Exist - %d\n", exists_key_char(mString.matrixPub, 5, 2014));
+    //printf("Exist - %d\n", exists_key_char(mString.matrixPub, 5, publicKeyLong));
+
 
     /*
     printf("A Chave Privada e - %llu\n", get_private_key_char(mString.matrixPub, mString.matrixPriv, 5, 2014));
@@ -109,10 +109,6 @@ struct matrixString clienteString(struct matrixString mString){
     */
 
     //printf("Chave Publica Apagada %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, "2014"));
-
-    //sort_matrix_char(mString.matrixPub, lines, 1);
-    //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
-    //list_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
 
     //privKeySearch = search_private_keys_char(mString.matrixPub, mString.matrixPriv, lines, 20);
 
@@ -155,13 +151,17 @@ struct matrixString clienteString(struct matrixString mString){
         printf("mString CodMatrix de %d - %s\n", i, mString.matrixCod[i]);
     }
     */
-    /*
+
+    //sort_matrix_char(mString.matrixPub, lines, 1);
+    //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
+    //list_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
+
     for (int i = 0; i < lines; ++i) {
         if(strcmp(mString.matrixPub[i], "\0") != 0)printf("Pub - %s\n", mString.matrixPub[i]);
         if(strcmp(mString.matrixPriv[i], "\0") != 0) printf("Priv - %s\n", mString.matrixPriv[i]);
         if(strcmp(mString.matrixCod[i], "\0") != 0) printf("Cod - %s\n", mString.matrixCod[i]);
     }
-    */
+
     /*
     privKeySearch = search_private_keys_char(mString.matrixPub, mString.matrixPriv, lines, 1);
     int p = 0;
@@ -182,7 +182,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     int lines = 12, columns = 1;
 
     pubKey = new_public_key_int();
-    pubKey = 201;
+    pubKey = 22;
     allD = key_long_2_digits_int(pubKey);
     pubKey = key_digits_2_long_int(allD);
     privKey = calc_private_key_int(pubKey);
@@ -216,9 +216,9 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     store_key_int(mInts.matrixPriv, lines, privKey);
     store_key_int(mInts.matrixCod, lines, codKey);
 
-    /*
+
     for (int i = 0; i < lines; ++i) {
-        if(mInts.matrixPub[i][0] != NULL){
+        if(mInts.matrixPub[i][0]){
             int j = 0;
             printf("Pub - ");
             while (mInts.matrixPub[i][j] != -1){
@@ -227,7 +227,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
             }
             printf("\n");
         }
-        if(mInts.matrixPriv[i][0] != NULL){
+        if(mInts.matrixPriv[i][0]){
             int j = 0;
             printf("Priv - ");
             while (mInts.matrixPriv[i][j] != -1){
@@ -236,7 +236,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
             }
             printf("\n");
         }
-        if(mInts.matrixCod[i][0] != NULL){
+        if(mInts.matrixCod[i][0]){
             int j = 0;
             printf("Cod - ");
             while (mInts.matrixCod[i][j] != -1){
@@ -247,7 +247,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
         }
     }
     printf("\n");
-    */
+
 
     //printf("Exists - %d\n", exists_key_int(mInts.matrixPub, lines, pubKey));
     //printf("PrivKey da PubKey - %llu\n", get_private_key_int(mInts.matrixPub, mInts.matrixPriv, lines, pubKey));
