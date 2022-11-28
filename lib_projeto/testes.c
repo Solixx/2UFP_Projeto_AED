@@ -376,7 +376,7 @@ void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, stru
 
     //remove_keyHolder(&portaChaves, 2);
 
-    print_keyHolders(&portaChaves);
+    //print_keyHolders(&portaChaves);
 
     printf("Do ficheiro de texto\n");
     insert_keyHolder(&portaChaves, mString, mInts, 0);

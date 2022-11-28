@@ -18,12 +18,14 @@ struct matrixString{
     char **matrixPub;
     char **matrixPriv;
     char **matrixCod;
+    int lines;
 };
 
 struct matrixInts{
     short **matrixPub;
     short **matrixPriv;
     short **matrixCod;
+    int lines;
 };
 
 typedef struct KEY_HOLDER{
@@ -93,6 +95,7 @@ void shellSortInt(short** a, int N, int order);
 void shellSortIntDigits(short** a, int N, int order);
 void swapInt(short** a, int i, int min);
 
+void updateLines_MatrixString(struct matrixString mString, int lines);
 
 void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int pos);
 void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int posChange, int keyPos);

@@ -751,7 +751,6 @@ void swapInt(short** a, int i, int min){
     free(temp);
 }
 
-
 //Funcoes Strings do ficheiro dos professores
 char* key_long_2_digits_char(unsigned long long key){
     int digits = numDigits(key);
@@ -1837,8 +1836,10 @@ void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, 
 
     FILE *fileChavesPubRead;
     fileChavesPubRead = fopen(filename, "r");
+    char * valueString = NULL, *privKey = NULL, *codKey = NULL;
     int i = 0, stopPos = 1, valuePos = 0, sizeMax = 1;
-    unsigned long long privKey = 0, codKey = 0, count = 1;
+    short *allD = NULL;
+    unsigned long long count = 1;
     unsigned long long *value = (unsigned long long *) calloc(count, sizeof (unsigned long long));
 
     if(fileChavesPubRead == NULL){
@@ -1861,31 +1862,84 @@ void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, 
         value = (unsigned long long *) realloc(value, count * sizeof (unsigned long long));
     }
 
-    while (i < count/3){
-        privKey = calc_private_key_char(value[valuePos]);
-        codKey = calc_runlength_char(privKey);
-        if(!curr->khString.matrixPub[i]){
-            store_key_char(curr->khString.matrixPub, sizeMax, value[valuePos]);
-        }
-        if(!curr->khString.matrixPriv[i]){
-            store_key_char(curr->khString.matrixPriv, sizeMax, privKey);
-        }
-        if(!curr->khString.matrixCod[i]){
-            store_key_char(curr->khString.matrixCod, sizeMax, codKey);
-        }
-        privKey = calc_private_key_int(value[i]);
-        codKey = calc_runlength_int(privKey);
-        if(!curr->khInts.matrixPub[i]){
-            store_key_int(curr->khInts.matrixPub, sizeMax, value[valuePos]);
-        }
-        if(!curr->khInts.matrixPriv[i]){
-            store_key_int(curr->khInts.matrixPriv, sizeMax, privKey);
-        }
-        if(!curr->khInts.matrixCod[i]){
-            store_key_int(curr->khInts.matrixCod, sizeMax, codKey);
-        }
+    while (i < count/6){
+
+        valueString = (char*) calloc(100, sizeof (char));
+        sprintf(valueString, "%llu", value[valuePos]);
+        //privKey = (char*) calloc(100, sizeof (char));
+        //codKey = (char*) calloc(100,  sizeof (char));
+        //sprintf(privKey, "%llu", calc_private_key_char(value[valuePos]));
+        //sprintf(codKey, "%llu", calc_runlength_char(calc_private_key_char(value[valuePos])));
+        //if(!curr->khString.matrixPub[i]){
+            curr->khString.matrixPub[newKeysPos+i] = calloc(numDigitsLong(atoll(valueString)),  sizeof (char));
+            curr->khString.matrixPub[newKeysPos+i] = valueString;
+        //}
+
+        //free(valueString);
+        valueString = (char*) calloc(100, sizeof (char));
+        sprintf(valueString, "%llu", value[valuePos+1]);
+        //if(!curr->khString.matrixPriv[i]){
+            curr->khString.matrixPriv[newKeysPos+i] = calloc(numDigitsLong(atoll(valueString)),  sizeof (char));
+            curr->khString.matrixPriv[newKeysPos+i] = valueString;
+        //}
+
+        //free(valueString);
+        valueString = (char*) calloc(100, sizeof (char));
+        sprintf(valueString, "%llu", value[valuePos+2]);
+        //if(!curr->khString.matrixCod[i]){
+            curr->khString.matrixCod[newKeysPos+i] = calloc(numDigitsLong(atoll(valueString)),  sizeof (char));
+            curr->khString.matrixCod[newKeysPos+i] = valueString;
+        //}
+
+        //free(valueString);
+        valueString = (char*) calloc(100, sizeof (char));
+        sprintf(valueString, "%llu", value[valuePos+3]);
+        //if(!curr->khInts.matrixPub[i]){
+            curr->khInts.matrixPub[newKeysPos+i] = calloc(numDigitsLong(atoll(valueString))+1,  sizeof (short ));
+            for (int j = 0; j < numDigitsLong(atoll(valueString)); ++j) {
+                curr->khInts.matrixPub[newKeysPos+i][j] = valueString[j]-'0';
+            }
+            curr->khInts.matrixPub[newKeysPos+i][numDigitsLong(atoll(valueString))] = -1;
+        //}
+
+        //free(valueString);
+        valueString = (char*) calloc(100, sizeof (char));
+        sprintf(valueString, "%llu", value[valuePos+4]);
+        //if(!curr->khInts.matrixPriv[i]){
+            curr->khInts.matrixPriv[newKeysPos+i] = calloc(numDigitsLong(atoll(valueString))+1,  sizeof (short ));
+            for (int j = 0; j < numDigitsLong(atoll(valueString)); ++j) {
+                curr->khInts.matrixPriv[newKeysPos+i][j] = valueString[j]-'0';
+            }
+            curr->khInts.matrixPriv[newKeysPos+i][numDigitsLong(atoll(valueString))] = -1;
+        //}
+
+        //free(valueString);
+        valueString = (char*) calloc(100, sizeof (char));
+        sprintf(valueString, "%llu", value[valuePos+5]);
+        //if(!curr->khInts.matrixCod[i]){
+            curr->khInts.matrixCod[newKeysPos+i] = calloc(numDigitsLong(atoll(valueString))+1,  sizeof (short ));
+            for (int j = 0; j < numDigitsLong(atoll(valueString)); ++j) {
+                curr->khInts.matrixCod[newKeysPos+i][j] = valueString[j]-'0';
+            }
+        curr->khInts.matrixCod[newKeysPos+i][numDigitsLong(atoll(valueString))] = -1;
+        //}
+
+        free(valueString);
+        valuePos += 6;
         i++;
     }
+    curr->khString.matrixPub[newKeysPos+i+1] = calloc(100, sizeof (char));
+    curr->khString.matrixPriv[newKeysPos+i+1] = calloc(100, sizeof (char));
+    curr->khString.matrixCod[newKeysPos+i+1] = calloc(100, sizeof (char));
+    curr->khInts.matrixPub[newKeysPos+i+1] = calloc(100, sizeof (short ));
+    curr->khInts.matrixPriv[newKeysPos+i+1] = calloc(100, sizeof (short ));
+    curr->khInts.matrixCod[newKeysPos+i+1] = calloc(100, sizeof (short ));
+    curr->khString.matrixPub[newKeysPos+i+1] = NULL;
+    curr->khString.matrixPriv[newKeysPos+i+1] = NULL;
+    curr->khString.matrixCod[newKeysPos+i+1] = NULL;
+    curr->khInts.matrixPub[newKeysPos+i+1] = NULL;
+    curr->khInts.matrixPriv[newKeysPos+i+1] = NULL;
+    curr->khInts.matrixCod[newKeysPos+i+1] = NULL;
 
     free(value);
     fclose(fileChavesPubRead);
@@ -1897,9 +1951,6 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
         int i = 0;
         printf("Porta Chaves - %d\n", numPortaChaves);
         while (1){
-            if(curr->khString.matrixPub[i] == NULL){
-                break;
-            }
             if(curr->khString.matrixPub[i]) {
                 printf("Porta Chaves PubKey String - %s\n", curr->khString.matrixPub[i]);
                 sair = 0;
