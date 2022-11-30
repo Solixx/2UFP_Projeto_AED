@@ -336,42 +336,6 @@ char* RL_V2_String(char* num, char rL[]){
     }
 }
 
-int numDigits(int num){
-    int digits = 0;
-    do {
-        num /= 10;
-        digits++;
-    } while (num != 0);
-    return digits;
-}
-
-int numDigitsLong(unsigned long long num){
-    int digits = 0;
-    do {
-        num /= 10;
-        digits++;
-    } while (num != 0);
-    return digits;
-}
-
-void allDigits(int num, int allD[]){
-    int i = 0;
-    while (num){
-        allD[i] = num%10;
-        num /= 10;
-        i++;
-    }
-}
-
-void allDigitsLong(unsigned long long num, int allD[]){
-    int i = 0;
-    while (num){
-        allD[i] = num%10;
-        num /= 10;
-        i++;
-    }
-}
-
 int countColumnPub(int digits, struct matrixString mString, int i, int columnsPub){
     digits = numDigits(atoi(mString.matrixPub[i]));
     if(digits > columnsPub){
@@ -579,6 +543,82 @@ void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, i
     }
 }
 
+struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int lines){
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(mString.matrixPub[i], key) == 0){
+            for (int j = i; j < lines-1; ++j) {
+                strcpy(mString.matrixPub[j], mString.matrixPub[j+1]);
+                strcpy(mString.matrixPriv[j], mString.matrixPriv[j+1]);
+                strcpy(mString.matrixCod[j], mString.matrixCod[j+1]);
+            }
+            lines--;
+        }
+    }
+    return mString;
+}
+
+/**
+ * Função que vai calcular o número de digitos de um número (int)
+ * @param num número usado para calcular o seu número de digitos
+ * @return número de digitos (int)
+ */
+int numDigits(int num){
+    int digits = 0;
+    do {
+        num /= 10;
+        digits++;
+    } while (num != 0);
+    return digits;
+}
+
+/**
+ * Função que vai calcular o número de digitos de um número (unsigned long long)
+ * @param num número usado para calcular o seu número de digitos
+ * @return número de digitos (int)
+ */
+int numDigitsLong(unsigned long long num){
+    int digits = 0;
+    do {
+        num /= 10;
+        digits++;
+    } while (num != 0);
+    return digits;
+}
+
+/**
+ * Função que vai dividir um número (int) por digitos e armazenar os mesmos num array
+ * @param num número a ser dividido em digitos
+ * @param allD aray com todos os digitos de num
+ */
+void allDigits(int num, int allD[]){
+    int i = 0;
+    while (num){
+        allD[i] = num%10;
+        num /= 10;
+        i++;
+    }
+}
+
+/**
+ * Função que vai dividir um número (unsigned long long) por digitos e armazenar os mesmos num array
+ * @param num número a ser dividido em digitos
+ * @param allD aray com todos os digitos de num
+ */
+void allDigitsLong(unsigned long long num, int allD[]){
+    int i = 0;
+    while (num){
+        allD[i] = num%10;
+        num /= 10;
+        i++;
+    }
+}
+
+/**
+ * Função que gera um número aleatório e insere num ficheiro
+ * @param fileChavesPubWrite ficheiro qe vai receber o número aleatório
+ * @param fileName nome do ficheiro
+ * @param n número de números aleatórios a serem gerados para o ficheiro
+ */
 void randomKeyFile(FILE *fileChavesPubWrite, char *fileName, int n){
 
     fileChavesPubWrite = fopen(fileName, "a");
@@ -592,6 +632,12 @@ void randomKeyFile(FILE *fileChavesPubWrite, char *fileName, int n){
     fclose(fileChavesPubWrite);
 }
 
+/**
+ * Função que vai gerar um número aleatório e retornar o mesmo em char**
+ * @param r matrix de strings (char*)
+ * @param n número de números aleatórios a serem gerados
+ * @return da matrix de strings (char*)
+ */
 char** randomKeyMatrix(char** r, int n){
     int random = 0, digits = 0;
 
@@ -605,6 +651,11 @@ char** randomKeyMatrix(char** r, int n){
     return r;
 }
 
+/**
+ * Função que retorna um número aleatório (char*)
+ * @param r apontador de char (char*) usado para armazenar o número em carateres
+ * @return do número em carateres
+ */
 char* randomKeyValue(char* r){
     int random = 0, digits = 0;
 
@@ -620,6 +671,11 @@ char* randomKeyValue(char* r){
     return returnval;
 }
 
+/**
+ * Função que retorna um número aleatório em short
+ * @param r variável que vai conter o número aleatório a ser retornado
+ * @return valor aleatório short
+ */
 short randomKeyValueShort(short r){
     int digits = 0;
     for (int i = 0; i < 1; ++i) {
@@ -627,20 +683,6 @@ short randomKeyValueShort(short r){
         digits = numDigits(r);
     }
     return r;
-}
-
-struct matrixString removeKeyMatrix(struct matrixString mString, char *key, int lines){
-    for (int i = 0; i < lines; ++i) {
-        if(strcmp(mString.matrixPub[i], key) == 0){
-            for (int j = i; j < lines-1; ++j) {
-                strcpy(mString.matrixPub[j], mString.matrixPub[j+1]);
-                strcpy(mString.matrixPriv[j], mString.matrixPriv[j+1]);
-                strcpy(mString.matrixCod[j], mString.matrixCod[j+1]);
-            }
-            lines--;
-        }
-    }
-    return mString;
 }
 
 void shellSortChar(char** a, int N, int order){
@@ -751,65 +793,67 @@ void swapInt(short** a, int i, int min){
     free(temp);
 }
 
+
 //Funcoes Strings do ficheiro dos professores
 char* key_long_2_digits_char(unsigned long long key){
-    int digits = numDigits(key);
-    char *keydigits = malloc(digits * sizeof (char));
-    sprintf(keydigits, "%llu", key);
-    return keydigits;
+    int digits = numDigits(key);                        //variavel com o numero de digitos de (key)
+    char *keydigits = malloc(digits * sizeof (char));   //alocar memória para *keydigits com o valor de (digits)
+    sprintf(keydigits, "%llu", key);           //converter o valor de (unsigned long long) para (char*)
+    return keydigits;                                         //returnar o valor de (keydigits)
 }
 
 unsigned long long key_digits_2_long_char(char* keydigits){
-    return atoll(keydigits);
+    return atoll(keydigits);    //converter de (char*) para (unsigned long long) e returnar o valor
 }
 
 unsigned long long calc_private_key_char(unsigned long long pubkey){
-    char *n;
-    char rightNum = '0', leftNum = '1';
-    int digitos = 2, j = 0, changePos = 0, numDigits = 2;
+    char *n;                                                                    //Apontador que vai receber cada digito para formar um número
+    char rightNum = '0', leftNum = '1';                                         //rightNum -> número a inserir à direita começa em 0 -> ++ / leftNum -> número a inserir à esquerda começa em 1 -> ++
+    int digitos = 2, j = 0, changePos = 0, numDigits = 2;                       //digitos = 2 pois o primeiro númnero a ser criado vai ter 2 digitos / j = 0 vai ser usado para comparar o número de digitos atual
+                                                                                //changePos = 0 vai ser a variável usada para sabermos quando parar de converter números à direita
 
-    n = (char *) calloc(digitos, sizeof (char));
-    while (1){
-        if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
-            digitos++;
-            n=NULL;
-            n = (char *) realloc(n, digitos); //Se der algum erro de printf na consola tentar mudar de realloc para calloc e tirar o n = NULL
-            changePos--;
-            leftNum = '1';
+    n = (char *) calloc(digitos, sizeof (char));    //Alocar memória para n
+    while (1){                                                                  //Ciclo infinito (vai ter condições de paragem dentro dele)
+        if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){       //Se o leftNum = 9 e a changePos = limite de digitos e rightNum = 8 temos (98, 988, 9888) então
+            digitos++;                                                          //Chegamos ao ultimo número gerado bipolar com este núemro de digito então incrementamos o número de digitos
+            n=NULL;                                                             //Apagamos o conteudo atual de n
+            n = (char *) realloc(n, digitos);                  //realocar memória para n com o novo número de digitos
+            changePos--;                                                        //diminuir a changePos
+            leftNum = '1';                                                      //Resetar o valor de leftNum e de rigthNum
             rightNum = '0';
         }
-        if(rightNum == '9' && changePos == digitos -1){
-            leftNum++;
+        if(rightNum == '9' && changePos == digitos -1){                         //Se rigthNum = 9 e changePos = limite de digitos do número menos o primeiro digito então
+            leftNum++;                                                          //aumentamos o valor de leftNum pois chegamos ao maior valor para este leftNum (19 -> 20, 1999 -> 2000, 19999 -> 20000)
         }
-        if(changePos == digitos -1){
-            changePos = 0;
-            if(rightNum != '9'){
+        if(changePos == digitos -1){                                            //Se changePos = limite de digitos do número então
+            changePos = 0;                                                      //Resetar a changePos pois chegamos à ultima posição para este valor de rightNum (1112 -> 1122 -> 1222 -> 1113)
+            if(rightNum != '9'){                                                //Se rightNum != 9 incrementamos o rightNum
                 rightNum++;
-            } else{
+            } else{                                                             //Se rigthNum = 9 então resetamos o valor de rigthNum
                 rightNum = '0';
             }
         }
-        if(leftNum == rightNum){
+        if(leftNum == rightNum){                                                //Se leftNum = rigthNum então podemos dar skip a estes valores pois (1111, 2222, 3333) não são bipolares
             rightNum++;
         }
-        if(j > changePos){
-            n[j] = rightNum;
-        } else{
+        if(j > changePos){                                                      //Se a posição do digito a ser mudado atualmente for maior que changePos então
+            n[j] = rightNum;                                                    //este valor vai ser igual a rigthNum ex: rigthNum=2 (1112), rigthNum=3 (2333), rigthNum=6 (8866)
+        } else{                                                                 //Se não então igualamos ao valor de leftNum
             n[j] = leftNum;
         }
-        if(j == digitos-1){
+        if(j == digitos-1){                                                             //Se j = ao número de digitos então
                 numDigits = digitos;
-                n[strlen(n)] = '\0';
-                if(atoll(n) > ULONG_LONG_MAX || atoll(n) < 0 || pubkey == 0) return 0;
-                if(atoll(n) > pubkey && atoll(n)%pubkey == 0){
-                    unsigned long long valorFinal = atoll(n);
-                    n=NULL;
+                n[strlen(n)] = '\0';                                                //Inserir o \0 no final da string
+                if(atoll(n) > ULONG_LONG_MAX || atoll(n) < 0 || pubkey == 0) return 0;  //Se o valor for maior que o suportado para (unsigned long long) ou for menor que 0 ou se a pubkey for igual a 0 returna 0
+                if(atoll(n) > pubkey && atoll(n)%pubkey == 0){                          //Se (unsigned long long) de n for maior que pubkey(pq a pubkey é multipla dela mesma) e (unsigned long long) de n for multiplo de pubkey
+                    unsigned long long valorFinal = atoll(n);                           //valorFinal vai ser igual a (unsigned long long) de n
+                    n=NULL;                                                             //Limpa n e dá free à memória
                     free(n);
-                    return valorFinal;
+                    return valorFinal;                                                  //retorna o valorFinal
                 }
-                changePos++;
+                changePos++;                                                            //Se não changePos++ e resetamos o j
                 j = 0;
-        } else{
+        } else{                                                                         //Se não incrementamos o j
             j++;
         }
     }
@@ -821,9 +865,11 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
     digits = numDigitsLong(privkey);
     int allD[digits], runLess[4];
 
+    //Ciclo para zerar runLess
     for (int i = 0; i < 4; ++i) {
         runLess[i] = 0;
     }
+    //Se privKey maior ou igual que 10 vai calcular a sua run Length
     if(privkey >= 10){
         allDigitsLong(privkey, allD);
         runLess[runLessPos] = 1;
@@ -854,7 +900,9 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
     }
 }
 
+
 unsigned long long private_key_from_runlength_char(unsigned long long runlengthkey){} //TODO como descobrir a chave privada com a chave cod quando o numero de digitos da cod é maior que 4
+
 
 char** alloc_matrix_char(int nlines, int ncolumns){
     char **matrix;
@@ -864,6 +912,7 @@ char** alloc_matrix_char(int nlines, int ncolumns){
     }
     return matrix;
 }
+
 
 void store_key_char(char **matrix, int lines, unsigned long long key){
     char *keyChar = malloc(numDigitsLong(key) * sizeof (char));
@@ -878,6 +927,7 @@ void store_key_char(char **matrix, int lines, unsigned long long key){
     keyChar=NULL;
     free(keyChar);
 }
+
 
 int exists_key_char(char **matrix, int lines, unsigned long long key){
     char *keyChar = malloc(numDigitsLong(key) * sizeof (char));
@@ -894,6 +944,7 @@ int exists_key_char(char **matrix, int lines, unsigned long long key){
     return 0;
 }
 
+
 unsigned long long get_private_key_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long pubkey){
     char *keyChar = malloc(numDigitsLong(pubkey) * sizeof (char));
     sprintf(keyChar, "%llu", pubkey);
@@ -909,6 +960,7 @@ unsigned long long get_private_key_char(char **matrix_kpub, char **matrix_kpriv,
     return 0;
 }
 
+
 unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, int lines, unsigned long long privkey){
     char *keyChar = malloc(numDigitsLong(privkey) * sizeof (char));
     sprintf(keyChar, "%llu", privkey);
@@ -923,6 +975,7 @@ unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, i
     free(keyChar);
     return 0;
 }
+
 
 unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char* pubkey){
     for (int i = 0; i < lines; ++i) {
