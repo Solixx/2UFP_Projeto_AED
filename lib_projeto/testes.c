@@ -20,8 +20,16 @@ int main_test(){
     time_t t1;
     srand((unsigned ) time(&t1));
 
+    clock_t start, end;
+    double execution_time;
+    start = clock();
+
     mString = clienteString(mString);
-    mInts = clienteInt(mInts);
+
+    end = clock();
+    execution_time = ((double)(end - start))/CLOCKS_PER_SEC;
+    printf("Time = %f\n", execution_time);
+    //mInts = clienteInt(mInts);
 
     /*
     for (int i = 0; i < 6; ++i) {
@@ -35,7 +43,7 @@ int main_test(){
     }
     */
 
-    clienteKeyHolder(portaChaves, mString, mInts);
+    //clienteKeyHolder(portaChaves, mString, mInts);
 
     return 0;
 }
@@ -49,7 +57,7 @@ struct matrixString clienteString(struct matrixString mString){
 
     privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
-    publicKeyChar = key_long_2_digits_char(22);
+    publicKeyChar = key_long_2_digits_char(25645);
     //printf("PubChar - %s\n", publicKeyChar);
     publicKeyLong = key_digits_2_long_char(publicKeyChar);
     //printf("PubLong - %llu\n", publicKeyLong);
@@ -87,14 +95,14 @@ struct matrixString clienteString(struct matrixString mString){
     store_key_char(mString.matrixPriv, lines, privKeyLong);
     store_key_char(mString.matrixCod, lines, codKeyLong);
 
-    /*
+
     for (int i = 0; i < lines; ++i) {
         if(strcmp(mString.matrixPub[i], "\0") != 0) printf("Pub - %s\n", mString.matrixPub[i]);
         if(strcmp(mString.matrixPriv[i], "\0") != 0) printf("Priv - %s\n", mString.matrixPriv[i]);
         if(strcmp(mString.matrixCod[i], "\0") != 0) printf("Cod - %s\n", mString.matrixCod[i]);
     }
     printf("\n");
-     */
+
 
     //printf("Delete a - %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, mString.matrixPub[0]));
 

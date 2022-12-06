@@ -844,7 +844,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
         if(j == digitos-1){                                                             //Se j = ao número de digitos então
                 numDigits = digitos;
                 n[strlen(n)] = '\0';                                                //Inserir o \0 no final da string
-                if(atoll(n) > ULONG_LONG_MAX || atoll(n) < 0 || pubkey == 0) return 0;  //Se o valor for maior que o suportado para (unsigned long long) ou for menor que 0 ou se a pubkey for igual a 0 returna 0
+                if(atoll(n) > 1000000000000 || atoll(n) < 0 || pubkey == 0) return 0;  //Se o valor for maior que o suportado para (unsigned long long) ou for menor que 0 ou se a pubkey for igual a 0 returna 0
                 if(atoll(n) > pubkey && atoll(n)%pubkey == 0){                          //Se (unsigned long long) de n for maior que pubkey(pq a pubkey é multipla dela mesma) e (unsigned long long) de n for multiplo de pubkey
                     unsigned long long valorFinal = atoll(n);                           //valorFinal vai ser igual a (unsigned long long) de n
                     n=NULL;                                                             //Limpa n e dá free à memória
