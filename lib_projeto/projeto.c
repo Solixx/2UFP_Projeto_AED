@@ -808,10 +808,16 @@ unsigned long long key_digits_2_long_char(char* keydigits){
 
 unsigned long long calc_private_key_char(unsigned long long pubkey){
     char *n;                                                                    //Apontador que vai receber cada digito para formar um número
-    char rightNum = '0', leftNum = '1';                                         //rightNum -> número a inserir à direita começa em 0 -> ++ / leftNum -> número a inserir à esquerda começa em 1 -> ++
-    int digitos = 2, j = 0, changePos = 0, numDigits = 2;                       //digitos = 2 pois o primeiro númnero a ser criado vai ter 2 digitos / j = 0 vai ser usado para comparar o número de digitos atual
+    int digitos = numDigitsLong(pubkey*2), j = 0, changePos = 0, numDigits = 2;                       //digitos = 2 pois o primeiro númnero a ser criado vai ter 2 digitos / j = 0 vai ser usado para comparar o número de digitos atual
                                                                                 //changePos = 0 vai ser a variável usada para sabermos quando parar de converter números à direita
+    short *allD = key_long_2_digits_int(pubkey*2);
+    char rightNum = allD[1]+'0', leftNum = allD[0]+'0';                     //rightNum -> número a inserir à direita começa em 0 -> ++ / leftNum -> número a inserir à esquerda começa em 1 -> ++
 
+    if(pubkey <= 5){
+        rightNum = '0';
+        leftNum = '1';
+    }
+    if(digitos < 2) digitos = 2;
     n = (char *) calloc(digitos, sizeof (char));    //Alocar memória para n
     while (1){                                                                  //Ciclo infinito (vai ter condições de paragem dentro dele)
         if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){       //Se o leftNum = 9 e a changePos = limite de digitos e rightNum = 8 temos (98, 988, 9888) então
