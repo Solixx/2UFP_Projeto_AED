@@ -232,7 +232,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 
 
     for (int i = 0; i < 2; ++i) {
-        if(mInts.matrixPub[i][0]){
+        if((!mInts.matrixPub[i][0] && mInts.matrixPub[i][1]) || mInts.matrixPub[i][0]){
             int j = 0;
             printf("Pub - ");
             while (mInts.matrixPub[i][j] != -1){
@@ -241,7 +241,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
             }
             printf("\n");
         }
-        if(mInts.matrixPriv[i][0]){
+        if((!mInts.matrixPriv[i][0] && mInts.matrixPriv[i][1]) || mInts.matrixPriv[i][0]){
             int j = 0;
             printf("Priv - ");
             while (mInts.matrixPriv[i][j] != -1){
@@ -250,7 +250,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
             }
             printf("\n");
         }
-        if(mInts.matrixCod[i][0]){
+        if((!mInts.matrixCod[i][0] && mInts.matrixCod[i][1]) || mInts.matrixCod[i][0]){
             int j = 0;
             printf("Cod - ");
             while (mInts.matrixCod[i][j] != -1){
@@ -269,9 +269,9 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 
     //printf("PubKey Apagada - %llu\n", delete_key_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, pubKey));
     //printf("PubKey Apagada - %llu\n", delete_key_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 2));
-    //bulk_populate_public_keys_int(mInts.matrixPub, lines);
-    //bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines);
-    //bulk_compute_runlengths_int(mInts.matrixPriv, mInts.matrixCod, lines);
+    bulk_populate_public_keys_int(mInts.matrixPub, lines);
+    bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines);
+    bulk_compute_runlengths_int(mInts.matrixPriv, mInts.matrixCod, lines);
 
     /*
     for (int i = 0; i < lines; ++i) {

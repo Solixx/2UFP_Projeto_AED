@@ -1223,16 +1223,22 @@ unsigned long long key_digits_2_long_int(short* keydigits){
 unsigned long long calc_private_key_int(unsigned long long pubkey){
     unsigned long long privKey = 0;
     short *n;
-    short rightNum = 0, leftNum = 1;
-    int digitos = 2, j = 0, changePos = 0;
+    int digitos = numDigitsLong(pubkey*2), j = 0, changePos = 0;
+    short *allD = key_long_2_digits_int(pubkey*2);
+    short rightNum = allD[1], leftNum = allD[0];
 
+    if(pubkey <= 5){
+        rightNum = 0;
+        leftNum = 1;
+    }
+    if(digitos < 2) digitos = 2;
     n = (short *) calloc(digitos, sizeof (short));
     while (1){
         if(leftNum == 9 && changePos == digitos -1 && rightNum == 8){
             digitos++;
-            //n=NULL;
-            //n = (short *) realloc(n, digitos);
-            n = (short *) calloc(digitos, sizeof (short ));
+            n=NULL;
+            n = (short *) realloc(n, digitos);
+            //n = (short *) calloc(digitos, sizeof (short ));
             changePos--;
             leftNum = 1;
             rightNum = 0;
@@ -1259,7 +1265,7 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
         if(j == digitos-1){
             n[digitos] = -1;
             privKey = key_digits_2_long_int(n);
-            if(privKey > ULONG_LONG_MAX || privKey < 0 || pubkey == 0) return 0;
+            if(privKey > 1000000000000 || privKey < 0 || pubkey == 0) return 0;
             if(privKey > pubkey && privKey%pubkey == 0){
                 n=NULL;
                 free(n);
@@ -1327,6 +1333,7 @@ short** alloc_matrix_int(int nlines, int ncolumns){
 void store_key_int(short **matrix, int lines, unsigned long long key){
     short *allD = key_long_2_digits_int(key);
     for (int i = 0; i < lines; ++i) {
+        if(!matrix[i][0] && matrix[i][1] == -1) continue;
         if(!matrix[i][0]){
             matrix[i] = (short *) calloc(numDigitsLong(key)+1, sizeof (short));
             matrix[i] = allD;
