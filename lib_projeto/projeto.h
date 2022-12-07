@@ -106,6 +106,9 @@ void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, 
 void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int newKeysPos, char filename[]);
 void print_keyHolders(KEY_HOLDER** portaChaves);
 
+void freeMatrixChar(char **matrix, int N);
+void freeMatrixShort(short **matrix, int N);
+
 void cliente0();
 void cliente1();
 void cliente2();

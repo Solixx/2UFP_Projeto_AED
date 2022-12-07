@@ -824,7 +824,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
             digitos++;                                                          //Chegamos ao ultimo número gerado bipolar com este núemro de digito então incrementamos o número de digitos
             n=NULL;                                                             //Apagamos o conteudo atual de n
             n = (char *) realloc(n, digitos);                  //realocar memória para n com o novo número de digitos
-            changePos--;                                                        //diminuir a changePos
+            changePos = 0;                                                        //diminuir a changePos
             leftNum = '1';                                                      //Resetar o valor de leftNum e de rigthNum
             rightNum = '0';
         }
@@ -850,6 +850,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
         if(j == digitos-1){                                                             //Se j = ao número de digitos então
                 numDigits = digitos;
                 n[strlen(n)] = '\0';                                                //Inserir o \0 no final da string
+                //printf("PivKey = %llu\n", atoll(n));
                 if(atoll(n) > 1000000000000 || atoll(n) < 0 || pubkey == 0) return 0;  //Se o valor for maior que o suportado para (unsigned long long) ou for menor que 0 ou se a pubkey for igual a 0 returna 0
                 if(atoll(n) > pubkey && atoll(n)%pubkey == 0){                          //Se (unsigned long long) de n for maior que pubkey(pq a pubkey é multipla dela mesma) e (unsigned long long) de n for multiplo de pubkey
                     unsigned long long valorFinal = atoll(n);                           //valorFinal vai ser igual a (unsigned long long) de n
@@ -1236,9 +1237,9 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
     while (1){
         if(leftNum == 9 && changePos == digitos -1 && rightNum == 8){
             digitos++;
-            n=NULL;
-            n = (short *) realloc(n, digitos);
-            //n = (short *) calloc(digitos, sizeof (short ));
+            //n=NULL;
+            //n = (short *) realloc(n, digitos);
+            n = (short *) calloc(digitos, sizeof (short ));
             changePos--;
             leftNum = 1;
             rightNum = 0;
@@ -1265,7 +1266,10 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
         if(j == digitos-1){
             n[digitos] = -1;
             privKey = key_digits_2_long_int(n);
-            if(privKey > 1000000000000 || privKey < 0 || pubkey == 0) return 0;
+            //printf("PivKey = %llu\n", privKey);
+            if(privKey > 1000000000000 || privKey < 0 || pubkey == 0){
+                return 0;
+            }
             if(privKey > pubkey && privKey%pubkey == 0){
                 n=NULL;
                 free(n);
@@ -2066,5 +2070,19 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
         printf("Data Modificacao: %s", curr->data_modificacao);
         printf("\n");
         numPortaChaves++;
+    }
+}
+
+
+void freeMatrixChar(char **matrix, int N){
+    for (int i = 0; i < N; ++i) {
+        matrix[i] = NULL;
+        free(matrix[i]);
+    }
+}
+void freeMatrixShort(short **matrix, int N){
+    for (int i = 0; i < N; ++i) {
+        matrix[i] = NULL;
+        free(matrix[i]);
     }
 }
