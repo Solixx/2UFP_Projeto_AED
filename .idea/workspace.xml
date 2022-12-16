@@ -27,7 +27,6 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/portaChaves.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/portaChaves.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/testes.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/testes.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,24 +57,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/GitHub/2UFP_Projeto_AED&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "E:/GitHub/2UFP_Projeto_AED"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="2UFP_Projeto_AED" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="2UFP_Projeto_AED" TARGET_NAME="2UFP_Projeto_AED" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="2UFP_Projeto_AED" RUN_TARGET_NAME="2UFP_Projeto_AED">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -185,6 +179,14 @@
       <workItem from="1670435841103" duration="13000" />
       <workItem from="1670435985035" duration="3113000" />
       <workItem from="1670439512165" duration="3375000" />
+      <workItem from="1670443019900" duration="104000" />
+      <workItem from="1670445258532" duration="36000" />
+      <workItem from="1670455497839" duration="42000" />
+      <workItem from="1670512573940" duration="2236000" />
+      <workItem from="1670518357828" duration="13000" />
+      <workItem from="1670518776000" duration="610000" />
+      <workItem from="1670523911890" duration="13000" />
+      <workItem from="1671201037035" duration="2704000" />
     </task>
     <servers />
   </component>
