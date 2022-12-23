@@ -818,13 +818,14 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
         leftNum = '1';
     }
     if(digitos < 2) digitos = 2;
+    if(pubkey == 0) return 0;
     n = (char *) calloc(digitos, sizeof (char));    //Alocar memória para n
-    while (1){                                                                  //Ciclo infinito (vai ter condições de paragem dentro dele)
+
+    unsigned long long max_iterations = (unsigned long long) 1000000000000;
+    for (int i = 0; i < max_iterations; i++) {
         if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){       //Se o leftNum = 9 e a changePos = limite de digitos e rightNum = 8 temos (98, 988, 9888) então
             digitos++;                                                          //Chegamos ao ultimo número gerado bipolar com este núemro de digito então incrementamos o número de digitos
-            n=NULL;                                                             //Apagamos o conteudo atual de n
             n = (char *) realloc(n, digitos);                  //realocar memória para n com o novo número de digitos
-
             changePos = 0;                                                        //diminuir a changePos
             leftNum = '1';                                                      //Resetar o valor de leftNum e de rigthNum
             rightNum = '0';
@@ -852,11 +853,10 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
                 numDigits = digitos;
                 n[strlen(n)] = '\0';                                                //Inserir o \0 no final da string
                 //printf("PivKey = %llu\n", atoll(n));
-                if(atoll(n) > 1000000000000 || atoll(n) < 0 || pubkey == 0){
+                if(atoll(n) > 1000000000000 || atoll(n) < 0){
                     n=NULL;
                     free(allD);
                     free(n);
-                    n=NULL;
                     return 0;  //Se o valor for maior que o suportado para (unsigned long long) ou for menor que 0 ou se a pubkey for igual a 0 returna 0
                 }
                 if(atoll(n) > pubkey && atoll(n)%pubkey == 0){                          //Se (unsigned long long) de n for maior que pubkey(pq a pubkey é multipla dela mesma) e (unsigned long long) de n for multiplo de pubkey
@@ -864,7 +864,6 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
                     n=NULL;                                                             //Limpa n e dá free à memória
                     free(allD);
                     free(n);
-                    n=NULL;
                     return valorFinal;                                                  //retorna o valorFinal
                 }
                 changePos++;                                                            //Se não changePos++ e resetamos o j
@@ -873,6 +872,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
             j++;
         }
     }
+    return 0;
 }
 
 unsigned long long calc_runlength_char(unsigned long long privkey){
@@ -1230,6 +1230,7 @@ unsigned long long key_digits_2_long_int(short* keydigits){
     return pubKey;
 }
 
+/*
 unsigned long long calc_private_key_int(unsigned long long pubkey){
     unsigned long long privKey = 0;
     short *n;
@@ -1250,7 +1251,7 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
             free(n);
             n = (short *) calloc(digitos, sizeof (short ));
             //n = (short *) calloc(digitos, sizeof (short ));
-            changePos--;
+            changePos = 0;
             leftNum = 1;
             rightNum = 0;
         }
@@ -1294,6 +1295,76 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
             j++;
         }
     }
+}
+*/
+
+
+unsigned long long calc_private_key_int(unsigned long long pubkey){
+    unsigned long long privKey = 0;
+    short *n;
+    int digitos = numDigitsLong(pubkey*2), j = 0, changePos = 0;
+    short *allD = key_long_2_digits_int(pubkey*2);
+    short rightNum = allD[1], leftNum = allD[0];
+
+    if(pubkey <= 5){
+        rightNum = 0;
+        leftNum = 1;
+    }
+    if(digitos < 2) digitos = 2;
+    if (pubkey == 0) return 0;
+    n = (short *) calloc(digitos, sizeof (short));
+
+    unsigned long long max_iterations = (unsigned long long) 1000000000000;
+    for (int i = 0; i < max_iterations; i++) {
+        if (leftNum == 9 && changePos == digitos - 1 && rightNum == 8) {
+            digitos++;
+            n = NULL;
+            n = realloc(n, digitos * sizeof(int));
+            changePos = 0;
+            leftNum = 1;
+            rightNum = 0;
+        }
+        if (rightNum == 9 && changePos == digitos - 1) {
+            leftNum++;
+        }
+        if (changePos == digitos - 1) {
+            changePos = 0;
+            if (rightNum != 9) {
+                rightNum++;
+            } else {
+                rightNum = 0;
+            }
+        }
+        if (leftNum == rightNum) {
+            rightNum++;
+        }
+        if (j > changePos) {
+            n[j] = rightNum;
+        } else {
+            n[j] = leftNum;
+        }
+        if(j == digitos-1){
+            n[digitos] = -1;
+            privKey = key_digits_2_long_int(n);
+            //printf("PivKey = %llu\n", privKey);
+            if(privKey > 1000000000000 || privKey < 0){
+                n=NULL;
+                free(n);
+                return 0;
+            }
+            if(privKey > pubkey && privKey%pubkey == 0){
+                n=NULL;
+                free(n);
+                return privKey;
+            }
+            changePos++;
+            j = 0;
+
+        } else{
+            j++;
+        }
+    }
+    return 0;
 }
 
 unsigned long long calc_runlength_int(unsigned long long privkey){
