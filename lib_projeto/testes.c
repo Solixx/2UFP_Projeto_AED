@@ -24,7 +24,7 @@ int main_test(){
     double execution_time;
     start = clock();
 
-    mString = clienteString(mString);
+    //mString = clienteString(mString);
     mInts = clienteInt(mInts);
 
     end = clock();

@@ -825,6 +825,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
     for (int i = 0; atoll(n) < max_iterations; i++) {
         if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){       //Se o leftNum = 9 e a changePos = limite de digitos e rightNum = 8 temos (98, 988, 9888) então
             digitos++;                                                          //Chegamos ao ultimo número gerado bipolar com este núemro de digito então incrementamos o número de digitos
+            n = NULL;
             n = (char *) realloc(n, digitos);                  //realocar memória para n com o novo número de digitos
             changePos = 0;                                                        //diminuir a changePos
             leftNum = '1';                                                      //Resetar o valor de leftNum e de rigthNum
