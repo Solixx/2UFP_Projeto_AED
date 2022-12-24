@@ -821,8 +821,8 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
     if(pubkey == 0) return 0;
     n = (char *) calloc(digitos, sizeof (char));    //Alocar memória para n
 
-    unsigned long long max_iterations = (unsigned long long) 1000000000000;
-    for (int i = 0; i < max_iterations; i++) {
+    unsigned long long max_iterations = (unsigned long long) 18446744073709551615;
+    for (int i = 0; atoll(n) < max_iterations; i++) {
         if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){       //Se o leftNum = 9 e a changePos = limite de digitos e rightNum = 8 temos (98, 988, 9888) então
             digitos++;                                                          //Chegamos ao ultimo número gerado bipolar com este núemro de digito então incrementamos o número de digitos
             n = (char *) realloc(n, digitos);                  //realocar memória para n com o novo número de digitos
@@ -1314,8 +1314,8 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
     if (pubkey == 0) return 0;
     n = (short *) calloc(digitos, sizeof (short));
 
-    unsigned long long max_iterations = (unsigned long long) 1000000000000;
-    for (int i = 0; i < max_iterations; i++) {
+    unsigned long long max_iterations = (unsigned long long) 18446744073709551615;
+    for (int i = 0; privKey < max_iterations; i++) {
         if (leftNum == 9 && changePos == digitos - 1 && rightNum == 8) {
             digitos++;
             n = NULL;

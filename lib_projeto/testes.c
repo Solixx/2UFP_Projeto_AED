@@ -71,7 +71,7 @@ struct matrixString clienteString(struct matrixString mString){
 
     privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
-    publicKeyChar = key_long_2_digits_char(25645);
+    publicKeyChar = key_long_2_digits_char(230);
     //printf("PubChar - %s\n", publicKeyChar);
     publicKeyLong = key_digits_2_long_char(publicKeyChar);
     //printf("PubLong - %llu\n", publicKeyLong);
@@ -211,7 +211,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     int lines = 12, columns = 1;
 
     pubKey = new_public_key_int();
-    pubKey = 25645;
+    pubKey = 230;
     allD = key_long_2_digits_int(pubKey);
     pubKey = key_digits_2_long_int(allD);
     privKey = calc_private_key_int(pubKey);
