@@ -2166,7 +2166,9 @@ void freeMatrixChar(char **matrix, int N){
 }
 void freeMatrixShort(short **matrix, int N){
     for (int i = 0; i < N; ++i) {
-        matrix[i] = NULL;
-        free(matrix[i]);
+        if(matrix[i] != NULL){
+            matrix[i] = NULL;
+            free(matrix[i]);
+        }
     }
 }
