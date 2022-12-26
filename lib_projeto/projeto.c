@@ -1735,38 +1735,71 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
 
     for (int j = 0; j <= keyPosChange; ++j) {
         if(!curr->khString.matrixPub[j]){
-            curr->khString.matrixPub[j] = realloc(curr->khString.matrixPub[j],numDigitsLong(atoll(mString.matrixPub[newKeyPos])));
-            curr->khString.matrixPub[j] =  mString.matrixPub[newKeyPos];
+            if(newKeyPos > mString.lines){
+                curr->khString.matrixPub[j] = realloc(curr->khString.matrixPub[j],2);
+                curr->khString.matrixPub[j] =  "0\0";
+            } else{
+                curr->khString.matrixPub[j] = realloc(curr->khString.matrixPub[j],numDigitsLong(atoll(mString.matrixPub[newKeyPos])));
+                curr->khString.matrixPub[j] =  mString.matrixPub[newKeyPos];
+            }
             isAdd = 1;
         }
         if(!curr->khString.matrixPriv[j]){
-            curr->khString.matrixPriv[j] = realloc(curr->khString.matrixPriv[j],numDigitsLong(atoll(mString.matrixPriv[newKeyPos])));
-            curr->khString.matrixPriv[j] = mString.matrixPriv[newKeyPos];
+            if(newKeyPos > mString.lines){
+                curr->khString.matrixPriv[j] = realloc(curr->khString.matrixPriv[j],2);
+                curr->khString.matrixPriv[j] =  "0\0";
+            } else {
+                curr->khString.matrixPriv[j] = realloc(curr->khString.matrixPriv[j],numDigitsLong(atoll(mString.matrixPriv[newKeyPos])));
+                curr->khString.matrixPriv[j] = mString.matrixPriv[newKeyPos];
+            }
             isAdd = 1;
         }
         if(!curr->khString.matrixCod[j]){
-            curr->khString.matrixCod[j] = realloc(curr->khString.matrixCod[j],numDigitsLong(atoll(mString.matrixCod[newKeyPos])));
-            curr->khString.matrixCod[j] = mString.matrixCod[newKeyPos];
+            if(newKeyPos > mString.lines){
+                curr->khString.matrixCod[j] = realloc(curr->khString.matrixCod[j],2);
+                curr->khString.matrixCod[j] =  "0\0";
+            } else {
+                curr->khString.matrixCod[j] = realloc(curr->khString.matrixCod[j],numDigitsLong(atoll(mString.matrixCod[newKeyPos])));
+                curr->khString.matrixCod[j] = mString.matrixCod[newKeyPos];
+            }
             isAdd = 1;
         }
         if(!curr->khInts.matrixPub[j]){
-            curr->khInts.matrixPub[j] = realloc(curr->khInts.matrixPub[j],numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos])));
-            for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1; ++i) {
-                curr->khInts.matrixPub[j][i] = mInts.matrixPub[newKeyPos][i];
+            if(newKeyPos > mInts.lines){
+                curr->khInts.matrixPub[j] = realloc(curr->khInts.matrixPub[j],2);
+                curr->khInts.matrixPub[j][0] = 0;
+                curr->khInts.matrixPub[j][1] = -1;
+            } else {
+                curr->khInts.matrixPub[j] = realloc(curr->khInts.matrixPub[j],numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos])));
+                for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos])) + 1; ++i) {
+                    curr->khInts.matrixPub[j][i] = mInts.matrixPub[newKeyPos][i];
+                }
             }
             isAdd = 1;
         }
         if(!curr->khInts.matrixPriv[j]){
-            curr->khInts.matrixPriv[j] = realloc(curr->khInts.matrixPriv[j],numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos])));
-            for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1; ++i) {
-                curr->khInts.matrixPriv[j][i] = mInts.matrixPriv[newKeyPos][i];
+            if(newKeyPos > mInts.lines){
+                curr->khInts.matrixPriv[j] = realloc(curr->khInts.matrixPriv[j],2);
+                curr->khInts.matrixPriv[j][0] = 0;
+                curr->khInts.matrixPriv[j][1] = -1;
+            } else{
+                curr->khInts.matrixPriv[j] = realloc(curr->khInts.matrixPriv[j],numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos])));
+                for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1; ++i) {
+                    curr->khInts.matrixPriv[j][i] = mInts.matrixPriv[newKeyPos][i];
+                }
             }
             isAdd = 1;
         }
         if(!curr->khInts.matrixCod[j]){
-            curr->khInts.matrixCod[j] = realloc(curr->khInts.matrixCod[j],numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos])));
-            for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1; ++i) {
-                curr->khInts.matrixCod[j][i] = mInts.matrixCod[newKeyPos][i];
+            if(newKeyPos > mInts.lines){
+                curr->khInts.matrixCod[j] = realloc(curr->khInts.matrixCod[j],2);
+                curr->khInts.matrixCod[j][0] = 0;
+                curr->khInts.matrixCod[j][1] = -1;
+            } else {
+                curr->khInts.matrixCod[j] = realloc(curr->khInts.matrixCod[j],numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos])));
+                for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos])) + 1; ++i) {
+                    curr->khInts.matrixCod[j][i] = mInts.matrixCod[newKeyPos][i];
+                }
             }
             isAdd = 1;
         }
@@ -1791,12 +1824,45 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
         //curr->khInts.matrixPriv = (short**) realloc(curr->khInts.matrixPriv, (sizeMax+1)*sizeof (short*));
         //curr->khInts.matrixCod = (short**) realloc(curr->khInts.matrixCod, (sizeMax+1)*sizeof (short*));
 
-        curr->khString.matrixPub[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPub[newKeyPos])), sizeof (char ));
-        curr->khString.matrixPriv[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPriv[newKeyPos])), sizeof (char ));
-        curr->khString.matrixCod[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixCod[newKeyPos])),  sizeof (char ));
-        curr->khInts.matrixPub[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1, sizeof (short ));
-        curr->khInts.matrixPriv[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1, sizeof (short ));
-        curr->khInts.matrixCod[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1, sizeof (short ));
+        if(newKeyPos > mString.lines){
+            curr->khString.matrixPub[keyPosChange] = (char *) calloc(1, sizeof (char ));
+            curr->khString.matrixPriv[keyPosChange] = (char *) calloc(1, sizeof (char ));
+            curr->khString.matrixCod[keyPosChange] = (char *) calloc(1,  sizeof (char ));
+            curr->khString.matrixPub[keyPosChange] = "0\0";
+            curr->khString.matrixPriv[keyPosChange] = "0\0";
+            curr->khString.matrixCod[keyPosChange] = "0\0";
+        } else{
+            curr->khString.matrixPub[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPub[newKeyPos])), sizeof (char ));
+            curr->khString.matrixPriv[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPriv[newKeyPos])), sizeof (char ));
+            curr->khString.matrixCod[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixCod[newKeyPos])),  sizeof (char ));
+            curr->khString.matrixPub[keyPosChange] =  mString.matrixPub[newKeyPos];
+            curr->khString.matrixPriv[keyPosChange] = mString.matrixPriv[newKeyPos];
+            curr->khString.matrixCod[keyPosChange] = mString.matrixCod[newKeyPos];
+        }
+        if(newKeyPos > mInts.lines){
+            curr->khInts.matrixPub[keyPosChange] = (short *) calloc(2, sizeof (short ));
+            curr->khInts.matrixPriv[keyPosChange] = (short *) calloc(2, sizeof (short ));
+            curr->khInts.matrixCod[keyPosChange] = (short *) calloc(2, sizeof (short ));
+            curr->khInts.matrixPub[keyPosChange][0] = 0;
+            curr->khInts.matrixPriv[keyPosChange][0] = 0;
+            curr->khInts.matrixCod[keyPosChange][0] = 0;
+            curr->khInts.matrixPub[keyPosChange][1] = -1;
+            curr->khInts.matrixPriv[keyPosChange][1] = -1;
+            curr->khInts.matrixCod[keyPosChange][1] = -1;
+        } else{
+            curr->khInts.matrixPub[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1, sizeof (short ));
+            curr->khInts.matrixPriv[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1, sizeof (short ));
+            curr->khInts.matrixCod[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1, sizeof (short ));
+            for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1; ++i) {
+                curr->khInts.matrixPub[keyPosChange][i] = mInts.matrixPub[newKeyPos][i];
+            }
+            for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1; ++i) {
+                curr->khInts.matrixPriv[keyPosChange][i] = mInts.matrixPriv[newKeyPos][i];
+            }
+            for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1; ++i) {
+                curr->khInts.matrixCod[keyPosChange][i] = mInts.matrixCod[newKeyPos][i];
+            }
+        }
 
         curr->khString.matrixPub[keyPosChange+1] = NULL;
         curr->khString.matrixPriv[keyPosChange+1] = NULL;
@@ -1804,19 +1870,6 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
         curr->khInts.matrixPub[keyPosChange+1] = NULL;
         curr->khInts.matrixPriv[keyPosChange+1] = NULL;
         curr->khInts.matrixCod[keyPosChange+1] = NULL;
-
-        curr->khString.matrixPub[keyPosChange] =  mString.matrixPub[newKeyPos];
-        curr->khString.matrixPriv[keyPosChange] = mString.matrixPriv[newKeyPos];
-        curr->khString.matrixCod[keyPosChange] = mString.matrixCod[newKeyPos];
-        for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1; ++i) {
-            curr->khInts.matrixPub[keyPosChange][i] = mInts.matrixPub[newKeyPos][i];
-        }
-        for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1; ++i) {
-            curr->khInts.matrixPriv[keyPosChange][i] = mInts.matrixPriv[newKeyPos][i];
-        }
-        for (int i = 0; i < numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1; ++i) {
-            curr->khInts.matrixCod[keyPosChange][i] = mInts.matrixCod[newKeyPos][i];
-        }
     }
 
     //new_keyHolder->khInts.matrixPub[posChange] = key_digits_2_long_int(mInts.matrixPub[keyPos]);
@@ -1855,76 +1908,84 @@ void remove_keyHolder(KEY_HOLDER** portaChaves, int keyHolderPos){
     }
 }
 
-void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, char* keyToSeach, int type){
+void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsigned long long keyToSeach, int type){
     int stopPos = 1, exist = 0;
+    if(type > 3 || type <= 0){
+        printf("Tipo e chaves nao existe (1 - Publica / 2 - Privada / 3 - Codificada)\n");
+        return;
+    }
     while (stopPos != keyHolderPos){
         portaChaves = portaChaves->next;
         stopPos++;
+        if(portaChaves == NULL){
+            printf("Porta Chaves nao existe\n");
+            return;
+        }
     }
 
         if(type == 1){
             for (int i = 0; portaChaves->khString.matrixPub[i] ; ++i) {
-                if(strcmp(portaChaves->khString.matrixPub[i], keyToSeach) == 0){
-                    printf("A chave %s existe na matrix de chaves publicas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                if(atoll(portaChaves->khString.matrixPub[i]) == keyToSeach){
+                    printf("A chave %llu existe na matrix de chaves publicas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %s nao existe na matrix de chaves publicas de Strings\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves publicas de Strings\n", keyToSeach);
             }
             exist = 0;
             for (int i = 0; portaChaves->khInts.matrixPub[i] ; ++i) {
-                if(key_digits_2_long_int(portaChaves->khInts.matrixPub[i]) == atoll(keyToSeach)){
-                    printf("A chave %s existe na matrix de chaves publicas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                if(key_digits_2_long_int(portaChaves->khInts.matrixPub[i]) == keyToSeach){
+                    printf("A chave %llu existe na matrix de chaves publicas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %s nao existe na matrix de chaves publicas de Inteiros\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves publicas de Inteiros\n", keyToSeach);
             }
             exist = 0;
         }
         else if(type == 2){
             for (int i = 0; portaChaves->khString.matrixPriv[i] ; ++i) {
-                if(strcmp(portaChaves->khString.matrixPriv[i], keyToSeach) == 0){
-                    printf("A chave %s existe na matrix de chaves privadas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                if(atoll(portaChaves->khString.matrixPriv[i]) == keyToSeach){
+                    printf("A chave %llu existe na matrix de chaves privadas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %s nao existe na matrix de chaves privadas de Strings\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves privadas de Strings\n", keyToSeach);
             }
             exist = 0;
             for (int i = 0; portaChaves->khInts.matrixPriv[i] ; ++i) {
-                if(key_digits_2_long_int(portaChaves->khInts.matrixPriv[i]) == atoll(keyToSeach)){
-                    printf("A chave %s existe na matrix de chaves privadas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                if(key_digits_2_long_int(portaChaves->khInts.matrixPriv[i]) == keyToSeach){
+                    printf("A chave %llu existe na matrix de chaves privadas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %s nao existe na matrix de chaves privadas de Inteiros\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves privadas de Inteiros\n", keyToSeach);
             }
             exist = 0;
         }
         else if(type == 3){
             for (int i = 0; portaChaves->khString.matrixCod[i] ; ++i) {
-                if(strcmp(portaChaves->khString.matrixCod[i], keyToSeach) == 0){
-                    printf("A chave %s existe na matrix de chaves codificada de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                if(atoll(portaChaves->khString.matrixCod[i]) == keyToSeach){
+                    printf("A chave %llu existe na matrix de chaves codificada de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %s nao existe na matrix de chaves codificadas de Strings\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves codificadas de Strings\n", keyToSeach);
             }
             exist = 0;
             for (int i = 0; portaChaves->khInts.matrixCod[i] ; ++i) {
                 if(key_digits_2_long_int(portaChaves->khInts.matrixCod[i]) == atoll(keyToSeach)){
-                    printf("A chave %s existe na matrix de chaves codificada de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    printf("A chave %llu existe na matrix de chaves codificada de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %s nao existe na matrix de chaves codificadas de Inteiros\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves codificadas de Inteiros\n", keyToSeach);
             }
             exist = 0;
         }
@@ -2138,8 +2199,8 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
                     j++;
                 }
                 sair = 0;
+                printf("\n");
             } else sair = 1;
-            printf("\n");
             j = 0;
             if(curr->khInts.matrixPriv[i]){
                 printf("Porta Chaves PrivKey Ints - ");
@@ -2148,8 +2209,8 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
                     j++;
                 }
                 sair = 0;
+                printf("\n");
             } else sair = 1;
-            printf("\n");
             j = 0;
             if(curr->khInts.matrixCod[i]){
                 printf("Porta Chaves CodKey Ints - ");
@@ -2158,10 +2219,10 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
                     j++;
                 }
                 sair = 0;
+                printf("\n");
             } else sair = 1;
             if(sair == 1) break;
             i++;
-            printf("\n");
         }
         printf("Data Criacao: %s", curr->data_criacao);
         printf("Data Modificacao: %s", curr->data_modificacao);
