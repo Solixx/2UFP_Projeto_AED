@@ -1666,6 +1666,7 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
     if(new_keyHolder == NULL){
         exit(1);
     }
+
     new_keyHolder->next = *portaChaves;
     new_keyHolder->khString.matrixPub = alloc_matrix_char(2, 1);
     new_keyHolder->khString.matrixPriv = alloc_matrix_char(2, 1);
@@ -1674,12 +1675,24 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
     new_keyHolder->khInts.matrixPriv = alloc_matrix_int(2, 1);
     new_keyHolder->khInts.matrixCod = alloc_matrix_int(2, 1);
 
-    store_key_char(new_keyHolder->khString.matrixPub, 2, atoll(mString.matrixPub[pos]));
-    store_key_char(new_keyHolder->khString.matrixPriv, 2, atoll(mString.matrixPriv[pos]));
-    store_key_char(new_keyHolder->khString.matrixCod, 2, atoll(mString.matrixCod[pos]));
-    store_key_int(new_keyHolder->khInts.matrixPub, 2, key_digits_2_long_int(mInts.matrixPub[pos]));
-    store_key_int(new_keyHolder->khInts.matrixPriv, 2, key_digits_2_long_int(mInts.matrixPriv[pos]));
-    store_key_int(new_keyHolder->khInts.matrixCod, 2, key_digits_2_long_int(mInts.matrixCod[pos]));
+    if(pos > mString.lines){
+        store_key_char(new_keyHolder->khString.matrixPub, 2, 0);
+        store_key_char(new_keyHolder->khString.matrixPriv, 2, 0);
+        store_key_char(new_keyHolder->khString.matrixCod, 2, 0);
+    } else{
+        store_key_char(new_keyHolder->khString.matrixPub, 2, atoll(mString.matrixPub[pos]));
+        store_key_char(new_keyHolder->khString.matrixPriv, 2, atoll(mString.matrixPriv[pos]));
+        store_key_char(new_keyHolder->khString.matrixCod, 2, atoll(mString.matrixCod[pos]));
+    }
+    if(pos > mInts.lines){
+        store_key_int(new_keyHolder->khInts.matrixPub, 2, 0);
+        store_key_int(new_keyHolder->khInts.matrixPriv, 2, 0);
+        store_key_int(new_keyHolder->khInts.matrixCod, 2, 0);
+    } else{
+        store_key_int(new_keyHolder->khInts.matrixPub, 2, key_digits_2_long_int(mInts.matrixPub[pos]));
+        store_key_int(new_keyHolder->khInts.matrixPriv, 2, key_digits_2_long_int(mInts.matrixPriv[pos]));
+        store_key_int(new_keyHolder->khInts.matrixCod, 2, key_digits_2_long_int(mInts.matrixCod[pos]));
+    }
 
     new_keyHolder->khString.matrixPub[1] = NULL;
     new_keyHolder->khString.matrixPriv[1] = NULL;

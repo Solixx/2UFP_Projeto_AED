@@ -166,15 +166,19 @@ struct matrixString clienteString(struct matrixString mString){
     for (int i = 0; i < lines; ++i) {
         printf("mString PubMatrix de %d - %s\n", i, mString.matrixPub[i]);
     }
+     */
 
     bulk_compute_private_keys_char(mString.matrixPub, mString.matrixPriv, lines);
 
+    /*
     for (int i = 0; i < lines; ++i) {
         printf("mString PrivMatrix de %d - %s\n", i, mString.matrixPriv[i]);
     }
+    */
 
     bulk_compute_runlengths_char(mString.matrixPriv, mString.matrixCod, lines);
 
+    /*
     for (int i = 0; i < lines; ++i) {
         printf("mString CodMatrix de %d - %s\n", i, mString.matrixCod[i]);
     }
@@ -390,20 +394,20 @@ void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, stru
 
     char filename[] = "../data/portaChaves.txt";
     int stopPos = 1, keyHolderPos = 1;
-    insert_keyHolder(&portaChaves, mString, mInts, 0); //201
-    insert_keyHolder(&portaChaves, mString, mInts, 1); //2014
+    insert_keyHolder(&portaChaves, mString, mInts, 0);
+    insert_keyHolder(&portaChaves, mString, mInts, 5);
     print_keyHolders(&portaChaves);
 
     searchSingleKey_inKeyHolder(portaChaves, 1, "2014", 1);
 
 
-    edit_keyHolder(&portaChaves, mString, mInts, 2, 1, 3);
-    edit_keyHolder(&portaChaves, mString, mInts, 1, 0, 2);
-    edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
-    edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
+    edit_keyHolder(&portaChaves, mString, mInts, 1, 1, 3);
+    //edit_keyHolder(&portaChaves, mString, mInts, 1, 0, 2);
+    //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
+    //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
 
     print_keyHolders(&portaChaves);
-
+    /*
     save_txt_keyHolder(&portaChaves, mString, mInts, 1, filename);
     save_txt_keyHolder(&portaChaves, mString, mInts, 2, filename);
 
@@ -415,4 +419,5 @@ void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, stru
     insert_keyHolder(&portaChaves, mString, mInts, 0);
     load_txt_keyHolder(&portaChaves, mString, mInts, 3, 0, filename);
     print_keyHolders(&portaChaves);
+    */
 }
