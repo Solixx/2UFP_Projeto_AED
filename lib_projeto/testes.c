@@ -27,6 +27,13 @@ int main_test(){
     mString = clienteString(mString);
     mInts = clienteInt(mInts);
 
+    end = clock();
+    execution_time = ((double)(end - start))/CLOCKS_PER_SEC;
+    printf("Numero de Matrix Strings %d\n", mString.lines);
+    printf("Numero de Matrix Ints %d\n", mInts.lines);
+    printf("Time = %f\n", execution_time);
+
+
     /*
     for (int i = 0; i < 6; ++i) {
         printf("Pub String - %s\n", mString.matrixPub[i]);
@@ -39,7 +46,7 @@ int main_test(){
     }
     */
 
-    clienteKeyHolder(portaChaves, mString, mInts);
+    //clienteKeyHolder(portaChaves, mString, mInts);
 
     freeMatrixChar(mString.matrixPub, mString.lines);
     freeMatrixChar(mString.matrixPriv, mString.lines);
@@ -54,12 +61,14 @@ int main_test(){
     free(mInts.matrixPriv);
     free(mInts.matrixCod);
 
+    /*
     end = clock();
     execution_time = ((double)(end - start))/CLOCKS_PER_SEC;
     printf("Numero de Matrix Strings %d\n", mString.lines);
     printf("Numero de Matrix Ints %d\n", mString.lines);
     printf("Porta Chaves\n");
     printf("Time = %f\n", execution_time);
+    */
 
     return 0;
 }
@@ -69,7 +78,7 @@ struct matrixString clienteString(struct matrixString mString){
     char *publicKeyChar, *privKeyChar, *codKeyChar;
     char **privKeySearch = NULL;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
-    int lines = 5000, columns = 1;
+    int lines = 16000, columns = 1;
 
     mString.lines = lines;
 
@@ -166,7 +175,7 @@ struct matrixString clienteString(struct matrixString mString){
     for (int i = 0; i < lines; ++i) {
         printf("mString PubMatrix de %d - %s\n", i, mString.matrixPub[i]);
     }
-     */
+    */
 
     bulk_compute_private_keys_char(mString.matrixPub, mString.matrixPriv, lines);
 
@@ -217,7 +226,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     char filename[] = "../data/chaves_publicas_ints.txt";
     unsigned long long pubKey = 0, privKey = 0, codKey = 0;
     short *allD = NULL, **privKeySearch = NULL;
-    int lines = 5000, columns = 1;
+    int lines = 16000, columns = 1;
 
     mInts.lines = lines;
 
@@ -400,20 +409,23 @@ void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, stru
 
     searchSingleKey_inKeyHolder(portaChaves, 2, 0, 2);
 
-    edit_keyHolder(&portaChaves, mString, mInts, 2, 4, 300000);
+    edit_keyHolder(&portaChaves, mString, mInts, 2, 4, 3);
     //edit_keyHolder(&portaChaves, mString, mInts, 1, 0, 2);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
 
     print_keyHolders(&portaChaves);
+
     /*
     save_txt_keyHolder(&portaChaves, mString, mInts, 1, filename);
     save_txt_keyHolder(&portaChaves, mString, mInts, 2, filename);
+    */
 
-    //remove_keyHolder(&portaChaves, 2);
+    remove_keyHolder(&portaChaves, 3);
 
-    //print_keyHolders(&portaChaves);
+    print_keyHolders(&portaChaves);
 
+    /*
     printf("Do ficheiro de texto\n");
     insert_keyHolder(&portaChaves, mString, mInts, 0);
     load_txt_keyHolder(&portaChaves, mString, mInts, 3, 0, filename);
