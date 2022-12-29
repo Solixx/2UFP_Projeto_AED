@@ -100,12 +100,14 @@ char* randomKeyValue(char* r);
 struct matrixString removeKey(struct matrixString mString, char *key, int lines);
 
 void shellSortChar(char** a, int N, int order);
-void shellSortCharDigits(char** a, int N, int order);
+void shellSortCharDigits(char** a, char** priv, char** cod, int N, int order);
 void swapChar(char** a, int i, int min);
+void swapCharDigits(char** a, char** priv, char** cod, int i, int min);
 
 void shellSortInt(short** a, int N, int order);
-void shellSortIntDigits(short** a, int N, int order);
+void shellSortIntDigits(short** a, short** priv, short** cod, int N, int order);
 void swapInt(short** a, int i, int min);
+void swapIntDigits(short** a, short** priv, short** cod, int i, int min);
 
 void updateLines_MatrixString(struct matrixString mString, int lines);
 

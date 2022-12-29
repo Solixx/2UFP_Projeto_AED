@@ -30,7 +30,7 @@ int main_test(){
     start = clock();
 
     mString = clienteString(mString);
-    mInts = clienteInt(mInts);
+    //mInts = clienteInt(mInts);
 
     end = clock();
     execution_time = ((double)(end - start))/CLOCKS_PER_SEC;
@@ -51,9 +51,9 @@ int main_test(){
     }
     */
 
-    portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
+    //portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
 
-    clienteUtilizadores(utilizador, queue, portaChaves);
+    //clienteUtilizadores(utilizador, queue, portaChaves);
 
     freeMatrixChar(mString.matrixPub, mString.lines);
     freeMatrixChar(mString.matrixPriv, mString.lines);
@@ -208,13 +208,13 @@ struct matrixString clienteString(struct matrixString mString){
 
     //load_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
 
-    /*
+
     for (int i = 0; i < lines; ++i) {
         if(mString.matrixPub[i]) printf("Pub - %s\n", mString.matrixPub[i]);
         if(mString.matrixPriv[i]) printf("Priv - %s\n", mString.matrixPriv[i]);
         if(mString.matrixCod[i]) printf("Cod - %s\n", mString.matrixCod[i]);
     }
-    */
+
 
     /*
     privKeySearch = search_private_keys_char(mString.matrixPub, mString.matrixPriv, lines, 1);

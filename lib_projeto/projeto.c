@@ -707,7 +707,7 @@ void shellSortChar(char** a, int N, int order){
     }
 }
 
-void shellSortCharDigits(char** a, int N, int order){
+void shellSortCharDigits(char** a, char** priv, char** cod, int N, int order){
     int h = 1;
     while (h < N/3){
         h = 3*h + 1;
@@ -717,16 +717,32 @@ void shellSortCharDigits(char** a, int N, int order){
             if(strcmp(a[i], "\0") == 0) return;
             if(order == 1){ // 1 -> ascendente
                 for (int j = i; j >= h && numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapChar(a, j, j-h);
+                    swapCharDigits(a, priv, cod, j, j-h);
                 }
             } else{ // 0 -> descendente
                 for (int j = i; j >= h && numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapChar(a, j, j-h);
+                    swapCharDigits(a, priv, cod, j, j-h);
                 }
             }
         }
         h /= 3;
     }
+}
+
+void swapCharDigits(char** a, char** priv, char** cod, int i, int min){
+
+    char* temp = (char *) calloc(strlen(a[min]) * sizeof (char), sizeof (char));
+    strcpy(temp, a[min]);
+    strcpy(a[min], a[i]);
+    strcpy(a[i], temp);
+    strcpy(temp, priv[min]);
+    strcpy(priv[min], priv[i]);
+    strcpy(priv[i], temp);
+    strcpy(temp, cod[min]);
+    strcpy(cod[min], cod[i]);
+    strcpy(cod[i], temp);
+    temp = NULL;
+    free(temp);
 }
 
 void swapChar(char** a, int i, int min){
@@ -761,7 +777,7 @@ void shellSortInt(short** a, int N, int order){
     }
 }
 
-void shellSortIntDigits(short** a, int N, int order){
+void shellSortIntDigits(short** a, short** priv, short** cod, int N, int order){
     int h = 1;
     while (h < N/3){
         h = 3*h + 1;
@@ -771,16 +787,32 @@ void shellSortIntDigits(short** a, int N, int order){
             if(a[i][0] == 0) return;
             if(order == 1){ // 1 -> ascendente
                 for (int j = i; j >= h && numDigitsLong(key_digits_2_long_int(a[j])) < numDigitsLong(key_digits_2_long_int(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapInt(a, j, j-h);
+                    swapIntDigits(a, priv, cod, j, j-h);
                 }
             } else{ // 0 -> descendente
                 for (int j = i; j >= h && numDigitsLong(key_digits_2_long_int(a[j])) > numDigitsLong(key_digits_2_long_int(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapInt(a, j, j-h);
+                    swapIntDigits(a, priv, cod, j, j-h);
                 }
             }
         }
         h /= 3;
     }
+}
+
+void swapIntDigits(short** a, short** priv, short** cod, int i, int min){
+
+    short* temp = (short *) calloc(numDigitsLong(key_digits_2_long_int(a[min])), sizeof (short ));
+    temp = a[min];
+    a[min] = a[i];
+    a[i] = temp;
+    temp = priv[min];
+    priv[min] = priv[i];
+    priv[i] = temp;
+    temp = cod[min];
+    cod[min] = cod[i];
+    cod[i] = temp;
+    temp = NULL;
+    free(temp);
 }
 
 void swapInt(short** a, int i, int min){
@@ -1092,7 +1124,7 @@ char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lin
 
     return result;
 
-} //TODO escreve o ultimo valor +1 dq devia
+}
 
 void sort_matrix_char(char **matrix, int lines, int order){
     shellSortChar(matrix, lines, order);
@@ -1105,9 +1137,7 @@ void sort_all_matrices_char(char **matrix_kpub, char **matrix_kpriv, char **matr
 }
 
 void list_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, int order){
-    shellSortCharDigits(matrix_kpub, lines, order);
-    shellSortCharDigits(matrix_kpriv, lines, order);
-    shellSortCharDigits(matrix_kcod, lines, order);
+    shellSortCharDigits(matrix_kpub, matrix_kpriv, matrix_kcod, lines, order);
 }
 
 void save_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]){
@@ -1123,13 +1153,10 @@ void save_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_k
             fprintf(fileChavesPubWrite,"%llu" , atoll(matrix_kpub[i]));
             fprintf(fileChavesPubWrite,"\n");
         }
-    }
-    for (int i = 0; i < lines; ++i) {
         if(strcmp(matrix_kpriv[i], "\0") != 0){
             fprintf(fileChavesPubWrite,"%llu" , atoll(matrix_kpriv[i]));
             fprintf(fileChavesPubWrite,"\n");
         }
-    }for (int i = 0; i < lines; ++i) {
         if(strcmp(matrix_kcod[i], "\0") != 0){
             fprintf(fileChavesPubWrite,"%llu" , atoll(matrix_kcod[i]));
             fprintf(fileChavesPubWrite,"\n");
@@ -1142,9 +1169,10 @@ void save_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_k
 void load_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]){
     FILE *fileChavesPubRead;
     fileChavesPubRead = fopen(filename, "r");
-    int i = 1;
+    int i = 0, j = 0;
     unsigned long long privKey = 0, codKey = 0, t = 0, count = 1;
-    unsigned long long *value = (unsigned long long *) calloc(count, sizeof (unsigned long long));
+    char **value = (char **) calloc(count, sizeof (char*));
+    value[0] = malloc(1 * sizeof (char));
     char str[lines][200];
 
     if(fileChavesPubRead == NULL){
@@ -1152,18 +1180,19 @@ void load_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_k
         return;
     }
 
-    while (fscanf (fileChavesPubRead, "%llu", &value[count-1]) == 1){
+    while (fscanf (fileChavesPubRead, "%s", value[count-1]) == 1){
         count++;
-        value = (unsigned long long *) realloc(value, count * sizeof (unsigned long long));
+        value = (char **) realloc(value, count * sizeof (char*));
+        value[count-1] = (char *) calloc(1, sizeof (char));
     }
 
-    while (i <= lines && i < count/3){
-        privKey = calc_private_key_char(value[i]);
-        codKey = calc_runlength_char(privKey);
-        store_key_char(matrix_kpub, lines, value[i]);
-        store_key_char(matrix_kpriv, lines, privKey);
-        store_key_char(matrix_kcod, lines, codKey);
-        i++;
+    j = 0;
+    while (i < lines && i < count){
+        strcpy(matrix_kpub[j], value[i]);
+        strcpy(matrix_kpriv[j], value[i+1]);
+        strcpy(matrix_kcod[j], value[i+2]);
+        i += 3;
+        j++;
     }
 
     fclose(fileChavesPubRead);
@@ -1588,9 +1617,7 @@ void sort_all_matrices_int(short **matrix_kpub, short **matrix_kpriv, short **ma
 }
 
 void list_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, int order){
-    shellSortIntDigits(matrix_kpub, lines, order);
-    shellSortIntDigits(matrix_kpriv, lines, order);
-    shellSortIntDigits(matrix_kcod, lines, order);
+    shellSortIntDigits(matrix_kpub, matrix_kpriv, matrix_kcod, lines, order);
 }
 
 void save_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){
