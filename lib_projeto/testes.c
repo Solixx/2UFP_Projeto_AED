@@ -9,13 +9,18 @@
 
 struct matrixString clienteString(struct matrixString mString);
 struct matrixInts clienteInt(struct matrixInts mInts);
-void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, struct matrixInts mInts);
+KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, struct matrixInts mInts);
+void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY_HOLDER *portaChaves);
 
 int main_test(){
 
     struct matrixString mString;
     struct matrixInts mInts;
     KEY_HOLDER *portaChaves = NULL;
+    UTILIZADORES *utilizador = NULL;
+    UTILIZADORES_QUEUE queue;
+    queue.head = NULL;
+    queue.tail = NULL;
 
     time_t t1;
     srand((unsigned ) time(&t1));
@@ -46,7 +51,9 @@ int main_test(){
     }
     */
 
-    //clienteKeyHolder(portaChaves, mString, mInts);
+    portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
+
+    clienteUtilizadores(utilizador, queue, portaChaves);
 
     freeMatrixChar(mString.matrixPub, mString.lines);
     freeMatrixChar(mString.matrixPriv, mString.lines);
@@ -78,7 +85,7 @@ struct matrixString clienteString(struct matrixString mString){
     char *publicKeyChar, *privKeyChar, *codKeyChar;
     char **privKeySearch = NULL;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
-    int lines = 16000, columns = 1;
+    int lines = 12, columns = 1;
 
     mString.lines = lines;
 
@@ -226,7 +233,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     char filename[] = "../data/chaves_publicas_ints.txt";
     unsigned long long pubKey = 0, privKey = 0, codKey = 0;
     short *allD = NULL, **privKeySearch = NULL;
-    int lines = 16000, columns = 1;
+    int lines = 12, columns = 1;
 
     mInts.lines = lines;
 
@@ -399,7 +406,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     return mInts;
 }
 
-void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, struct matrixInts mInts){
+KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, struct matrixInts mInts){
 
     char filename[] = "../data/portaChaves.txt";
     int stopPos = 1, keyHolderPos = 1;
@@ -431,4 +438,23 @@ void clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, stru
     load_txt_keyHolder(&portaChaves, mString, mInts, 3, 0, filename);
     print_keyHolders(&portaChaves);
     */
+
+    return portaChaves;
+}
+
+void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY_HOLDER *portaChaves){
+
+    create_utilizador(&queue, &utilizador, "Manuel", "m@gmail.com", portaChaves, 100);
+    create_utilizador(&queue, &utilizador, "Jose", "m@gmail.com", portaChaves, 2);
+    create_utilizador(&queue, &utilizador, "Ricardo", "m@gmail.com", portaChaves, 1);
+    create_utilizador(&queue, &utilizador, "Mario", "m@gmail.com", portaChaves, 2);
+    create_utilizador(&queue, &utilizador, "Nao sei", "m@gmail.com", portaChaves, 1);
+
+    print_utilizadores(&queue);
+
+    remover_utilizador(&queue, "Manuel");
+
+    print_utilizadores(&queue);
+
+    search_utilizador_by_name(&queue, "Ricardo");
 }

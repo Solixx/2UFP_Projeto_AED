@@ -2232,6 +2232,104 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
 }
 
 
+
+void create_utilizador(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
+    int stopKeyHolderPos = 1;
+    UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
+    utilizador->name = name;
+    utilizador->email = email;
+    KEY_HOLDER *currKeyHolder = key_holder_list;
+    while (stopKeyHolderPos < pos){
+        currKeyHolder = currKeyHolder->next;
+        stopKeyHolderPos++;
+        if (currKeyHolder == NULL){
+            printf("Porta Chaves nao encontrado\n");
+            return;
+        }
+    }
+    utilizador->key_holder_list = currKeyHolder;
+    utilizador->next = NULL;
+
+    if(*utilizadores == NULL){
+        *utilizadores = utilizador;
+        enqueue(queue, utilizador);
+        return;
+    }
+
+    UTILIZADORES *curr = *utilizadores;
+    while (curr->next != NULL){
+        curr = curr->next;
+    }
+    curr->next = utilizador;
+    enqueue(queue, curr->next);
+}
+
+void enqueue(UTILIZADORES_QUEUE* queue, UTILIZADORES* utilizador) {
+    if (queue->tail == NULL) {
+        queue->head = utilizador;
+        queue->tail = utilizador;
+    } else {
+        queue->tail->next = utilizador;
+        queue->tail = utilizador;
+    }
+}
+
+void print_utilizadores(UTILIZADORES_QUEUE* queue) {
+    UTILIZADORES* curr = queue->head;
+    printf("UTILIZADORES\n");
+    while (curr != NULL) {
+        printf("Name: %s\n", curr->name);
+        printf("Email: %s\n", curr->email);
+        print_keyHolders(&curr->key_holder_list);
+        curr = curr->next;
+    }
+}
+
+void remover_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
+    UTILIZADORES* curr = queue->head;
+    UTILIZADORES* previous = NULL;
+
+    while (curr != NULL && strcmp(curr->name, name) != 0) {
+        previous = curr;
+        curr = curr->next;
+    }
+
+    if (curr == NULL) {
+        printf("Utilizador Nao Encontrado\n");
+        return;
+    }
+
+    if (previous == NULL) {
+        queue->head = curr->next;
+    } else {
+        previous->next = curr->next;
+    }
+
+    if (curr->next == NULL) {
+        queue->tail = previous;
+    }
+
+    free(curr);
+}
+
+void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name) {
+    UTILIZADORES* curr = queue->head;
+
+    while (curr != NULL && strcmp(curr->name, name) != 0) {
+        curr = curr->next;
+    }
+
+    if (curr == NULL) {
+        printf("Utilizador Nao Econtrado\n");
+        return;
+    }
+
+    printf("Name: %s\n", curr->name);
+    printf("Email: %s\n", curr->email);
+    print_keyHolders(&curr->key_holder_list);
+}
+
+
 void freeMatrixChar(char **matrix, int N){
     for (int i = 0; i < N; ++i) {
         matrix[i] = NULL;

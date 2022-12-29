@@ -36,6 +36,18 @@ typedef struct KEY_HOLDER{
     struct KEY_HOLDER *next;
 } KEY_HOLDER;
 
+typedef struct UTILIZADORES {
+    char* name;
+    char* email;
+    KEY_HOLDER* key_holder_list;
+    struct UTILIZADORES* next;
+} UTILIZADORES;
+
+typedef struct UTILIZADORES_QUEUE {
+    UTILIZADORES* head;
+    UTILIZADORES* tail;
+} UTILIZADORES_QUEUE;
+
 int bipolar_number(char *text);
 
 void print_bipolar_numbers(int k);
@@ -105,6 +117,12 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsi
 void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, char filename[]);
 void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int newKeysPos, char filename[]);
 void print_keyHolders(KEY_HOLDER** portaChaves);
+
+void create_utilizador(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos);
+void enqueue(UTILIZADORES_QUEUE* queue, UTILIZADORES* utilizador);
+void print_utilizadores(UTILIZADORES_QUEUE* queue);
+void remover_utilizador(UTILIZADORES_QUEUE* queue, char* name);
+void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name);
 
 void freeMatrixChar(char **matrix, int N);
 void freeMatrixShort(short **matrix, int N);
