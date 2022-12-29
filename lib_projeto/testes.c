@@ -29,8 +29,8 @@ int main_test(){
     double execution_time;
     start = clock();
 
-    mString = clienteString(mString);
-    //mInts = clienteInt(mInts);
+    //mString = clienteString(mString);
+    mInts = clienteInt(mInts);
 
     end = clock();
     execution_time = ((double)(end - start))/CLOCKS_PER_SEC;
@@ -215,6 +215,9 @@ struct matrixString clienteString(struct matrixString mString){
         if(mString.matrixCod[i]) printf("Cod - %s\n", mString.matrixCod[i]);
     }
 
+    privKeyLong = private_key_from_runlength_char(atoll(mString.matrixCod[11]));
+
+    printf("Priv: %llu (RunLength: %llu)\n", privKeyLong, atoll(mString.matrixCod[11]));
 
     /*
     privKeySearch = search_private_keys_char(mString.matrixPub, mString.matrixPriv, lines, 1);
@@ -368,7 +371,6 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     //sort_all_matrices_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
     //list_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
 
-    /*
     for (int i = 0; i < lines; ++i) {
         if(mInts.matrixPub[i]){
             int j = 0;
@@ -399,7 +401,10 @@ struct matrixInts clienteInt(struct matrixInts mInts){
         }
     }
     printf("\n");
-    */
+
+    privKey = private_key_from_runlength_int(key_digits_2_long_int(mInts.matrixCod[11]));
+
+    printf("Priv: %llu (RunLength: %llu)\n", privKey, key_digits_2_long_int(mInts.matrixCod[11]));
 
     //save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 

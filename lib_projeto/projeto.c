@@ -921,25 +921,31 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
     //Se privKey maior ou igual que 10 vai calcular a sua run Length
     if(privkey >= 10){
         allDigitsLong(privkey, allD);
-        runLess[runLessPos] = 1;
-        runLess[runLessPos+1] = allD[digits-1];
+        runLess[runLessPos+1] = 1;
+        runLess[runLessPos] = allD[digits-1];
         for (int i = digits-1; i > 0; i--) {
             if(allD[i] != allD[i-1]){
                 runLessPos += 2;
-                runLess[runLessPos+1] = allD[i-1];
+                runLess[runLessPos] = allD[i-1];
             }
-            runLess[runLessPos]++;
+            runLess[runLessPos+1]++;
         }
-        for (int i = 0; i < 4; i++) {
-            if ( i == 0){
-                codKey = runLess[i];
+        for (int i = 1; i <= 4; i++) {
+            if ( i == 1){
+                codKey = runLess[i-1];
             } else{
-                for (int j = 0; j < numDigitsLong(runLess[i]); ++j) {
-                    pow *= 10;
+                if(i%2 == 0){
+                    codKey *= 100;
+                    codKey += runLess[i-1];
+                    pow = 1;
+                } else{
+                    for (int j = 0; j < numDigitsLong(runLess[i-1]); ++j) {
+                        pow *= 10;
+                    }
+                    codKey *= pow;
+                    codKey += runLess[i-1];
+                    pow = 1;
                 }
-                codKey *= pow;
-                codKey += runLess[i];
-                pow = 1;
             }
         }
         return codKey;
@@ -950,7 +956,31 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
 }
 
 
-unsigned long long private_key_from_runlength_char(unsigned long long runlengthkey){} //TODO como descobrir a chave privada com a chave cod quando o numero de digitos da cod é maior que 4
+unsigned long long private_key_from_runlength_char(unsigned long long runlengthkey){
+
+    unsigned long long privKey = 0;
+    short *allDigits, freq = 0, pow = 1;
+    allDigits = key_long_2_digits_int(runlengthkey);
+
+    privKey = allDigits[0];
+    freq = allDigits[1] * 10;
+    freq += allDigits[2];
+    for (int i = 1; i < freq; ++i) {
+        privKey *= 10;
+        privKey += allDigits[0];
+    }
+
+    privKey *= 10;
+    privKey += allDigits[3];
+    freq = allDigits[4] * 10;
+    freq += allDigits[5];
+    for (int i = 1; i < freq; ++i) {
+        privKey *= 10;
+        privKey += allDigits[3];
+    }
+
+    return privKey;
+}
 
 
 char** alloc_matrix_char(int nlines, int ncolumns){
@@ -1408,25 +1438,31 @@ unsigned long long calc_runlength_int(unsigned long long privkey){
     }
     if(privkey >= 10){
         allDigitsLong(privkey, allD);
-        runLess[runLessPos] = 1;
-        runLess[runLessPos+1] = allD[digits-1];
+        runLess[runLessPos+1] = 1;
+        runLess[runLessPos] = allD[digits-1];
         for (int i = digits-1; i > 0; i--) {
             if(allD[i] != allD[i-1]){
                 runLessPos += 2;
-                runLess[runLessPos+1] = allD[i-1];
+                runLess[runLessPos] = allD[i-1];
             }
-            runLess[runLessPos]++;
+            runLess[runLessPos+1]++;
         }
-        for (int i = 0; i < 4; i++) {
-            if ( i == 0){
-                codKey = runLess[i];
+        for (int i = 1; i <= 4; i++) {
+            if ( i == 1){
+                codKey = runLess[i-1];
             } else{
-                for (int j = 0; j < numDigitsLong(runLess[i]); ++j) {
-                    pow *= 10;
+                if(i%2 == 0){
+                    codKey *= 100;
+                    codKey += runLess[i-1];
+                    pow = 1;
+                } else {
+                    for (int j = 0; j < numDigitsLong(runLess[i-1]); ++j) {
+                        pow *= 10;
+                    }
+                    codKey *= pow;
+                    codKey += runLess[i-1];
+                    pow = 1;
                 }
-                codKey *= pow;
-                codKey += runLess[i];
-                pow = 1;
             }
         }
         return codKey;
@@ -1436,7 +1472,31 @@ unsigned long long calc_runlength_int(unsigned long long privkey){
     }
 }
 
-unsigned long long private_key_from_runlength_int(unsigned long long runlengthkey); //TODO como descobrir a chave privada com a chave cod quando o numero de digitos da cod é maior que 4
+unsigned long long private_key_from_runlength_int(unsigned long long runlengthkey){
+
+    unsigned long long privKey = 0;
+    short *allDigits, freq = 0, pow = 1;
+    allDigits = key_long_2_digits_int(runlengthkey);
+
+    privKey = allDigits[0];
+    freq = allDigits[1] * 10;
+    freq += allDigits[2];
+    for (int i = 1; i < freq; ++i) {
+        privKey *= 10;
+        privKey += allDigits[0];
+    }
+
+    privKey *= 10;
+    privKey += allDigits[3];
+    freq = allDigits[4] * 10;
+    freq += allDigits[5];
+    for (int i = 1; i < freq; ++i) {
+        privKey *= 10;
+        privKey += allDigits[3];
+    }
+
+    return privKey;
+}
 
 short** alloc_matrix_int(int nlines, int ncolumns){
     short **matrix;
