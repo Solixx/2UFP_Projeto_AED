@@ -1140,10 +1140,12 @@ char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lin
             }
             if(k == strlen(partialPubKeyChar)){
                 sizeResult++;
-                result = (char **) realloc(result, sizeResult * sizeof (char *));
+                result = (char **) realloc(result, (sizeResult+1) * sizeof (char *));
                 val = get_private_key_char(matrix_kpub, matrix_kpriv, lines, atoll(matrix_kpub[i]));
                 result[posResult] = (char *) malloc(numDigitsLong(val) * sizeof (char));
                 sprintf(result[posResult], "%llu", val);
+                result[posResult+1] = (char *) malloc(2 * sizeof (char));
+                result[posResult+1] = "-1";
                 posResult++;
             }
         }
@@ -1646,7 +1648,7 @@ short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int l
             }
             if(k == numDigitsLong(partialpubkey)){
                 sizeResult++;
-                result = (short **) realloc(result, sizeResult * sizeof (short *));
+                result = (short **) realloc(result, (sizeResult+1) * sizeof (short *));
                 val = get_private_key_int(matrix_kpub, matrix_kpriv, lines, key_digits_2_long_int(matrix_kpub[i]));
                 valArray = (short *) malloc(numDigitsLong(val) * sizeof (short));
                 valArray = key_long_2_digits_int(val);
@@ -1654,6 +1656,8 @@ short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int l
                 for (int l = 0; l <= numDigitsLong(val); ++l) {
                     result[posResult][l] = valArray[l];
                 }
+                result[posResult+1] = (short *) malloc(1 * sizeof (short));
+                result[posResult+1][0] = -1;
                 posResult++;
             }
         }
