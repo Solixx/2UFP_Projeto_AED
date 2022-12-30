@@ -30,7 +30,7 @@ int main_test(){
     start = clock();
 
     mString = clienteString(mString);
-    //mInts = clienteInt(mInts);
+    mInts = clienteInt(mInts);
 
     end = clock();
     execution_time = ((double)(end - start))/CLOCKS_PER_SEC;
@@ -51,7 +51,7 @@ int main_test(){
     }
     */
 
-    //portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
+    portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
 
     //clienteUtilizadores(utilizador, queue, portaChaves);
 
@@ -205,25 +205,30 @@ struct matrixString clienteString(struct matrixString mString){
 
     //load_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
 
-
+    /*
     for (int i = 0; i < lines; ++i) {
         if(mString.matrixPub[i]) printf("Pub - %s\n", mString.matrixPub[i]);
         if(mString.matrixPriv[i]) printf("Priv - %s\n", mString.matrixPriv[i]);
         if(mString.matrixCod[i]) printf("Cod - %s\n", mString.matrixCod[i]);
     }
+     */
 
+    /*
     privKeyLong = private_key_from_runlength_char(atoll(mString.matrixCod[11]));
 
     printf("Priv: %llu (RunLength: %llu)\n", privKeyLong, atoll(mString.matrixCod[11]));
+    */
 
-
+    /*
     privKeySearch = search_private_keys_char(mString.matrixPub, mString.matrixPriv, lines, 1);
     int p = 0;
     while (strcmp(privKeySearch[p], "-1") != 0){
         printf("Privs Encontradas - %s\n", privKeySearch[p]);
         p++;
     }
+     */
 
+    /*
     printf("Delete a - %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, "1"));
 
     for (int i = 0; i < lines; ++i) {
@@ -231,6 +236,7 @@ struct matrixString clienteString(struct matrixString mString){
         if(mString.matrixPriv[i]) printf("Priv - %s\n", mString.matrixPriv[i]);
         if(mString.matrixCod[i]) printf("Cod - %s\n", mString.matrixCod[i]);
     }
+    */
 
     return mString;
 }
@@ -356,7 +362,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     printf("\n");
     */
 
-
+    /*
     privKeySearch = search_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines, 2);
 
     int p = 0;
@@ -365,7 +371,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
         printf("\n");
         p++;
     }
-
+    */
 
     //load_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 
@@ -373,6 +379,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     //sort_all_matrices_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
     //list_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
 
+    /*
     for (int i = 0; i < lines; ++i) {
         if(mInts.matrixPub[i]){
             int j = 0;
@@ -403,7 +410,9 @@ struct matrixInts clienteInt(struct matrixInts mInts){
         }
     }
     printf("\n");
+    */
 
+    /*
     privKey = private_key_from_runlength_int(key_digits_2_long_int(mInts.matrixCod[11]));
 
     printf("Priv: %llu (RunLength: %llu)\n", privKey, key_digits_2_long_int(mInts.matrixCod[11]));
@@ -441,6 +450,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
         }
     }
     printf("\n");
+     */
 
     //save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 
@@ -453,23 +463,26 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
     int stopPos = 1, keyHolderPos = 1;
     insert_keyHolder(&portaChaves, mString, mInts, 0);
     insert_keyHolder(&portaChaves, mString, mInts, 5);
+    insert_keyHolder(&portaChaves, mString, mInts, 11);
+    insert_keyHolder(&portaChaves, mString, mInts, 2);
+    insert_keyHolder(&portaChaves, mString, mInts, 1);
     print_keyHolders(&portaChaves);
 
-    searchSingleKey_inKeyHolder(portaChaves, 2, 0, 2);
+    //searchSingleKey_inKeyHolder(portaChaves, 2, 0, 2);
 
-    edit_keyHolder(&portaChaves, mString, mInts, 2, 4, 3);
+    //edit_keyHolder(&portaChaves, mString, mInts, 2, 4, 3);
     //edit_keyHolder(&portaChaves, mString, mInts, 1, 0, 2);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
 
-    print_keyHolders(&portaChaves);
+    //print_keyHolders(&portaChaves);
 
     /*
     save_txt_keyHolder(&portaChaves, mString, mInts, 1, filename);
     save_txt_keyHolder(&portaChaves, mString, mInts, 2, filename);
     */
 
-    remove_keyHolder(&portaChaves, 3);
+    remove_keyHolder(&portaChaves, 2);
 
     print_keyHolders(&portaChaves);
 
