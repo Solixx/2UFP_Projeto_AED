@@ -141,9 +141,6 @@ struct matrixString clienteString(struct matrixString mString){
     printf("\n");
     */
 
-    //printf("Delete a - %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, mString.matrixPub[0]));
-
-
     //printf("Exist - %d\n", exists_key_char(mString.matrixPub, 5, 2014));
     //printf("Exist - %d\n", exists_key_char(mString.matrixPub, 5, publicKeyLong));
 
@@ -225,6 +222,14 @@ struct matrixString clienteString(struct matrixString mString){
     while (strcmp(privKeySearch[p], "-1") != 0){
         printf("Privs Encontradas - %s\n", privKeySearch[p]);
         p++;
+    }
+
+    printf("Delete a - %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, "1"));
+
+    for (int i = 0; i < lines; ++i) {
+        if(mString.matrixPub[i]) printf("Pub - %s\n", mString.matrixPub[i]);
+        if(mString.matrixPriv[i]) printf("Priv - %s\n", mString.matrixPriv[i]);
+        if(mString.matrixCod[i]) printf("Cod - %s\n", mString.matrixCod[i]);
     }
 
     return mString;
@@ -313,7 +318,6 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     //printf("PrivKey da PubKey - %llu\n", get_private_key_int(mInts.matrixPub, mInts.matrixPriv, lines, pubKey));
     //printf("CodKey da PrivKey - %llu\n", get_runlength_int(mInts.matrixPriv, mInts.matrixCod, lines, privKey));
 
-    //printf("PubKey Apagada - %llu\n", delete_key_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, pubKey));
     //printf("PubKey Apagada - %llu\n", delete_key_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 2));
     bulk_populate_public_keys_int(mInts.matrixPub, lines);
     bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines);
@@ -403,6 +407,40 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     privKey = private_key_from_runlength_int(key_digits_2_long_int(mInts.matrixCod[11]));
 
     printf("Priv: %llu (RunLength: %llu)\n", privKey, key_digits_2_long_int(mInts.matrixCod[11]));
+
+    printf("PubKey Apagada - %llu\n", delete_key_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines,
+                                                     key_digits_2_long_int(mInts.matrixPub[1])));
+
+    for (int i = 0; i < lines; ++i) {
+        if(mInts.matrixPub[i]){
+            int j = 0;
+            printf("Pub - ");
+            while (mInts.matrixPub[i][j] != -1){
+                printf("%hi", mInts.matrixPub[i][j]);
+                j++;
+            }
+            printf("\n");
+        }
+        if(mInts.matrixPriv[i]){
+            int j = 0;
+            printf("Priv - ");
+            while (mInts.matrixPriv[i][j] != -1){
+                printf("%hi", mInts.matrixPriv[i][j]);
+                j++;
+            }
+            printf("\n");
+        }
+        if(mInts.matrixCod[i]){
+            int j = 0;
+            printf("Cod - ");
+            while (mInts.matrixCod[i][j] != -1){
+                printf("%hi", mInts.matrixCod[i][j]);
+                j++;
+            }
+            printf("\n");
+        }
+    }
+    printf("\n");
 
     //save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 

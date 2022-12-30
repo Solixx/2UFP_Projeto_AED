@@ -1057,9 +1057,11 @@ unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, i
 
 
 unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char* pubkey){
+    int exist = 0;
     for (int i = 0; i < lines; ++i) {
         if(!matrix_kpub[i] || matrix_kpub[i][0] == '\0') continue;
         if(strcmp(matrix_kpub[i], pubkey) == 0){
+            exist = 1;
             for (int j = i; j < lines; ++j) {
                 if(j == lines-1){
                     matrix_kpub[lines-1] = NULL;
@@ -1077,6 +1079,10 @@ unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char
             }
             lines--;
         }
+    }
+    if(exist == 0){
+        printf("Chave Nao Encontrada\n");
+        return 0;
     }
     return atoll(pubkey);
 }
@@ -1570,9 +1576,11 @@ unsigned long long get_runlength_int(short **matrix_kpriv, short **matrix_kcod, 
 }
 
 unsigned long long delete_key_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, short pubkey){
+    int exist = 0;
     for (int i = 0; i < lines; ++i) {
         if(!matrix_kpub[i] || matrix_kpub[i][0] == 0) continue;
         if(key_digits_2_long_int(matrix_kpub[i]) == pubkey){
+            exist = 1;
             for (int j = i; j < lines; ++j) {
                 if(j == lines-1){
                     matrix_kpub[j] = NULL;
@@ -1589,6 +1597,10 @@ unsigned long long delete_key_int(short **matrix_kpub, short **matrix_kpriv, sho
             }
             lines--;
         }
+    }
+    if(exist == 0){
+        printf("Chave Nao Encontrada\n");
+        return 0;
     }
     return pubkey;
 }
