@@ -13,6 +13,7 @@
 #include <time.h>
 
 #define FIRST_NUMBER '0'
+#define MAX_NAME_LEN 256
 
 struct matrixString{
     char **matrixPub;

@@ -511,7 +511,7 @@ void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY
 
     //print_utilizadores(&queue);
 
-    //search_utilizador_by_name(&queue, "Ricardo");
+    search_utilizador_by_name(&queue, "Manuel");
 
     //print_utilizadores(&queue);
 }

@@ -2442,21 +2442,33 @@ void remover_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
 }
 
 void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name) {
+    int exist = 0;
+    char nomeMinisculas[MAX_NAME_LEN];
+    char nomeUtilMinusculas[MAX_NAME_LEN];
     UTILIZADORES* curr = queue->head;
 
-    while (curr != NULL && strcmp(curr->name, name) != 0) {
+    for (int i = 0; i < strlen(name); ++i) {
+        nomeMinisculas[i] = tolower(name[i]);
+    }
+    nomeMinisculas[strlen(name)] = '\0';
+    while (curr != NULL) {
+        for (int i = 0; i < strlen(curr->name); ++i) {
+            nomeUtilMinusculas[i] = tolower(curr->name[i]);
+        }
+        nomeUtilMinusculas[strlen(curr->name)] = '\0';
+        if (strstr(nomeUtilMinusculas, nomeMinisculas) != NULL) {
+            exist = 1;
+            printf("Name: %s\n", curr->name);
+            printf("Email: %s\n", curr->email);
+            print_keyHolders(&curr->key_holder_list);
+        }
         curr = curr->next;
     }
-
-    if (curr == NULL) {
+    if(exist == 0){
         printf("Utilizador Nao Econtrado\n");
-        return;
     }
-
-    printf("Name: %s\n", curr->name);
-    printf("Email: %s\n", curr->email);
-    print_keyHolders(&curr->key_holder_list);
 }
+
 
 void freeMatrixChar(char **matrix, int N){
     for (int i = 0; i < N; ++i) {
