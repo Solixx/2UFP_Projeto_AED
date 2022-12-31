@@ -46,6 +46,7 @@ typedef struct UTILIZADORES {
 typedef struct UTILIZADORES_QUEUE {
     UTILIZADORES* head;
     UTILIZADORES* tail;
+    int size;
 } UTILIZADORES_QUEUE;
 
 int bipolar_number(char *text);
@@ -96,6 +97,7 @@ void receiveMatrixCodInt(struct matrixString mString, struct matrixInts mInts, i
 void randomKey(FILE *fileChavesPubWrite, char *fileName, int n);
 char** randomKeyMatrix(char** r, int n);
 char* randomKeyValue(char* r);
+int charPos(char *a, int d);
 
 struct matrixString removeKey(struct matrixString mString, char *key, int lines);
 

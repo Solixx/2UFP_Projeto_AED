@@ -21,6 +21,7 @@ int main_test(){
     UTILIZADORES_QUEUE queue;
     queue.head = NULL;
     queue.tail = NULL;
+    queue.size = 0;
 
     time_t t1;
     srand((unsigned ) time(&t1));
@@ -53,7 +54,7 @@ int main_test(){
 
     portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
 
-    //clienteUtilizadores(utilizador, queue, portaChaves);
+    clienteUtilizadores(utilizador, queue, portaChaves);
 
     freeMatrixChar(mString.matrixPub, mString.lines);
     freeMatrixChar(mString.matrixPriv, mString.lines);
@@ -466,7 +467,7 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
     insert_keyHolder(&portaChaves, mString, mInts, 11);
     insert_keyHolder(&portaChaves, mString, mInts, 2);
     insert_keyHolder(&portaChaves, mString, mInts, 1);
-    print_keyHolders(&portaChaves);
+    //print_keyHolders(&portaChaves);
 
     //searchSingleKey_inKeyHolder(portaChaves, 2, 0, 2);
 
@@ -484,7 +485,7 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
 
     remove_keyHolder(&portaChaves, 2);
 
-    print_keyHolders(&portaChaves);
+    //print_keyHolders(&portaChaves);
 
     /*
     printf("Do ficheiro de texto\n");
@@ -498,17 +499,19 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
 
 void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY_HOLDER *portaChaves){
 
-    create_utilizador(&queue, &utilizador, "Manuel", "m@gmail.com", portaChaves, 100);
-    create_utilizador(&queue, &utilizador, "Jose", "m@gmail.com", portaChaves, 2);
+    create_utilizador(&queue, &utilizador, "Manuel", "m@gmail.com", portaChaves, 0);
+    create_utilizador(&queue, &utilizador, "Z", "m@gmail.com", portaChaves, 2);
     create_utilizador(&queue, &utilizador, "Ricardo", "m@gmail.com", portaChaves, 1);
     create_utilizador(&queue, &utilizador, "Mario", "m@gmail.com", portaChaves, 2);
-    create_utilizador(&queue, &utilizador, "Nao sei", "m@gmail.com", portaChaves, 1);
-
+    create_utilizador(&queue, &utilizador, "A", "m@gmail.com", portaChaves, 1);
     print_utilizadores(&queue);
 
-    remover_utilizador(&queue, "Manuel");
+    //remover_utilizador(&queue, "Manuel");
+    //aux = realloc(aux, queue.size * sizeof (UTILIZADORES*));
 
-    print_utilizadores(&queue);
+    //print_utilizadores(&queue);
 
-    search_utilizador_by_name(&queue, "Ricardo");
+    //search_utilizador_by_name(&queue, "Ricardo");
+
+    //print_utilizadores(&queue);
 }

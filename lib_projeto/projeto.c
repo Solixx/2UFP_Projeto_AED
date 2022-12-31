@@ -2334,12 +2334,13 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
     }
 }
 
-
-
 void create_utilizador(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
     int stopKeyHolderPos = 1;
     UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
-    utilizador->name = name;
+    utilizador->name = malloc(sizeof (char) * (strlen(name) + 1));
+    strcpy(utilizador->name, name);
+    utilizador->email = malloc(sizeof (char) * (strlen(email) + 1));
+    strcpy(utilizador->email, email);
     utilizador->email = email;
     KEY_HOLDER *currKeyHolder = key_holder_list;
     while (stopKeyHolderPos < pos){
@@ -2355,16 +2356,40 @@ void create_utilizador(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, c
 
     if(*utilizadores == NULL){
         *utilizadores = utilizador;
+        queue->size++;
         enqueue(queue, utilizador);
         return;
     }
 
+    /*
     UTILIZADORES *curr = *utilizadores;
     while (curr->next != NULL){
         curr = curr->next;
     }
     curr->next = utilizador;
-    enqueue(queue, curr->next);
+    queue->size++;
+    enqueue(queue, utilizador->next);
+    */
+
+    UTILIZADORES *curr = *utilizadores;
+    UTILIZADORES *prev = NULL;
+
+    while (curr != NULL && strcmp(curr->name, name) < 0) {
+        prev = curr;
+        curr = curr->next;
+    }
+
+    if (prev == NULL) {
+        utilizador->next = *utilizadores;
+        *utilizadores = utilizador;
+        queue->head = utilizador;
+    } else {
+        utilizador->next = prev->next;
+        prev->next = utilizador;
+    }
+
+    queue->size++;
+
 }
 
 void enqueue(UTILIZADORES_QUEUE* queue, UTILIZADORES* utilizador) {
@@ -2412,6 +2437,7 @@ void remover_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
         queue->tail = previous;
     }
 
+    queue->size--;
     free(curr);
 }
 
@@ -2432,7 +2458,6 @@ void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name) {
     print_keyHolders(&curr->key_holder_list);
 }
 
-
 void freeMatrixChar(char **matrix, int N){
     for (int i = 0; i < N; ++i) {
         matrix[i] = NULL;
@@ -2446,4 +2471,9 @@ void freeMatrixShort(short **matrix, int N){
             free(matrix[i]);
         }
     }
+}
+
+int charPos(char *a, int d){
+    if(d < strlen(a)) return a[d];
+    else return -1;
 }
