@@ -985,20 +985,20 @@ unsigned long long private_key_from_runlength_char(unsigned long long runlengthk
 
 char** alloc_matrix_char(int nlines, int ncolumns){
     char **matrix;
-    matrix = (char **) calloc(nlines, sizeof (char *));
+    matrix = (char **) calloc(nlines * sizeof (char *), sizeof (char *));
     for (int i = 0; i < nlines; ++i) {
-        matrix[i] = (char *) calloc(ncolumns, sizeof (char));
+        matrix[i] = (char *) calloc(ncolumns * sizeof (char), sizeof (char));
     }
     return matrix;
 }
 
 
 void store_key_char(char **matrix, int lines, unsigned long long key){
-    char *keyChar = malloc(numDigitsLong(key) * sizeof (char));
+    char *keyChar = (char *) calloc((numDigitsLong(key)+1) * sizeof (char), sizeof (char));
     sprintf(keyChar, "%llu", key);
     for (int i = 0; i < lines; ++i) {
         if(!matrix[i][0]){
-            //matrix[i] = (char *) realloc(matrix[i], strlen(keyChar) * sizeof (char));
+            matrix[i] = (char *) calloc(strlen(keyChar)+1, sizeof (char));
             matrix[i] = keyChar;
             break;
         }
@@ -1088,17 +1088,19 @@ unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char
 }
 
 void bulk_populate_public_keys_char(char **matrix_kpub, int lines){
-    char* r = NULL;
+    unsigned long long r;
     matrix_kpub = (char **) realloc(matrix_kpub, lines * sizeof (char*));
     for (int i = 0; i < lines; ++i) {
         if(!matrix_kpub[i] || matrix_kpub[i][0] == '\0'){
-            r = randomKeyValue(matrix_kpub[i]);
-            matrix_kpub[i] = (char *) calloc(strlen(r), sizeof (char));
-            store_key_char(matrix_kpub, lines, atoll(r));
+            r = new_public_key_int();
+            char* rString = malloc(numDigitsLong(r)+1 * sizeof (char));
+            sprintf(rString, "%llu", r);
+            matrix_kpub[i] = (char *) calloc(strlen(rString)+1, sizeof (char));
+            store_key_char(matrix_kpub, lines, r);
             //matrix_kpub[i] = randomKeyValue(matrix_kpub[i]);
+            rString=NULL;
+            free(rString);
         }
-        r=NULL;
-        free(r);
     }
 }
 
@@ -1108,7 +1110,7 @@ void bulk_compute_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int
     for (int i = 0; i < lines; ++i) {
         if(!matrix_kpriv[i] || matrix_kpriv[i][0] == '\0'){
             val = calc_private_key_char(atoll(matrix_kpub[i]));
-            matrix_kpriv[i] = (char *) calloc(numDigitsLong(val), sizeof (char));
+            matrix_kpriv[i] = (char *) calloc(numDigitsLong(val)+1, sizeof (char));
             store_key_char(matrix_kpriv, lines, val);
         }
     }
@@ -1120,7 +1122,7 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
     for (int i = 0; i < lines; ++i) {
         if(!matrix_kcod[i] || matrix_kcod[i][0] == '\0'){
             val = calc_runlength_char(atoll(matrix_kpriv[i]));
-            matrix_kcod[i] = (char *) calloc(numDigitsLong(val), sizeof (char));
+            matrix_kcod[i] = (char *) calloc(numDigitsLong(val)+1, sizeof (char));
             store_key_char(matrix_kcod, lines, val);
         }
     }

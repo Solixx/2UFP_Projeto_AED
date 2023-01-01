@@ -52,9 +52,9 @@ int main_test(){
     }
     */
 
-    portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
+    //portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
 
-    clienteUtilizadores(utilizador, queue, portaChaves);
+    //clienteUtilizadores(utilizador, queue, portaChaves);
 
     freeMatrixChar(mString.matrixPub, mString.lines);
     freeMatrixChar(mString.matrixPriv, mString.lines);
@@ -86,9 +86,10 @@ struct matrixString clienteString(struct matrixString mString){
     char *publicKeyChar, *privKeyChar, *codKeyChar;
     char **privKeySearch = NULL;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
-    int lines = 12, columns = 1;
+    int lines = 3, columns = 1;
 
     mString.lines = lines;
+
 
     privKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
     codKeyChar = (char *) malloc(numDigitsLong(key) * sizeof (char));
@@ -198,6 +199,13 @@ struct matrixString clienteString(struct matrixString mString){
     }
     */
 
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(mString.matrixPub[i], "\0") != 0) printf("Pub - %s\n", mString.matrixPub[i]);
+        if(strcmp(mString.matrixPriv[i], "\0") != 0) printf("Priv - %s\n", mString.matrixPriv[i]);
+        if(strcmp(mString.matrixCod[i], "\0") != 0) printf("Cod - %s\n", mString.matrixCod[i]);
+    }
+    printf("\n");
+
     //sort_matrix_char(mString.matrixPub, lines, 1);
     //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
     //list_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
@@ -247,7 +255,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     char filename[] = "../data/chaves_publicas_ints.txt";
     unsigned long long pubKey = 0, privKey = 0, codKey = 0;
     short *allD = NULL, **privKeySearch = NULL;
-    int lines = 12, columns = 1;
+    int lines = 3, columns = 1;
 
     mInts.lines = lines;
 
@@ -330,7 +338,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     bulk_compute_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines);
     bulk_compute_runlengths_int(mInts.matrixPriv, mInts.matrixCod, lines);
 
-    /*
+
     for (int i = 0; i < lines; ++i) {
         if(mInts.matrixPub[i]){
             int j = 0;
@@ -361,7 +369,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
         }
     }
     printf("\n");
-    */
+
 
     /*
     privKeySearch = search_private_keys_int(mInts.matrixPub, mInts.matrixPriv, lines, 2);
