@@ -86,10 +86,9 @@ struct matrixString clienteString(struct matrixString mString){
     char *publicKeyChar, *privKeyChar, *codKeyChar;
     char **privKeySearch = NULL;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
-    int lines = 3, columns = 1;
+    int lines = 4, columns = 1;
 
-    mString.lines = lines;
-
+    mString.lines = 0;
 
     printf("Matriz Strings\n");
 
@@ -117,7 +116,7 @@ struct matrixString clienteString(struct matrixString mString){
     store_key_char(mString.matrixPriv, lines, privKeyLong);
     store_key_char(mString.matrixCod, lines, codKeyLong);
 
-    /*
+
     publicKeyChar = key_long_2_digits_char(2014);
     //printf("PubChar - %s\n", publicKeyChar);
     publicKeyLong = key_digits_2_long_char(publicKeyChar);
@@ -135,7 +134,7 @@ struct matrixString clienteString(struct matrixString mString){
     store_key_char(mString.matrixPriv, lines, privKeyLong);
     store_key_char(mString.matrixCod, lines, codKeyLong);
 
-    */
+
     /*
     for (int i = 0; i < lines; ++i) {
         if(strcmp(mString.matrixPub[i], "\0") != 0) printf("Pub - %s\n", mString.matrixPub[i]);
@@ -147,16 +146,14 @@ struct matrixString clienteString(struct matrixString mString){
 
     //printf("Chave Publica Apagada %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, "230"));
 
-    //privKeySearch = search_private_keys_char(mString.matrixPub, mString.matrixPriv, lines, 4);
-    //printf("As priv encontradas foram %s\n", privKeySearch[0]);
-
     /*
-    int j = 0;
-    while (strcmp(privKeySearch[j], "\0") != 0){
-        printf("Priv Encontrada - %s\n", privKeySearch[j]);
-        j++;
+    privKeySearch = search_private_keys_char(mString.matrixPub, mString.matrixPriv, lines, 4);
+    int k = 0;
+    while (strcmp(privKeySearch[k], "-1") != 0){
+        printf("As priv encontradas foram %s\n", privKeySearch[k]);
+        k++;
     }
-     */
+    */
 
     /*
     for (int i = 0; i < lines; ++i) {
@@ -192,18 +189,18 @@ struct matrixString clienteString(struct matrixString mString){
     }
     */
 
-    for (int i = 0; i < lines; ++i) {
-        if(strcmp(mString.matrixPub[i], "\0") != 0) printf("Pub - %s\n", mString.matrixPub[i]);
-        if(strcmp(mString.matrixPriv[i], "\0") != 0) printf("Priv - %s\n", mString.matrixPriv[i]);
-        if(strcmp(mString.matrixCod[i], "\0") != 0) printf("Cod - %s\n", mString.matrixCod[i]);
+    for (int i = 0; i < lines+1; ++i) {
+        printf("Pub - %s\n", mString.matrixPub[i]);
+        printf("Priv - %s\n", mString.matrixPriv[i]);
+        printf("Cod - %s\n", mString.matrixCod[i]);
     }
     printf("\n");
 
-    //printf("A Chave Privada e - %llu\n", get_private_key_char(mString.matrixPub, mString.matrixPriv, lines, atoll(mString.matrixPub[1])));
-    //printf("A Chave Codificada e - %llu\n", get_runlength_char(mString.matrixPriv, mString.matrixCod, lines, atoll(mString.matrixPriv[1])));
+    //printf("A Chave Privada e - %llu\n", get_private_key_char(mString.matrixPub, mString.matrixPriv, lines, atoll(mString.matrixPub[3])));
+    //printf("A Chave Codificada e - %llu\n", get_runlength_char(mString.matrixPriv, mString.matrixCod, lines, atoll(mString.matrixPriv[3])));
 
     //printf("Exist - %d\n", exists_key_char(mString.matrixPub, lines, 2014));
-    //printf("Exist - %d\n", exists_key_char(mString.matrixPub, lines, publicKeyLong));
+    //printf("Exist - %d\n", exists_key_char(mString.matrixPub, lines, atoll(mString.matrixPub[3])));
 
     //sort_matrix_char(mString.matrixPub, lines, 1);
     //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
@@ -214,18 +211,18 @@ struct matrixString clienteString(struct matrixString mString){
     //load_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
 
     /*
-    for (int i = 0; i < lines; ++i) {
-        if(mString.matrixPub[i]) printf("Pub - %s\n", mString.matrixPub[i]);
-        if(mString.matrixPriv[i]) printf("Priv - %s\n", mString.matrixPriv[i]);
-        if(mString.matrixCod[i]) printf("Cod - %s\n", mString.matrixCod[i]);
+    for (int i = 0; i < lines+1; ++i) {
+        printf("Pub - %s\n", mString.matrixPub[i]);
+        printf("Priv - %s\n", mString.matrixPriv[i]);
+        printf("Cod - %s\n", mString.matrixCod[i]);
     }
     printf("\n");
     */
 
     /*
-    privKeyLong = private_key_from_runlength_char(atoll(mString.matrixCod[2]));
+    privKeyLong = private_key_from_runlength_char(atoll(mString.matrixCod[1]));
 
-    printf("Priv: %llu (RunLength: %llu)\n", privKeyLong, atoll(mString.matrixCod[2]));
+    printf("Priv: %llu (RunLength: %llu)\n", privKeyLong, atoll(mString.matrixCod[1]));
     */
 
     /*
@@ -241,12 +238,18 @@ struct matrixString clienteString(struct matrixString mString){
     printf("Delete a - %llu\n", delete_key_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, "230"));
 
     for (int i = 0; i < lines; ++i) {
-        if(mString.matrixPub[i]) printf("Pub - %s\n", mString.matrixPub[i]);
-        if(mString.matrixPriv[i]) printf("Priv - %s\n", mString.matrixPriv[i]);
-        if(mString.matrixCod[i]) printf("Cod - %s\n", mString.matrixCod[i]);
+        printf("Pub - %s\n", mString.matrixPub[i]);
+        printf("Priv - %s\n", mString.matrixPriv[i]);
+        printf("Cod - %s\n", mString.matrixCod[i]);
     }
     printf("\n");
     */
+
+    int k = 0;
+    while (strcmp(mString.matrixPub[k], "-1") != 0){
+        mString.lines++;
+        k++;
+    }
 
     return mString;
 }
@@ -471,28 +474,29 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 
 KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mString, struct matrixInts mInts){
 
+    printf("Porta Chaves\n");
+
     char filename[] = "../data/portaChaves.txt";
     int stopPos = 1, keyHolderPos = 1;
     insert_keyHolder(&portaChaves, mString, mInts, 0);
+    insert_keyHolder(&portaChaves, mString, mInts, 1);
     insert_keyHolder(&portaChaves, mString, mInts, 2);
-    //print_keyHolders(&portaChaves);
+    print_keyHolders(&portaChaves);
 
-    searchSingleKey_inKeyHolder(portaChaves, 2, 0, 2);
+    //searchSingleKey_inKeyHolder(portaChaves, 1, 2014, 1);
 
-    edit_keyHolder(&portaChaves, mString, mInts, 2, 4, 1);
+    //edit_keyHolder(&portaChaves, mString, mInts, 2, 0, 2);
     //edit_keyHolder(&portaChaves, mString, mInts, 1, 0, 2);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
 
-    print_keyHolders(&portaChaves);
-
+    //print_keyHolders(&portaChaves);
 
     //save_txt_keyHolder(&portaChaves, mString, mInts, 1, filename);
 
+    remove_keyHolder(&portaChaves, 1);
 
-    //remove_keyHolder(&portaChaves, 2);
-
-    //print_keyHolders(&portaChaves);
+    print_keyHolders(&portaChaves);
 
     /*
     printf("Do ficheiro de texto\n");
