@@ -692,7 +692,7 @@ void shellSortChar(char** a, int N, int order){
     }
     while (h >= 1){
         for (int i = 0; i < N; ++i) {
-            if(strcmp(a[i], "\0") == 0) return;
+            //if(strcmp(a[i], "\0") == 0) return;
             if(order == 1){ // 1 -> ascendente
                 for (int j = i; j >= h && atoll(a[j]) < atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
                     swapChar(a, j, j-h);
@@ -714,7 +714,7 @@ void shellSortCharDigits(char** a, char** priv, char** cod, int N, int order){
     }
     while (h >= 1){
         for (int i = 0; i < N; ++i) {
-            if(strcmp(a[i], "\0") == 0) return;
+            //if(strcmp(a[i], "\0") == 0) return;
             if(order == 1){ // 1 -> ascendente
                 for (int j = i; j >= h && numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
                     swapCharDigits(a, priv, cod, j, j-h);
@@ -762,7 +762,7 @@ void shellSortInt(short** a, int N, int order){
     }
     while (h >= 1){
         for (int i = 0; i < N; ++i) {
-            if(a[i][0] == 0) return;
+            //if(a[i][0] == 0) return;
             if(order == 1){ // 1 -> ascendente
                 for (int j = i; j >= h && key_digits_2_long_int(a[j]) < key_digits_2_long_int(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
                     swapInt(a, j, j-h);
@@ -784,7 +784,7 @@ void shellSortIntDigits(short** a, short** priv, short** cod, int N, int order){
     }
     while (h >= 1){
         for (int i = 0; i < N; ++i) {
-            if(a[i][0] == 0) return;
+            //if(a[i][0] == 0) return;
             if(order == 1){ // 1 -> ascendente
                 for (int j = i; j >= h && numDigitsLong(key_digits_2_long_int(a[j])) < numDigitsLong(key_digits_2_long_int(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
                     swapIntDigits(a, priv, cod, j, j-h);
@@ -1708,21 +1708,18 @@ void save_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
         return;
     }
     for (int i = 0; i < lines; ++i) {
-        if(matrix_kpub[i][0] != NULL){
+        //if(matrix_kpub[i][0] != NULL){
             fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kpub[i]));
             fprintf(fileChavesPubWrite,"\n");
-        }
-    }
-    for (int i = 0; i < lines; ++i) {
-        if(matrix_kpriv[i][0] != NULL){
+        //}
+        //if(matrix_kpriv[i][0] != NULL){
             fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kpriv[i]));
             fprintf(fileChavesPubWrite,"\n");
-        }
-    }for (int i = 0; i < lines; ++i) {
-        if(matrix_kcod[i][0] != NULL){
+        //}
+        // if(matrix_kcod[i][0] != NULL){
             fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kcod[i]));
             fprintf(fileChavesPubWrite,"\n");
-        }
+            //}
     }
 
     fclose(fileChavesPubWrite);
@@ -1813,10 +1810,14 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
     new_keyHolder->data_modificacao = ctime(&data_modificacao);
 
     if(*portaChaves == NULL){
+        new_keyHolder->sieInts++;
+        new_keyHolder->sizeStrings++;
         *portaChaves = new_keyHolder;
         return;
     }
 
+    new_keyHolder->sieInts++;
+    new_keyHolder->sizeStrings++;
     *portaChaves = new_keyHolder;
 }
 
@@ -1829,6 +1830,10 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
 
     KEY_HOLDER * curr = *portaChaves;
     while (stopPos != keyHolderPos){
+        if(curr == NULL){
+            printf("Porta Chaves Nao Encontrado\n");
+            return;
+        }
         temp = curr;
         curr = curr->next;
         stopPos++;
@@ -1909,6 +1914,8 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             isAdd = 1;
         }
         if(isAdd == 1){
+            curr->sieInts++;
+            curr->sizeStrings++;
             if(j+1 >= sizeMax){
                 curr->khString.matrixPub[j+1] = NULL;
                 curr->khString.matrixPriv[j+1] = NULL;
@@ -1968,6 +1975,9 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
                 curr->khInts.matrixCod[keyPosChange][i] = mInts.matrixCod[newKeyPos][i];
             }
         }
+
+        curr->sieInts++;
+        curr->sizeStrings++;
 
         curr->khString.matrixPub[keyPosChange+1] = NULL;
         curr->khString.matrixPriv[keyPosChange+1] = NULL;
@@ -2099,7 +2109,7 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsi
 void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, char filename[]){
 
     FILE *fileChavesPubWrite;
-    fileChavesPubWrite = fopen(filename, "r+");
+    fileChavesPubWrite = fopen(filename, "w");
     int stopPos = 1;
 
     if(fileChavesPubWrite == NULL){
@@ -2114,31 +2124,25 @@ void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, 
     }
 
     int i = 0;
-    while (1){
-        if(curr->khString.matrixPub[i] != NULL){
-            fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixPub[i]);
-            fprintf(fileChavesPubWrite,"\n");
-        } else break;
-        if(curr->khString.matrixPriv[i] != NULL){
-            fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixPriv[i]);
-            fprintf(fileChavesPubWrite,"\n");
-        } else break;
-        if(curr->khString.matrixCod[i] != NULL){
-            fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixCod[i]);
-            fprintf(fileChavesPubWrite,"\n");
-        } else break;
-        if(curr->khInts.matrixPub[i] != NULL){
-            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixPub[i]));
-            fprintf(fileChavesPubWrite,"\n");
-        } else break;
-        if(curr->khInts.matrixPriv[i] != NULL){
-            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixPriv[i]));
-            fprintf(fileChavesPubWrite,"\n");
-        } else break;
-        if(curr->khInts.matrixCod[i] != NULL){
-            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixCod[i]));
-            fprintf(fileChavesPubWrite,"\n");
-        } else break;
+    while (i < curr->sizeStrings){
+        fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixPub[i]);
+        fprintf(fileChavesPubWrite,"\n");
+        fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixPriv[i]);
+        fprintf(fileChavesPubWrite,"\n");
+        fprintf(fileChavesPubWrite,"%s" , curr->khString.matrixCod[i]);
+        fprintf(fileChavesPubWrite,"\n");
+
+        i++;
+    }
+    i = 0;
+    while (i < curr->sieInts){
+        fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixPub[i]));
+        fprintf(fileChavesPubWrite,"\n");
+        fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixPriv[i]));
+        fprintf(fileChavesPubWrite,"\n");
+        fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(curr->khInts.matrixCod[i]));
+        fprintf(fileChavesPubWrite,"\n");
+
         i++;
     }
 
@@ -2406,7 +2410,6 @@ void enqueue(UTILIZADORES_QUEUE* queue, UTILIZADORES* utilizador) {
 
 void print_utilizadores(UTILIZADORES_QUEUE* queue) {
     UTILIZADORES* curr = queue->head;
-    printf("UTILIZADORES\n");
     while (curr != NULL) {
         printf("Name: %s\n", curr->name);
         printf("Email: %s\n", curr->email);

@@ -389,7 +389,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 
     //sort_matrix_int(mInts.matrixPub, lines, 1);
     //sort_all_matrices_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
-    //list_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 0);
+    //list_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
 
     /*
     for (int i = 0; i < lines; ++i) {
@@ -464,7 +464,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     printf("\n");
     */
 
-    //save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
+    save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 
     return mInts;
 }
@@ -484,16 +484,15 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
 
-    //print_keyHolders(&portaChaves);
-
-    /*
-    save_txt_keyHolder(&portaChaves, mString, mInts, 1, filename);
-    save_txt_keyHolder(&portaChaves, mString, mInts, 2, filename);
-    */
-
-    remove_keyHolder(&portaChaves, 2);
-
     print_keyHolders(&portaChaves);
+
+
+    //save_txt_keyHolder(&portaChaves, mString, mInts, 1, filename);
+
+
+    //remove_keyHolder(&portaChaves, 2);
+
+    //print_keyHolders(&portaChaves);
 
     /*
     printf("Do ficheiro de texto\n");
@@ -506,6 +505,8 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
 }
 
 void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY_HOLDER *portaChaves){
+
+    printf("UTILIZADORES\n");
 
     create_utilizador(&queue, &utilizador, "Manuel", "m@gmail.com", portaChaves, 0);
     create_utilizador(&queue, &utilizador, "Z", "m@gmail.com", portaChaves, 2);
@@ -520,6 +521,7 @@ void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY
     //print_utilizadores(&queue);
 
     search_utilizador_by_name(&queue, "Manuel");
+    search_utilizador_by_name(&queue, "A");
 
     print_utilizadores(&queue);
 }

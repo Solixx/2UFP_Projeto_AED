@@ -34,6 +34,8 @@ typedef struct KEY_HOLDER{
     struct matrixInts khInts;
     char* data_criacao;
     char* data_modificacao;
+    int sizeStrings;
+    int sieInts;
     struct KEY_HOLDER *next;
 } KEY_HOLDER;
 
