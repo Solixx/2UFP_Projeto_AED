@@ -125,11 +125,16 @@ void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, 
 void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int newKeysPos, char filename[]);
 void print_keyHolders(KEY_HOLDER** portaChaves);
 
-void create_utilizador(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos);
+void create_utilizador_ordenado(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos);
+void create_utilizador_cabeca(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos);
+void create_utilizador_cauda(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos);
 void enqueue(UTILIZADORES_QUEUE* queue, UTILIZADORES* utilizador);
 void print_utilizadores(UTILIZADORES_QUEUE* queue);
-void remover_utilizador(UTILIZADORES_QUEUE* queue, char* name);
+void remover_nome_utilizador(UTILIZADORES_QUEUE* queue, char* name);
+void remover_cabeca_utilizador(UTILIZADORES_QUEUE* queue);
+void remover_cauda_utilizador(UTILIZADORES_QUEUE* queue);
 void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name);
+void ordenar_utilizadores(UTILIZADORES_QUEUE* queue);
 
 void freeMatrixChar(char **matrix, int N);
 void freeMatrixShort(short **matrix, int N);

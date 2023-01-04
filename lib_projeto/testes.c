@@ -52,9 +52,9 @@ int main_test(){
     }
     */
 
-    portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
+    //portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
 
-    clienteUtilizadores(utilizador, queue, portaChaves);
+    //clienteUtilizadores(utilizador, queue, portaChaves);
 
     freeMatrixChar(mString.matrixPub, mString.lines);
     freeMatrixChar(mString.matrixPriv, mString.lines);
@@ -83,6 +83,7 @@ int main_test(){
 
 struct matrixString clienteString(struct matrixString mString){
     char filename[] = "../data/chaves_publicas.txt";
+    char filenameBn[] = "../data/chaves_String_Bn.txt";
     char *publicKeyChar, *privKeyChar, *codKeyChar;
     char **privKeySearch = NULL;
     unsigned long long key = 2014, publicKeyLong = 0, privKeyLong = 0, codKeyLong = 0;
@@ -210,6 +211,8 @@ struct matrixString clienteString(struct matrixString mString){
 
     //load_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
 
+    save_bin_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filenameBn);
+
     /*
     for (int i = 0; i < lines+1; ++i) {
         printf("Pub - %s\n", mString.matrixPub[i]);
@@ -257,6 +260,7 @@ struct matrixString clienteString(struct matrixString mString){
 struct matrixInts clienteInt(struct matrixInts mInts){
 
     char filename[] = "../data/chaves_publicas_ints.txt";
+    char filenameBn[] =  "../data/chaves_Ints_Bn.txt";
     unsigned long long pubKey = 0, privKey = 0, codKey = 0;
     short *allD = NULL, **privKeySearch = NULL;
     int lines = 6, columns = 1;
@@ -410,6 +414,8 @@ struct matrixInts clienteInt(struct matrixInts mInts){
 
     //save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 
+    save_bin_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filenameBn);
+
     int p = 0;
     while (mInts.matrixPub[p][0] != -1){
         mInts.lines++;
@@ -459,20 +465,43 @@ void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY
 
     printf("UTILIZADORES\n");
 
-    create_utilizador(&queue, &utilizador, "Manuel", "m@gmail.com", portaChaves, 0);
-    create_utilizador(&queue, &utilizador, "Z", "m@gmail.com", portaChaves, 2);
-    create_utilizador(&queue, &utilizador, "Ricardo", "m@gmail.com", portaChaves, 1);
-    create_utilizador(&queue, &utilizador, "Mario", "m@gmail.com", portaChaves, 2);
-    create_utilizador(&queue, &utilizador, "A", "m@gmail.com", portaChaves, 1);
+    /*
+    create_utilizador_ordenado(&queue, &utilizador, "Manuel", "m@gmail.com", portaChaves, 0);
+    create_utilizador_ordenado(&queue, &utilizador, "Z", "m@gmail.com", portaChaves, 2);
+    create_utilizador_ordenado(&queue, &utilizador, "Ricardo", "m@gmail.com", portaChaves, 1);
+    create_utilizador_ordenado(&queue, &utilizador, "Mario", "m@gmail.com", portaChaves, 2);
+    create_utilizador_ordenado(&queue, &utilizador, "A", "m@gmail.com", portaChaves, 1);
+     */
+
+    /*
+    create_utilizador_cauda(&queue, &utilizador, "Manuel", "m@gmail.com", portaChaves, 0);
+    create_utilizador_cauda(&queue, &utilizador, "Jose", "m@gmail.com", portaChaves, 0);
+    create_utilizador_ordenado(&queue, &utilizador, "A", "m@gmail.com", portaChaves, 1);
+     */
+
+    create_utilizador_cabeca(&queue, &utilizador, "Manuel", "m@gmail.com", portaChaves, 0);
+    create_utilizador_cabeca(&queue, &utilizador, "Josa", "m@gmail.com", portaChaves, 0);
+    create_utilizador_cabeca(&queue, &utilizador, "Z", "m@gmail.com", portaChaves, 0);
+    create_utilizador_ordenado(&queue, &utilizador, "A", "m@gmail.com", portaChaves, 1);
+    create_utilizador_cauda(&queue, &utilizador, "Cauda", "m@gmail.com", portaChaves, 0);
+    create_utilizador_cabeca(&queue, &utilizador, "Jose", "m@gmail.com", portaChaves, 0);
+
     print_utilizadores(&queue);
 
-    remover_utilizador(&queue, "Manuel");
+    //remover_nome_utilizador(&queue, "Manuel");
+    //remover_cabeca_utilizador(&queue);
+    remover_cauda_utilizador(&queue);
     //aux = realloc(aux, queue.size * sizeof (UTILIZADORES*));
+
+    print_utilizadores(&queue);
+
+    //printf("Ordenado\n");
+    //ordenar_utilizadores(&queue);
 
     //print_utilizadores(&queue);
 
-    search_utilizador_by_name(&queue, "Manuel");
-    search_utilizador_by_name(&queue, "A");
+    //search_utilizador_by_name(&queue, "Manuel");
+    //search_utilizador_by_name(&queue, "Ricardo");
 
-    print_utilizadores(&queue);
+    //print_utilizadores(&queue);
 }

@@ -1302,6 +1302,32 @@ void load_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_k
     fclose(fileChavesPubRead);
 }
 
+void save_bin_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]){
+    FILE *fileChavesPubWrite;
+    fileChavesPubWrite = fopen(filename, "wb");
+
+    if(fileChavesPubWrite == NULL){
+        printf("Ficheiro nao existe\n");
+        return;
+    }
+    for (int i = 0; i < lines; ++i) {
+        if(strcmp(matrix_kpub[i], "-1") != 0){
+            fwrite(matrix_kpub[i], sizeof (char), strlen(matrix_kpub[i]), fileChavesPubWrite);
+            fwrite("\n", sizeof (char), 1, fileChavesPubWrite);
+        } else break;
+        if(strcmp(matrix_kpriv[i], "-1") != 0){
+            fwrite(matrix_kpriv[i], sizeof (char), strlen(matrix_kpriv[i]), fileChavesPubWrite);
+            fwrite("\n", sizeof (char), 1, fileChavesPubWrite);
+        } else break;
+        if(strcmp(matrix_kcod[i], "-1") != 0){
+            fwrite(matrix_kcod[i], sizeof (char), strlen(matrix_kcod[i]), fileChavesPubWrite);
+            fwrite("\n", sizeof (char), 1, fileChavesPubWrite);
+        } else break;
+    }
+
+    fclose(fileChavesPubWrite);
+}
+
 
 //Funcoes Ints do ficheiro dos professores
 unsigned long long new_public_key_int(void){
@@ -1853,6 +1879,39 @@ void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 
     free(value);
     fclose(fileChavesPubRead);
+}
+
+void save_bin_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){
+
+    FILE *fileChavesPubWrite;
+    fileChavesPubWrite = fopen(filename, "wb");
+
+    if(fileChavesPubWrite == NULL){
+        printf("Ficheiro nao existe\n");
+        return;
+    }
+    for (int i = 0; i < lines; ++i) {
+        if(matrix_kpub[i][0] != -1){
+            char *temp = malloc(numDigitsLong(key_digits_2_long_int(matrix_kpub[i])) * sizeof (char));
+            sprintf(temp, "%llu", key_digits_2_long_int(matrix_kpub[i]));
+            fwrite(temp, sizeof(char), strlen(temp), fileChavesPubWrite);
+            fwrite("\n", sizeof(char), 1, fileChavesPubWrite);
+        } else break;
+        if(matrix_kpriv[i][0] != -1){
+            char *temp = malloc(numDigitsLong(key_digits_2_long_int(matrix_kpriv[i])) * sizeof (char));
+            sprintf(temp, "%llu", key_digits_2_long_int(matrix_kpriv[i]));
+            fwrite(temp, sizeof(char), strlen(temp), fileChavesPubWrite);
+            fwrite("\n", sizeof(char), 1, fileChavesPubWrite);
+        } else break;
+        if(matrix_kcod[i][0] != -1){
+            char *temp = malloc(numDigitsLong(key_digits_2_long_int(matrix_kcod[i])) * sizeof (char));
+            sprintf(temp, "%llu", key_digits_2_long_int(matrix_kcod[i]));
+            fwrite(temp, sizeof(char), strlen(temp),fileChavesPubWrite);
+            fwrite("\n", sizeof(char), 1, fileChavesPubWrite);
+        } else break;
+    }
+
+    fclose(fileChavesPubWrite);
 }
 
 
@@ -2466,7 +2525,7 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
     }
 }
 
-void create_utilizador(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
+void create_utilizador_ordenado(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
     int stopKeyHolderPos = 1;
     UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
     utilizador->name = malloc(sizeof (char) * (strlen(name) + 1));
@@ -2521,7 +2580,75 @@ void create_utilizador(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, c
     }
 
     queue->size++;
+}
 
+void create_utilizador_cauda(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
+    int stopKeyHolderPos = 1;
+    UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
+    utilizador->name = malloc(sizeof (char) * (strlen(name) + 1));
+    strcpy(utilizador->name, name);
+    utilizador->email = malloc(sizeof (char) * (strlen(email) + 1));
+    strcpy(utilizador->email, email);
+    utilizador->email = email;
+    KEY_HOLDER *currKeyHolder = key_holder_list;
+    while (stopKeyHolderPos < pos){
+        currKeyHolder = currKeyHolder->next;
+        stopKeyHolderPos++;
+        if (currKeyHolder == NULL){
+            printf("Porta Chaves nao encontrado\n");
+            return;
+        }
+    }
+    utilizador->key_holder_list = currKeyHolder;
+    utilizador->next = NULL;
+
+    if(*utilizadores == NULL){
+        *utilizadores = utilizador;
+        queue->size++;
+        enqueue(queue, utilizador);
+        return;
+    }
+
+    UTILIZADORES *curr = *utilizadores;
+    while (curr->next != NULL){
+        curr = curr->next;
+    }
+    curr->next = utilizador;
+    queue->size++;
+    enqueue(queue, curr->next);
+}
+
+void create_utilizador_cabeca(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
+    int stopKeyHolderPos = 1;
+    UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
+    utilizador->name = malloc(sizeof (char) * (strlen(name) + 1));
+    strcpy(utilizador->name, name);
+    utilizador->email = malloc(sizeof (char) * (strlen(email) + 1));
+    strcpy(utilizador->email, email);
+    utilizador->email = email;
+
+    KEY_HOLDER *currKeyHolder = key_holder_list;
+    while (stopKeyHolderPos < pos){
+        currKeyHolder = currKeyHolder->next;
+        stopKeyHolderPos++;
+        if (currKeyHolder == NULL){
+            printf("Porta Chaves nao encontrado\n");
+            return;
+        }
+    }
+    utilizador->key_holder_list = currKeyHolder;
+    utilizador->next = *utilizadores;
+
+    if(*utilizadores == NULL){
+        *utilizadores = utilizador;
+        queue->size++;
+        enqueue(queue, utilizador);
+        return;
+    }
+
+    queue->size++;
+    *utilizadores = utilizador;
+    queue->head = utilizador;
 }
 
 void enqueue(UTILIZADORES_QUEUE* queue, UTILIZADORES* utilizador) {
@@ -2544,7 +2671,7 @@ void print_utilizadores(UTILIZADORES_QUEUE* queue) {
     }
 }
 
-void remover_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
+void remover_nome_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
     UTILIZADORES* curr = queue->head;
     UTILIZADORES* previous = NULL;
 
@@ -2558,6 +2685,7 @@ void remover_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
         return;
     }
 
+    printf("Utilizador Apagado: %s\n", curr->name);
     if (previous == NULL) {
         queue->head = curr->next;
     } else {
@@ -2570,6 +2698,34 @@ void remover_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
 
     queue->size--;
     free(curr);
+}
+
+void remover_cabeca_utilizador(UTILIZADORES_QUEUE* queue) {
+    printf("Utilizador Apagado: %s\n", queue->head->name);
+    queue->head = queue->head->next;
+
+    queue->size--;
+}
+
+void remover_cauda_utilizador(UTILIZADORES_QUEUE* queue) {
+    UTILIZADORES *curr = queue->head;
+    UTILIZADORES* previous = NULL;
+
+    while (curr->next != NULL){
+        previous = curr;
+        curr = curr->next;
+    }
+
+    printf("Utilizador Apagado: %s\n", curr->name);
+    if (previous == NULL) {
+        queue->head = NULL;
+        queue->tail = NULL;
+    } else {
+        previous->next = NULL;
+        queue->tail = previous;
+    }
+
+    queue->size--;
 }
 
 void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name) {
@@ -2600,6 +2756,34 @@ void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name) {
     }
 }
 
+void ordenar_utilizadores(UTILIZADORES_QUEUE* queue){
+    UTILIZADORES* current;
+    UTILIZADORES* index;
+
+    if (queue == NULL) {
+        return;
+    }
+
+    if (queue->head == NULL) {
+        return;
+    }
+
+    for (current = queue->head; current->next != NULL; current = current->next) {
+        for (index = current->next; index != NULL; index = index->next) {
+            if (strcmp(current->name, index->name) > 0) {
+                char* temp_name = current->name;
+                char* temp_email = current->email;
+                KEY_HOLDER* temp_key_holder_list = current->key_holder_list;
+                current->name = index->name;
+                current->email = index->email;
+                current->key_holder_list = index->key_holder_list;
+                index->name = temp_name;
+                index->email = temp_email;
+                index->key_holder_list = temp_key_holder_list;
+            }
+        }
+    }
+}
 
 void freeMatrixChar(char **matrix, int N){
     for (int i = 0; i < N; ++i) {
