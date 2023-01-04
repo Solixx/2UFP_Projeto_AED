@@ -52,9 +52,9 @@ int main_test(){
     }
     */
 
-    //portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
+    portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
 
-    //clienteUtilizadores(utilizador, queue, portaChaves);
+    clienteUtilizadores(utilizador, queue, portaChaves);
 
     freeMatrixChar(mString.matrixPub, mString.lines);
     freeMatrixChar(mString.matrixPriv, mString.lines);
@@ -207,7 +207,7 @@ struct matrixString clienteString(struct matrixString mString){
     //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
     //list_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 1);
 
-    //save_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
+    save_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
 
     //load_txt_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, filename);
 
@@ -412,7 +412,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     printf("\n");
     */
 
-    //save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
+    save_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 
     save_bin_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filenameBn);
 
@@ -430,26 +430,27 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
     printf("Porta Chaves\n");
 
     char filename[] = "../data/portaChaves.txt";
+    char filenameSearch[] = "../data/portaChavesPesquisa.txt";
     int stopPos = 1, keyHolderPos = 1;
     insert_keyHolder(&portaChaves, mString, mInts, 0);
     insert_keyHolder(&portaChaves, mString, mInts, 1);
     insert_keyHolder(&portaChaves, mString, mInts, 2);
-    print_keyHolders(&portaChaves);
+    //print_keyHolders(&portaChaves);
 
-    searchSingleKey_inKeyHolder(portaChaves, 2, 2014, 1);
+    searchSingleKey_inKeyHolder(portaChaves, 2, 2014, 1, filenameSearch);
 
     edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 3);
     edit_keyHolder(&portaChaves, mString, mInts, 1, 0, 2);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
 
-    print_keyHolders(&portaChaves);
+    //print_keyHolders(&portaChaves);
 
-    //save_txt_keyHolder(&portaChaves, mString, mInts, 2, filename);
+    save_txt_keyHolder(&portaChaves, mString, mInts, 2, filename);
 
     remove_keyHolder(&portaChaves, 1);
 
-    print_keyHolders(&portaChaves);
+    //print_keyHolders(&portaChaves);
 
     /*
     printf("Do ficheiro de texto\n");
@@ -504,4 +505,6 @@ void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY
     //search_utilizador_by_name(&queue, "Ricardo");
 
     //print_utilizadores(&queue);
+
+    dequeue(&queue);
 }

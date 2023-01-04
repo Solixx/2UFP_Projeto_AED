@@ -1246,7 +1246,7 @@ void list_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod,
 
 void save_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]){
     FILE *fileChavesPubWrite;
-    fileChavesPubWrite = fopen(filename, "w");
+    fileChavesPubWrite = fopen(filename, "a+");
 
     if(fileChavesPubWrite == NULL){
         printf("Ficheiro nao existe\n");
@@ -1304,7 +1304,7 @@ void load_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_k
 
 void save_bin_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]){
     FILE *fileChavesPubWrite;
-    fileChavesPubWrite = fopen(filename, "wb");
+    fileChavesPubWrite = fopen(filename, "a+b");
 
     if(fileChavesPubWrite == NULL){
         printf("Ficheiro nao existe\n");
@@ -1826,7 +1826,7 @@ void list_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kco
 void save_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){
 
     FILE *fileChavesPubWrite;
-    fileChavesPubWrite = fopen(filename, "w");
+    fileChavesPubWrite = fopen(filename, "a+");
 
     if(fileChavesPubWrite == NULL){
         printf("Ficheiro nao existe\n");
@@ -1884,7 +1884,7 @@ void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 void save_bin_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){
 
     FILE *fileChavesPubWrite;
-    fileChavesPubWrite = fopen(filename, "wb");
+    fileChavesPubWrite = fopen(filename, "a+b");
 
     if(fileChavesPubWrite == NULL){
         printf("Ficheiro nao existe\n");
@@ -2204,7 +2204,9 @@ void remove_keyHolder(KEY_HOLDER** portaChaves, int keyHolderPos){
     }
 }
 
-void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsigned long long keyToSeach, int type){
+void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsigned long long keyToSeach, int type, char* filename){
+
+    FILE *fp = fopen(filename, "a+");
     int stopPos = 1, exist = 0;
     if(type > 3 || type <= 0){
         printf("Tipo de chaves nao existe (1 - Publica / 2 - Privada / 3 - Codificada)\n");
@@ -2223,21 +2225,25 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsi
             for (int i = 0; portaChaves->khString.matrixPub[i] ; ++i) {
                 if(atoll(portaChaves->khString.matrixPub[i]) == keyToSeach){
                     printf("A chave %llu existe na matrix de chaves publicas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    fprintf(fp, "A chave %llu existe na matrix de chaves publicas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
                 printf("A chave %llu nao existe na matrix de chaves publicas de Strings do porta chaves %d\n", keyToSeach, keyHolderPos);
+                fprintf(fp, "A chave %llu nao existe na matrix de chaves publicas de Strings do porta chaves %d\n", keyToSeach, keyHolderPos);
             }
             exist = 0;
             for (int i = 0; portaChaves->khInts.matrixPub[i] ; ++i) {
                 if(key_digits_2_long_int(portaChaves->khInts.matrixPub[i]) == keyToSeach){
                     printf("A chave %llu existe na matrix de chaves publicas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    fprintf(fp, "A chave %llu existe na matrix de chaves publicas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
                 printf("A chave %llu nao existe na matrix de chaves publicas de Inteiros do porta chaves %d\n", keyToSeach, keyHolderPos);
+                fprintf(fp, "A chave %llu nao existe na matrix de chaves publicas de Inteiros do porta chaves %d\n", keyToSeach, keyHolderPos);
             }
             exist = 0;
         }
@@ -2245,21 +2251,25 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsi
             for (int i = 0; portaChaves->khString.matrixPriv[i] ; ++i) {
                 if(atoll(portaChaves->khString.matrixPriv[i]) == keyToSeach){
                     printf("A chave %llu existe na matrix de chaves privadas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    fprintf(fp, "A chave %llu existe na matrix de chaves privadas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %llu nao existe na matrix de chaves privadas de Strings\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves privadas de Strings do porta chaves %d\n", keyToSeach, keyHolderPos);
+                fprintf(fp, "A chave %llu nao existe na matrix de chaves privadas de Strings do porta chaves %d\n", keyToSeach, keyHolderPos);
             }
             exist = 0;
             for (int i = 0; portaChaves->khInts.matrixPriv[i] ; ++i) {
                 if(key_digits_2_long_int(portaChaves->khInts.matrixPriv[i]) == keyToSeach){
                     printf("A chave %llu existe na matrix de chaves privadas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    fprintf(fp, "A chave %llu existe na matrix de chaves privadas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %llu nao existe na matrix de chaves privadas de Inteiros\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves privadas de Inteiros do porta chaves %d\n", keyToSeach, keyHolderPos);
+                fprintf(fp, "A chave %llu nao existe na matrix de chaves privadas de Inteiros do porta chaves %d\n", keyToSeach, keyHolderPos);
             }
             exist = 0;
         }
@@ -2267,30 +2277,35 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsi
             for (int i = 0; portaChaves->khString.matrixCod[i] ; ++i) {
                 if(atoll(portaChaves->khString.matrixCod[i]) == keyToSeach){
                     printf("A chave %llu existe na matrix de chaves codificada de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    fprintf(fp, "A chave %llu existe na matrix de chaves codificadas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %llu nao existe na matrix de chaves codificadas de Strings\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves codificadas de Strings do porta chaves %d\n", keyToSeach, keyHolderPos);
+                fprintf(fp, "A chave %llu nao existe na matrix de chaves codificadas de Strings do porta chaves %d\n", keyToSeach, keyHolderPos);
             }
             exist = 0;
             for (int i = 0; portaChaves->khInts.matrixCod[i] ; ++i) {
                 if(key_digits_2_long_int(portaChaves->khInts.matrixCod[i]) == atoll(keyToSeach)){
                     printf("A chave %llu existe na matrix de chaves codificada de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
+                    fprintf(fp, "A chave %llu existe na matrix de chaves codificadas de Inteiros na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
                     exist = 1;
                 }
             }
             if(exist == 0){
-                printf("A chave %llu nao existe na matrix de chaves codificadas de Inteiros\n", keyToSeach);
+                printf("A chave %llu nao existe na matrix de chaves codificadas de Inteiros do porta chaves %d\n", keyToSeach, keyHolderPos);
+                fprintf(fp, "A chave %llu nao existe na matrix de chaves codificadas de Inteiros do porta chaves %d\n", keyToSeach, keyHolderPos);
             }
             exist = 0;
         }
+    fclose(fp);
 }
 
 void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, char filename[]){
 
     FILE *fileChavesPubWrite;
-    fileChavesPubWrite = fopen(filename, "w");
+    fileChavesPubWrite = fopen(filename, "a+");
     int stopPos = 1;
 
     if(fileChavesPubWrite == NULL){
@@ -2658,6 +2673,20 @@ void enqueue(UTILIZADORES_QUEUE* queue, UTILIZADORES* utilizador) {
     } else {
         queue->tail->next = utilizador;
         queue->tail = utilizador;
+    }
+}
+
+void dequeue(UTILIZADORES_QUEUE* queue){
+    while (queue->head != NULL){
+        if(queue->head == queue->tail){
+            queue->head = NULL;
+            queue->tail = NULL;
+        }
+        else{
+            UTILIZADORES *temp = queue->head;
+            queue->head = queue->head->next;
+            free(temp);
+        }
     }
 }
 
