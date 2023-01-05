@@ -31,7 +31,7 @@ int main_test(){
     start = clock();
 
     mString = clienteString(mString);
-    //mInts = clienteInt(mInts);
+    mInts = clienteInt(mInts);
 
     end = clock();
     execution_time = ((double)(end - start))/CLOCKS_PER_SEC;

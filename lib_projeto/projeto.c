@@ -100,6 +100,25 @@ int bipolar_number(char *text){
     }
 }
 
+int bipolar_numberInt(short text[]){
+
+    int bipolar = 0, changes = 0, exits = 0;
+    int number, pow, digits = 0;
+
+    for (int i = 0; text[i+1] != -1; ++i) {
+        if(text[i] != text[i+1]){
+            changes++;
+        }
+    }
+    //changes--;
+    if(changes == 1){
+        return 0;
+    }
+    else{
+        return -1;
+    }
+}
+
 void print_bipolar_numbers(int k){
 
     int n[4] = {};
@@ -1037,6 +1056,7 @@ unsigned long long calc_private_key_char(unsigned long long pubkey){
     short *allD = key_long_2_digits_int(pubkey*2);
     char rightNum = allD[1]+'0', leftNum = allD[0]+'0';                     //rightNum -> número a inserir à direita começa em 0 -> ++ / leftNum -> número a inserir à esquerda começa em 1 -> ++
 
+    if(bipolar_numberInt(allD) ==  0) return key_digits_2_long_int(allD);
     if(pubkey <= 5){
         rightNum = '0';
         leftNum = '1';
@@ -1659,6 +1679,7 @@ unsigned long long calc_private_key_int(unsigned long long pubkey){
     short *allD = key_long_2_digits_int(pubkey*2);
     short rightNum = allD[1], leftNum = allD[0];
 
+    if(bipolar_numberInt(allD) ==  0) return key_digits_2_long_int(allD);
     if(pubkey <= 5){
         rightNum = 0;
         leftNum = 1;
