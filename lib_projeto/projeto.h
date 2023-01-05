@@ -14,6 +14,7 @@
 
 #define FIRST_NUMBER '0'
 #define MAX_NAME_LEN 256
+#define CUTOFF 10
 
 struct matrixString{
     char **matrixPub;
@@ -113,6 +114,19 @@ void shellSortInt(short** a, int N, int order);
 void shellSortIntDigits(short** a, short** priv, short** cod, int N, int order);
 void swapInt(short** a, int i, int min);
 void swapIntDigits(short** a, short** priv, short** cod, int i, int min);
+
+void merge_char_sort_base(char* a[], int N, int order);
+void merge_char_sort_recursive_cutoff(char* a[], char* aux[], int lo, int hi, int order);
+void merge_char_sort_recursive_basic(char* a[], char* aux[], int lo, int hi, int order);
+void merge_char(char* a[], char* aux[], int lo, int mid, int hi, int order);
+void insertionSort_char(char* a[], int N, int order);
+
+void mergeDigits_char_sort_base(char* a[], char* priv[], char* cod[], int N, int order);
+void mergeDigits_char_sort_recursive_cutoff(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int hi, int order);
+void mergeDigits_char_sort_recursive_basic(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int hi, int order);
+void mergeDigits_char(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int mid, int hi, int order);
+void insertionSortDigits_char(char* a[], char* priv[], char* cod[], int N, int order);
+
 
 void updateLines_MatrixString(struct matrixString mString, int lines);
 
