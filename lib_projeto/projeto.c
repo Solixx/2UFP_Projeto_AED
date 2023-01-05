@@ -1127,7 +1127,7 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
     int allD[digits], runLess[4];
 
     //Ciclo para zerar runLess
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 6; ++i) {
         runLess[i] = 0;
     }
     //Se privKey maior ou igual que 10 vai calcular a sua run Length
@@ -1747,7 +1747,7 @@ unsigned long long calc_runlength_int(unsigned long long privkey){
     digits = numDigitsLong(privkey);
     int allD[digits], runLess[4];
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 6; ++i) {
         runLess[i] = 0;
     }
     if(privkey >= 10){
