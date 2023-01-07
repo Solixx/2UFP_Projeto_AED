@@ -203,7 +203,7 @@ struct matrixString clienteString(struct matrixString mString){
     //printf("Exist - %d\n", exists_key_char(mString.matrixPub, lines, 2014));
     //printf("Exist - %d\n", exists_key_char(mString.matrixPub, lines, atoll(mString.matrixPub[3])));
 
-    //sort_matrix_char(mString.matrixPub, lines, 0);
+    //sort_matrix_char(mString.matrixPub, lines, 1);
     //sort_all_matrices_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 0);
     list_keys_char(mString.matrixPub, mString.matrixPriv, mString.matrixCod, lines, 0);
 
