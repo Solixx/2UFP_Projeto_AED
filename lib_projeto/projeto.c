@@ -1037,6 +1037,195 @@ void insertionSortDigits_char(char* a[], char* priv[], char* cod[], int N, int o
 }
 
 
+
+void merge_int_sort_base(short* a[], int N, int order){
+    short **aux = malloc(N * sizeof (short*));
+    merge_int_sort_recursive_cutoff(a, aux, 0, N-1, order);
+}
+
+void merge_int(short* a[], short* aux[], int lo, int mid, int hi, int order){
+    for (int k = lo; k <= hi; ++k) {
+        aux[k] = malloc(numDigitsLong(key_digits_2_long_int(a[k]) * sizeof (short)));
+        aux[k] = a[k];
+    }
+    int i = lo, j = mid+1;
+    if(order == 1){
+        for (int k = lo; k <= hi; ++k) {
+            if      (i > mid)                           a[k] = aux[j++];
+            else if (j > hi)                            a[k] = aux[i++];
+            else if (key_digits_2_long_int(aux[j]) < key_digits_2_long_int(aux[i]))                   a[k] = aux[j++];
+            else                                        a[k] = aux[i++];
+        }
+    } else{
+        for (int k = lo; k <= hi; ++k) {
+            if      (i > mid)                           a[k] = aux[j++];
+            else if (j > hi)                            a[k] = aux[i++];
+            else if (key_digits_2_long_int(aux[j]) > key_digits_2_long_int(aux[i]))     a[k] = aux[j++];
+            else                                        a[k] = aux[i++];
+        }
+    }
+}
+
+void merge_int_sort_recursive_basic(short* a[], short* aux[], int lo, int hi, int order){
+
+    if(hi <= lo) return;
+    int mid = lo + (hi-lo)/2;
+    merge_int_sort_recursive_basic(a, aux, lo, mid, order);
+    merge_int_sort_recursive_basic(a, aux, mid+1, hi, order);
+    merge_int(a, aux, lo, mid, hi, order);
+}
+
+void merge_int_sort_recursive_cutoff(short* a[], short* aux[], int lo, int hi, int order){
+
+    if (hi <= lo + CUTOFF - 1)
+    {
+        insertionSort_int(&a[lo], hi-lo+1, order);
+        return;
+    }
+    int mid = lo + (hi-lo)/2;
+    merge_int_sort_recursive_basic(a, aux, lo, mid, order);
+    merge_int_sort_recursive_basic(a, aux, mid+1, hi, order);
+    merge_int(a, aux, lo, mid, hi, order);
+}
+
+void insertionSort_int(short* a[], int N, int order){
+    for (int i = 0; i < N; ++i) {
+        for (int j = i; j > 0; j--) {
+            if(order == 1){
+                if(key_digits_2_long_int(a[j]) < key_digits_2_long_int(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-1);
+                } else break;
+            } else{
+                if(key_digits_2_long_int(a[j]) > key_digits_2_long_int(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-1);
+                } else break;
+            }
+        }
+    }
+}
+
+
+void mergeDigits_int_sort_base(short* a[], short* priv[], short* cod[], int N, int order){
+    short **aux = malloc(N * sizeof (short*));
+    short **auxPriv = malloc(N * sizeof (short*));
+    short **auxCod = malloc(N * sizeof (short*));
+    mergeDigits_int_sort_recursive_cutoff(a, aux, priv, cod, auxPriv, auxCod, 0, N-1, order);
+}
+
+void mergeDigits_int(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int mid, int hi, int order){
+    for (int k = lo; k <= hi; ++k) {
+        aux[k] = malloc(numDigitsLong(key_digits_2_long_int(a[k]) * sizeof (short)));
+        auxPriv[k] = malloc(numDigitsLong(key_digits_2_long_int(priv[k]) * sizeof (short)));
+        auxCod[k] = malloc(numDigitsLong(key_digits_2_long_int(cod[k]) * sizeof (short)));
+        aux[k] = a[k];
+        auxPriv[k] = priv[k];
+        auxCod[k] = cod[k];
+    }
+    int i = lo, j = mid+1;
+    if(order == 1){
+        for (int k = lo; k <= hi; ++k) {
+            if (i > mid){
+                a[k] = aux[j++];
+                j--;
+                priv[k] = auxPriv[j++];
+                j--;
+                cod[k] = auxCod[j++];
+            }
+            else if (j > hi){
+                a[k] = aux[i++];
+                i--;
+                priv[k] = auxPriv[i++];
+                i--;
+                cod[k] = auxCod[i++];
+            }
+            else if (numDigitsLong(key_digits_2_long_int(aux[j])) < numDigitsLong(key_digits_2_long_int(aux[i]))){
+                a[k] = aux[j++];
+                j--;
+                priv[k] = auxPriv[j++];
+                j--;
+                cod[k] = auxCod[j++];
+            }
+            else{
+                a[k] = aux[i++];
+                i--;
+                priv[k] = auxPriv[i++];
+                i--;
+                cod[k] = auxCod[i++];
+            }
+        }
+    } else{
+        for (int k = lo; k <= hi; ++k) {
+            if (i > mid){
+                a[k] = aux[j++];
+                j--;
+                priv[k] = auxPriv[j++];
+                j--;
+                cod[k] = auxCod[j++];
+            }
+            else if (j > hi) {
+                a[k] = aux[i++];
+                i--;
+                priv[k] = auxPriv[i++];
+                i--;
+                cod[k] = auxCod[i++];
+            }
+            else if (numDigitsLong(key_digits_2_long_int(aux[j])) > numDigitsLong(key_digits_2_long_int(aux[i]))){
+                a[k] = aux[j++];
+                j--;
+                priv[k] = auxPriv[j++];
+                j--;
+                cod[k] = auxCod[j++];
+            }
+            else {
+                a[k] = aux[i++];
+                i--;
+                priv[k] = auxPriv[i++];
+                i--;
+                cod[k] = auxCod[i++];
+            }
+        }
+    }
+}
+
+void mergeDigits_int_sort_recursive_basic(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int hi, int order){
+
+    if(hi <= lo) return;
+    int mid = lo + (hi-lo)/2;
+    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
+    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
+    mergeDigits_int(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
+}
+
+void mergeDigits_int_sort_recursive_cutoff(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int hi, int order){
+
+    if (hi <= lo + CUTOFF - 1)
+    {
+        insertionSortDigits_int(&a[lo], priv, cod, hi-lo+1, order);
+        return;
+    }
+    int mid = lo + (hi-lo)/2;
+    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
+    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
+    mergeDigits_int(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
+}
+
+void insertionSortDigits_int(short* a[], short* priv[], short* cod[], int N, int order){
+    for (int i = 0; i < N; ++i) {
+        for (int j = i; j > 0; j--) {
+            if(order == 1){
+                if(numDigitsLong(key_digits_2_long_int(a[j])) < numDigitsLong(key_digits_2_long_int(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapIntDigits(a, priv, cod, j, j-1);
+                } else break;
+            } else{
+                if(numDigitsLong(key_digits_2_long_int(a[j])) > numDigitsLong(key_digits_2_long_int(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapIntDigits(a, priv, cod, j, j-1);
+                } else break;
+            }
+        }
+    }
+}
+
+
 //Funcoes Strings do ficheiro dos professores
 char* key_long_2_digits_char(unsigned long long key){
     int digits = numDigits(key);                        //variavel com o numero de digitos de (key)
@@ -2024,17 +2213,22 @@ short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int l
 }
 
 void sort_matrix_int(short **matrix, int lines, int order){
-    shellSortInt(matrix, lines, order);
+    //shellSortInt(matrix, lines, order);
+    merge_int_sort_base(matrix, lines, order);
 }
 
 void sort_all_matrices_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, int order){
-    shellSortInt(matrix_kpub, lines, order);
-    shellSortInt(matrix_kpriv, lines, order);
-    shellSortInt(matrix_kcod, lines, order);
+    //shellSortInt(matrix_kpub, lines, order);
+    //shellSortInt(matrix_kpriv, lines, order);
+    //shellSortInt(matrix_kcod, lines, order);
+    merge_int_sort_base(matrix_kpub, lines, order);
+    merge_int_sort_base(matrix_kpriv, lines, order);
+    merge_int_sort_base(matrix_kcod, lines, order);
 }
 
 void list_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, int order){
-    shellSortIntDigits(matrix_kpub, matrix_kpriv, matrix_kcod, lines, order);
+    //shellSortIntDigits(matrix_kpub, matrix_kpriv, matrix_kcod, lines, order);
+    mergeDigits_int_sort_base(matrix_kpub, matrix_kpriv, matrix_kcod, lines, order);
 }
 
 void save_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){

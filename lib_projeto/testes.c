@@ -376,10 +376,10 @@ struct matrixInts clienteInt(struct matrixInts mInts){
     //load_txt_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, filename);
 
     //sort_matrix_int(mInts.matrixPub, lines, 1);
-    //sort_all_matrices_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
+    sort_all_matrices_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 0);
     //list_keys_int(mInts.matrixPub, mInts.matrixPriv, mInts.matrixCod, lines, 1);
 
-    /*
+
     for (int i = 0; i < lines+1; ++i) {
         if(mInts.matrixPub[i][0] == -1) break;
         if(mInts.matrixPub[i][0] == 0 && mInts.matrixPub[i][1] != -1) printf("Pub - 0\n");
@@ -390,7 +390,7 @@ struct matrixInts clienteInt(struct matrixInts mInts){
         else printf("Cod - %llu\n", key_digits_2_long_int(mInts.matrixCod[i]));
     }
     printf("\n");
-    */
+
 
 
     //privKey = private_key_from_runlength_int(key_digits_2_long_int(mInts.matrixCod[2]));

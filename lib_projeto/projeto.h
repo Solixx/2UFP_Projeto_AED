@@ -127,6 +127,17 @@ void mergeDigits_char_sort_recursive_basic(char* a[], char* aux[], char* priv[],
 void mergeDigits_char(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int mid, int hi, int order);
 void insertionSortDigits_char(char* a[], char* priv[], char* cod[], int N, int order);
 
+void merge_int_sort_base(short* a[], int N, int order);
+void merge_int_sort_recursive_cutoff(short*  a[], short*  aux[], int lo, int hi, int order);
+void merge_int_sort_recursive_basic(short*  a[], short*  aux[], int lo, int hi, int order);
+void merge_int(short*  a[], short*  aux[], int lo, int mid, int hi, int order);
+void insertionSort_int(short*  a[], int N, int order);
+
+void mergeDigits_int_sort_base(short*  a[], short*  priv[], short*  cod[], int N, int order);
+void mergeDigits_int_sort_recursive_cutoff(short*  a[], short*  aux[], short*  priv[], short*  cod[], short*  auxPriv[], short*  auxCod[], int lo, int hi, int order);
+void mergeDigits_int_sort_recursive_basic(short*  a[], short*  aux[], short*  priv[], short*  cod[], short*  auxPriv[], short*  auxCod[], int lo, int hi, int order);
+void mergeDigits_int(short*  a[], short*  aux[], short*  priv[], short*  cod[], short*  auxPriv[], short*  auxCod[], int lo, int mid, int hi, int order);
+void insertionSortDigits_int(short*  a[], short*  priv[], short*  cod[], int N, int order);
 
 void updateLines_MatrixString(struct matrixString mString, int lines);
 
