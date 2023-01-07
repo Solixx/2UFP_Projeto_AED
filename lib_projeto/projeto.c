@@ -11,7 +11,7 @@ void main_lib_projeto(){
     //cliente0();
     //cliente1();
     //cliente2();
-    cliente3();
+    //cliente3();
 }
 
 void cliente0(){
