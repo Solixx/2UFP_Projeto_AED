@@ -103,31 +103,31 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
     }
     //Se privKey maior ou igual que 10 vai calcular a sua run Length
     if(privkey >= 10){
-        allDigitsLong(privkey, allD);
-        runLess[runLessPos+1] = 1;
-        runLess[runLessPos] = allD[digits-1];
+        allDigitsLong(privkey, allD);          // Insere no array allD todos os digitos da privKey
+        runLess[runLessPos+1] = 1;                  // iguala a segunda posição do runLength a 1(count de frequencia de um numero)
+        runLess[runLessPos] = allD[digits-1];       // iguala a primeira posição do runLength ao ultimo digito de allD (ultimode allD é o primeiro da privKey pois o allD fica invertido)
         for (int i = digits-1; i > 0; i--) {
-            if(allD[i] != allD[i-1]){
-                runLessPos += 2;
-                runLess[runLessPos] = allD[i-1];
+            if(allD[i] != allD[i-1]){               // compara se o valor atual de allD é igual ao proximo valor (i-1 é o proximo porque o array está a andar de tras para a frente)
+                runLessPos += 2;                    // se os 2 valores forem iguais então mudamos de digito e subimos então a runLessPos+2 pois a pos 0 e 2 do runLength são os digitos
+                runLess[runLessPos] = allD[i-1];    // igualo runLess[2] ao valor valor de allD[i-1] (i-1 pois o array está a ir de tras para a frente então o i-1 é que é o prox valor)
             }
-            runLess[runLessPos+1]++;
+            runLess[runLessPos+1]++;                // frequencia do digitos++
         }
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= 4; i++) {             // array que vai concatenar todo o array runLess num numero
             if ( i == 1){
-                codKey = runLess[i-1];
+                codKey = runLess[i-1];              // codKey = ao primeiro digito
             } else{
-                if(i%2 == 0){
-                    codKey *= 100;
-                    codKey += runLess[i-1];
+                if(i%2 == 0){                       // se estivermos numa posição multipla de 2 então estamos em posições de frequencias de digitos
+                    codKey *= 100;                  // mutiplicamos o valor de codKey por 100 pois cada frequencia vai ocupar 2 espaços exemplo (101 isto é o numero 1 aparece 1 vez / 1 é o numero e 01 é a frequencia)
+                    codKey += runLess[i-1];         // soma de codKey com o valor de runLess
                     pow = 1;
                 } else{
-                    for (int j = 0; j < numDigitsLong(runLess[i-1]); ++j) {
+                    for (int j = 0; j < numDigitsLong(runLess[i-1]); ++j) { // Ciclo para saber quanto se tem de multiplicar codKey para poder fazer a soma e juntar runLess sabemos isso pelo numero de digitos
                         pow *= 10;
                     }
-                    codKey *= pow;
-                    codKey += runLess[i-1];
-                    pow = 1;
+                    codKey *= pow;              // multiplicamos codKey pelo pow
+                    codKey += runLess[i-1];     // soamos codKey e runLess
+                    pow = 1;                    // voltamos o pow a 1
                 }
             }
         }
@@ -138,22 +138,21 @@ unsigned long long calc_runlength_char(unsigned long long privkey){
     }
 }
 
-
 unsigned long long private_key_from_runlength_char(unsigned long long runlengthkey){
 
     unsigned long long privKey = 0;
     short *allDigits, freq = 0, pow = 1;
     allDigits = key_long_2_digits_int(runlengthkey);
 
-    privKey = allDigits[0];
-    freq = allDigits[1] * 10;
-    freq += allDigits[2];
-    for (int i = 1; i < freq; ++i) {
+    privKey = allDigits[0];         // privKey = ao primeiro digito do allDigits
+    freq = allDigits[1] * 10;       // frequecia = ao segundp digito de allDigits * 10
+    freq += allDigits[2];           // frequencia + o terceiro digito de allDigits = frequencia do primeiro digito da privKey
+    for (int i = 1; i < freq; ++i) {    // ciclo para coclocar o digito da privkey com o seu nº de frequencias
         privKey *= 10;
         privKey += allDigits[0];
     }
 
-    privKey *= 10;
+    privKey *= 10;                  // multiplicamos a privKey * 10 para juntar os restantes valores
     privKey += allDigits[3];
     freq = allDigits[4] * 10;
     freq += allDigits[5];
@@ -165,24 +164,22 @@ unsigned long long private_key_from_runlength_char(unsigned long long runlengthk
     return privKey;
 }
 
-
 char** alloc_matrix_char(int nlines, int ncolumns){
     char **matrix;
     matrix = (char **) calloc((nlines+1) * sizeof (char *), sizeof (char *));
     for (int i = 0; i < nlines; ++i) {
         matrix[i] = (char *) calloc(ncolumns * sizeof (char), sizeof (char));
     }
-    matrix[nlines] = (char *) calloc(3 * sizeof (char), sizeof (char));
+    matrix[nlines] = (char *) calloc(3 * sizeof (char), sizeof (char));   // Linha que vai ser usada para saber o fim da matriz
     strcpy(matrix[nlines], "-1");
     return matrix;
 }
-
 
 void store_key_char(char **matrix, int lines, unsigned long long key){
     char *keyChar = (char *) calloc((numDigitsLong(key)+1) * sizeof (char), sizeof (char));
     sprintf(keyChar, "%llu", key);
     for (int i = 0; i < lines; ++i) {
-        if(!matrix[i][0]){
+        if(!matrix[i][0]){      // Se o valor for vazio
             matrix[i] = (char *) calloc(strlen(keyChar)+1, sizeof (char));
             matrix[i] = keyChar;
             break;
@@ -191,7 +188,6 @@ void store_key_char(char **matrix, int lines, unsigned long long key){
     keyChar=NULL;
     free(keyChar);
 }
-
 
 int exists_key_char(char **matrix, int lines, unsigned long long key){
     char *keyChar = malloc(numDigitsLong(key) * sizeof (char));
@@ -208,7 +204,6 @@ int exists_key_char(char **matrix, int lines, unsigned long long key){
     return 0;
 }
 
-
 unsigned long long get_private_key_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long pubkey){
     char *keyChar = malloc(numDigitsLong(pubkey) * sizeof (char));
     sprintf(keyChar, "%llu", pubkey);
@@ -224,7 +219,6 @@ unsigned long long get_private_key_char(char **matrix_kpub, char **matrix_kpriv,
     return 0;
 }
 
-
 unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, int lines, unsigned long long privkey){
     char *keyChar = malloc(numDigitsLong(privkey) * sizeof (char));
     sprintf(keyChar, "%llu", privkey);
@@ -239,7 +233,6 @@ unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, i
     free(keyChar);
     return 0;
 }
-
 
 unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char* pubkey){
     int exist = 0;
@@ -280,40 +273,26 @@ void bulk_populate_public_keys_char(char **matrix_kpub, int lines){
     unsigned long long r;
     matrix_kpub = (char **) realloc(matrix_kpub, (lines+1) * sizeof (char*));
     for (int i = 0; i < lines; ++i) {
-        if(strcmp(matrix_kpub[i], "\0") == 0){
-            r = new_public_key_int();
+        if(strcmp(matrix_kpub[i], "\0") == 0){      // Se a linha estiver vazia
+            r = new_public_key_int();               // gerar numero aleatorio
             char* rString = malloc(numDigitsLong(r)+1 * sizeof (char));
             sprintf(rString, "%llu", r);
             matrix_kpub[i] = (char *) calloc(strlen(rString)+1, sizeof (char));
-            store_key_char(matrix_kpub, lines, r);
-            //matrix_kpub[i] = randomKeyValue(matrix_kpub[i]);
+            store_key_char(matrix_kpub, lines, r);  // meter o valor aleatorio na matriz
             rString=NULL;
             free(rString);
         }
-        if(strcmp(matrix_kpub[i], "-1") == 0){
-            r = new_public_key_int();
+        if(strcmp(matrix_kpub[i], "-1") == 0){      // Se estivermos na ultima linha da matriz
+            r = new_public_key_int();               // geramos o numero aleatorio
             char* rString = malloc(numDigitsLong(r)+1 * sizeof (char));
             sprintf(rString, "%llu", r);
             matrix_kpub[i] = (char *) calloc(strlen(rString)+1, sizeof (char));
-            store_key_char(matrix_kpub, lines, r);
+            store_key_char(matrix_kpub, lines, r);  // colocamos o numero aleatorio na matriz
             matrix_kpub[i+1] = (char *) calloc(3*sizeof (char), sizeof (char));
-            strcpy(matrix_kpub[i+1], "-1");
-            //matrix_kpub[i] = randomKeyValue(matrix_kpub[i]);
+            strcpy(matrix_kpub[i+1], "-1");         // atualizamos a posição do -1 para a prox
             rString=NULL;
             free(rString);
         }
-        /*
-        if(!matrix_kpub[i] || matrix_kpub[i][0] == '\0'){
-            r = new_public_key_int();
-            char* rString = malloc(numDigitsLong(r)+1 * sizeof (char));
-            sprintf(rString, "%llu", r);
-            matrix_kpub[i] = (char *) calloc(strlen(rString)+1, sizeof (char));
-            store_key_char(matrix_kpub, lines, r);
-            //matrix_kpub[i] = randomKeyValue(matrix_kpub[i]);
-            rString=NULL;
-            free(rString);
-        }
-         */
     }
 }
 
@@ -321,25 +300,18 @@ void bulk_compute_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int
     unsigned long long val = 0;
     matrix_kpriv = (char **) realloc(matrix_kpriv, (lines+1) * sizeof (char*));
     for (int i = 0; i < lines; ++i) {
-        if(strcmp(matrix_kpriv[i], "\0") == 0){
-            val = calc_private_key_char(atoll(matrix_kpub[i]));
+        if(strcmp(matrix_kpriv[i], "\0") == 0){     // se o valor for vazio
+            val = calc_private_key_char(atoll(matrix_kpub[i]));     // calcula a privKey
             matrix_kpriv[i] = (char *) calloc(numDigitsLong(val)+1, sizeof (char));
-            store_key_char(matrix_kpriv, lines, val);
+            store_key_char(matrix_kpriv, lines, val);           // guarda na matriz privada
         }
-        if(strcmp(matrix_kpriv[i], "-1") == 0){
-            val = calc_private_key_char(atoll(matrix_kpub[i]));
+        if(strcmp(matrix_kpriv[i], "-1") == 0){     // se estivermos na ultima linha da matriz
+            val = calc_private_key_char(atoll(matrix_kpub[i]));     // calcula a privKey
             matrix_kpriv[i] = (char *) calloc(numDigitsLong(val)+1, sizeof (char));
-            store_key_char(matrix_kpriv, lines, val);
+            store_key_char(matrix_kpriv, lines, val);           // guarda ana matriz de privadas
             matrix_kpriv[i+1] = (char *) calloc(3 * sizeof (char), sizeof (char));
-            strcpy(matrix_kpriv[i+1], "-1");
+            strcpy(matrix_kpriv[i+1], "-1");                    // atualizamos a posição do -1
         }
-        /*
-        if(!matrix_kpriv[i] || matrix_kpriv[i][0] == '\0'){
-            val = calc_private_key_char(atoll(matrix_kpub[i]));
-            matrix_kpriv[i] = (char *) calloc(numDigitsLong(val)+1, sizeof (char));
-            store_key_char(matrix_kpriv, lines, val);
-        }
-         */
     }
 }
 
@@ -347,25 +319,18 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
     unsigned long long val;
     matrix_kcod = (char **) realloc(matrix_kcod, (lines+1) * sizeof (char*));
     for (int i = 0; i < lines; ++i) {
-        if(strcmp(matrix_kcod[i], "\0") == 0){
-            val = calc_runlength_char(atoll(matrix_kpriv[i]));
+        if(strcmp(matrix_kcod[i], "\0") == 0){      // se a posição estiver vazia
+            val = calc_runlength_char(atoll(matrix_kpriv[i]));  // calcula a runLength
             matrix_kcod[i] = (char *) calloc(numDigitsLong(val)+1, sizeof (char));
-            store_key_char(matrix_kcod, lines, val);
+            store_key_char(matrix_kcod, lines, val);        // guarda na matriz
         }
-        if(strcmp(matrix_kcod[i], "-1") == 0){
-            val = calc_runlength_char(atoll(matrix_kpriv[i]));
+        if(strcmp(matrix_kcod[i], "-1") == 0){     // se estiver na ultima linha da matriz
+            val = calc_runlength_char(atoll(matrix_kpriv[i]));  // calcula o runLength
             matrix_kcod[i] = (char *) calloc(numDigitsLong(val)+1, sizeof (char));
-            store_key_char(matrix_kcod, lines, val);
+            store_key_char(matrix_kcod, lines, val);        // guarda na matriz
             matrix_kcod[i+1] = (char *) calloc(3 * sizeof (char), sizeof (char));
-            strcpy(matrix_kcod[i+1], "-1");
+            strcpy(matrix_kcod[i+1], "-1");                 // atualiza a pos do -1
         }
-        /*
-        if(!matrix_kcod[i] || matrix_kcod[i][0] == '\0'){
-            val = calc_runlength_char(atoll(matrix_kpriv[i]));
-            matrix_kcod[i] = (char *) calloc(numDigitsLong(val)+1, sizeof (char));
-            store_key_char(matrix_kcod, lines, val);
-        }
-         */
     }
 }
 
@@ -380,8 +345,7 @@ char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lin
 
     for (int i = 0; i < lines; ++i) {
         int k = 0;
-        //if(!matrix_kpub[i] || matrix_kpub[i][0] == '\0') continue;
-        if(strcmp(matrix_kpub[i], "-1") == 0) break;
+        if(strcmp(matrix_kpub[i], "-1") == 0) break;        // se for -1 estamos no fim da matriz então já podemos sair
         for (int j = 0; j < strlen(matrix_kpub[i]); ++j) {
             if(matrix_kpub[i][j] == partialPubKeyChar[k]){
                 k++;
@@ -538,7 +502,7 @@ short* key_long_2_digits_int(unsigned long long key){
         tempKey /= 10;
         i++;
     }
-    for (int j = 0; j < numDigitsLong(key); ++j) {
+    for (int j = 0; j < numDigitsLong(key); ++j) {      // inverter o array (para guardar com a ordem normal da key)
         if(hi <= j) break;
         temp = keyDigits[j];
         keyDigits[j] = keyDigits[hi];
@@ -575,75 +539,6 @@ unsigned long long key_digits_2_long_int(short* keydigits){
 
     return pubKey;
 }
-
-/*
-unsigned long long calc_private_key_int(unsigned long long pubkey){
-    unsigned long long privKey = 0;
-    short *n;
-    int digitos = numDigitsLong(pubkey*2), j = 0, changePos = 0;
-    short *allD = key_long_2_digits_int(pubkey*2);
-    short rightNum = allD[1], leftNum = allD[0];
-
-    if(pubkey <= 5){
-        rightNum = 0;
-        leftNum = 1;
-    }
-    if(digitos < 2) digitos = 2;
-    n = (short *) calloc(digitos, sizeof (short));
-    while (1){
-        if(leftNum == 9 && changePos == digitos -1 && rightNum == 8){
-            digitos++;
-            n=NULL;
-            free(n);
-            n = (short *) calloc(digitos, sizeof (short ));
-            //n = (short *) calloc(digitos, sizeof (short ));
-            changePos = 0;
-            leftNum = 1;
-            rightNum = 0;
-        }
-        if(rightNum == 9 && changePos == digitos -1){
-            leftNum++;
-        }
-        if(changePos == digitos -1){
-            changePos = 0;
-            if(rightNum != 9){
-                rightNum++;
-            } else{
-                rightNum = 0;
-            }
-        }
-        if(leftNum == rightNum){
-            rightNum++;
-        }
-        if(j > changePos){
-            n[j] = rightNum;
-        } else{
-            n[j] = leftNum;
-        }
-        if(j == digitos-1){
-            n[digitos] = -1;
-            privKey = key_digits_2_long_int(n);
-            //printf("PivKey = %llu\n", privKey);
-            if(privKey > 1000000000000 || privKey < 0 || pubkey == 0){
-                n=NULL;
-                free(n);
-                return 0;
-            }
-            if(privKey > pubkey && privKey%pubkey == 0){
-                n=NULL;
-                free(n);
-                return privKey;
-            }
-            changePos++;
-            j = 0;
-
-        } else{
-            j++;
-        }
-    }
-}
-*/
-
 
 unsigned long long calc_private_key_int(unsigned long long pubkey){
     unsigned long long privKey = 0;
@@ -1110,6 +1005,14 @@ void save_bin_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 // ===================================================================================================================================== //
 // ========================================== FUNÇÕES PARA PORTA-CHAVES ================================================================ //
 // ===================================================================================================================================== //
+
+/**
+ * Esta função vai criar um novo porta chaves e inserir uma dada linha das matrizes nesse porta chaves e inserilo no inicio da lista ligada
+ * @param portaChaves apontador para os apontadores dos porta chaves
+ * @param mString  struct das matrizes de Strings
+ * @param mInts struct das matrizes de Ints
+ * @param pos linha das matrizes a ser inserida no porta chaves
+ */
 void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int pos){
     KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
     time_t data_criacao;
@@ -1129,7 +1032,7 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
     new_keyHolder->khInts.matrixPriv = alloc_matrix_int(1, 1);
     new_keyHolder->khInts.matrixCod = alloc_matrix_int(1, 1);
 
-    if(pos >= mString.lines){
+    if(pos >= mString.lines){       // se tentar adicionar uma linha que não exista é inserido 0
         store_key_char(new_keyHolder->khString.matrixPub, 1, 0);
         store_key_char(new_keyHolder->khString.matrixPriv, 1, 0);
         store_key_char(new_keyHolder->khString.matrixCod, 1, 0);
@@ -1138,7 +1041,7 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
         store_key_char(new_keyHolder->khString.matrixPriv, 1, atoll(mString.matrixPriv[pos]));
         store_key_char(new_keyHolder->khString.matrixCod, 1, atoll(mString.matrixCod[pos]));
     }
-    if(pos >= mInts.lines){
+    if(pos >= mInts.lines){       // se tentar adicionar uma linha que não exista é inserido 0
         store_key_int(new_keyHolder->khInts.matrixPub, 1, 0);
         store_key_int(new_keyHolder->khInts.matrixPriv, 1, 0);
         store_key_int(new_keyHolder->khInts.matrixCod, 1, 0);
@@ -1148,20 +1051,10 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
         store_key_int(new_keyHolder->khInts.matrixCod, 2, key_digits_2_long_int(mInts.matrixCod[pos]));
     }
 
-    //new_keyHolder->khString.matrixPub[1] = NULL;
-    //new_keyHolder->khString.matrixPriv[1] = NULL;
-    //new_keyHolder->khString.matrixCod[1] = NULL;
-    //new_keyHolder->khInts.matrixPub[1] = NULL;
-    //new_keyHolder->khInts.matrixPriv[1] = NULL;
-    //new_keyHolder->khInts.matrixCod[1] = NULL;
-    /*
-    new_keyHolder->khString = mString;
-    new_keyHolder->khInts = mInts;
-     */
-    new_keyHolder->data_criacao = ctime(&data_criacao);
-    new_keyHolder->data_modificacao = ctime(&data_modificacao);
+    new_keyHolder->data_criacao = ctime(&data_criacao);             // insere a data de criação
+    new_keyHolder->data_modificacao = ctime(&data_modificacao);     // insere a data de modificação
 
-    if(*portaChaves == NULL){
+    if(*portaChaves == NULL){           // se não existirem porta chaves
         new_keyHolder->sieInts++;
         new_keyHolder->sizeStrings++;
         *portaChaves = new_keyHolder;
@@ -1170,46 +1063,52 @@ void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, str
 
     new_keyHolder->sieInts++;
     new_keyHolder->sizeStrings++;
-    *portaChaves = new_keyHolder;
+    *portaChaves = new_keyHolder;       // se já existirem porta chaves o primeiro agora é o new_keyHolder
 }
 
+/**
+ * Função que serve para editar um porta chaves tanto para adicionar uma nova linha de matrizes como para editar uma já existente
+ * A posição na lista ligada deste porta chaves vai ser atualizada para a primeira posição pois vais começar a ser o porta chaves com a data de modificação mais recente
+ * @param portaChaves apontador para os apontadores dos porta chaves
+ * @param mString struct das matrizes de strings
+ * @param mInts strucr para as matrizes de ints
+ * @param keyHolderPos posição do porta chaves a ser editado
+ * @param keyPosChange linha do porta chaves a ser editada/adicionada
+ * @param newKeyPos linha da matriz de string/ints a ser adicionada
+ */
 void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int keyPosChange, int newKeyPos){
-    //KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
     KEY_HOLDER *temp = NULL;
     time_t data_modificacao;
     time(&data_modificacao);
     int stopPos=1, isAdd = 0, size = 0, sizeMax = 1;
 
     KEY_HOLDER * curr = *portaChaves;
-    while (stopPos != keyHolderPos){
+    while (stopPos != keyHolderPos){    // andar na lista ligada até chegar ao porta chaves a ser editado
         if(curr == NULL){
             printf("Porta Chaves Nao Encontrado\n");
             return;
         }
-        temp = curr;
+        temp = curr;            // guarda o porta chaves anterior
         curr = curr->next;
         stopPos++;
     }
-    //portaChaves->next = new_keyHolder;
-    for (int i = 0; strcmp(curr->khString.matrixPub[i], "-1") != 0; ++i) {
+
+    for (int i = 0; strcmp(curr->khString.matrixPub[i], "-1") != 0; ++i) {  // calcula o tamanho das matrizes deste prota chaves
         sizeMax++;
     }
 
-    for (int j = 0; j <= keyPosChange; ++j) {
-        //if(!curr->khString.matrixPub[j]){
-        if(strcmp(curr->khString.matrixPub[j], "-1") == 0){
-            if(newKeyPos > mString.lines){
+    for (int j = 0; j <= keyPosChange; ++j) {       // ciclo que vai verificar se a linha do porta chaves já existe ou não, se nãon existir vamos adicionar
+        if(strcmp(curr->khString.matrixPub[j], "-1") == 0){ // se estamos na ultima linha do porta chaves quer dizer que a linha que o utilizador escolheu não existe
+            if(newKeyPos > mString.lines){  // verificar se a linha a diconar existe na matriz de strings
                 curr->khString.matrixPub[j] = realloc(curr->khString.matrixPub[j],2 * sizeof (char));
-                strcpy(curr->khString.matrixPub[j], "0");
-                //curr->khString.matrixPub[j] =  "0\0";
+                strcpy(curr->khString.matrixPub[j], "0");   // se não existir adicionamos 0
             } else{
                 curr->khString.matrixPub[j] = realloc(curr->khString.matrixPub[j],(numDigitsLong(atoll(mString.matrixPub[newKeyPos]))+1)*sizeof (char));
-                strcpy(curr->khString.matrixPub[j], mString.matrixPub[newKeyPos]);
-                //curr->khString.matrixPub[j] =  mString.matrixPub[newKeyPos];
+                strcpy(curr->khString.matrixPub[j], mString.matrixPub[newKeyPos]);  // se existir adicionamos essa linha
             }
             isAdd = 1;
         }
-        //if(!curr->khString.matrixPriv[j]){
+        // Mesma coisa que na matriz de String de chaves Publicas
         if(strcmp(curr->khString.matrixPriv[j], "-1") == 0){
             if(newKeyPos > mString.lines){
                 curr->khString.matrixPriv[j] = realloc(curr->khString.matrixPriv[j],2 * sizeof (char));
@@ -1220,7 +1119,6 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             }
             isAdd = 1;
         }
-        //if(!curr->khString.matrixCod[j]){
         if(strcmp(curr->khString.matrixCod[j], "-1") == 0){
             if(newKeyPos > mString.lines){
                 curr->khString.matrixCod[j] = realloc(curr->khString.matrixCod[j],2 * sizeof (char));
@@ -1231,7 +1129,6 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             }
             isAdd = 1;
         }
-        //if(!curr->khInts.matrixPub[j]){
         if(curr->khInts.matrixPub[j][0] == -1){
             if(newKeyPos > mInts.lines){
                 curr->khInts.matrixPub[j] = realloc(curr->khInts.matrixPub[j],2 * sizeof (short));
@@ -1245,7 +1142,6 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             }
             isAdd = 1;
         }
-        //if(!curr->khInts.matrixPriv[j]){
         if(curr->khInts.matrixPriv[j][0] == -1){
             if(newKeyPos > mInts.lines){
                 curr->khInts.matrixPriv[j] = realloc(curr->khInts.matrixPriv[j],2 * sizeof (short));
@@ -1259,7 +1155,6 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             }
             isAdd = 1;
         }
-        //if(!curr->khInts.matrixCod[j]){
         if(curr->khInts.matrixCod[j][0] == -1){
             if(newKeyPos > mInts.lines){
                 curr->khInts.matrixCod[j] = realloc(curr->khInts.matrixCod[j],2 * sizeof (short));
@@ -1273,10 +1168,11 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             }
             isAdd = 1;
         }
-        if(isAdd == 1){
-            curr->sieInts++;
-            curr->sizeStrings++;
+        if(isAdd == 1){ // se a linha foi adicionada então
+            curr->sieInts++;        // aumentamos o numero de linhas ints deste porta chaves
+            curr->sizeStrings++;    // aumentamos o numeri de linhas strings deste porta chaves
 
+            // Atualizo o valor de -1 nas matrizes
             curr->khString.matrixPub = realloc(curr->khString.matrixPub, (sizeMax+1) * sizeof (char*));
             curr->khString.matrixPub[sizeMax] = calloc(3, sizeof (char));
             curr->khString.matrixPriv[sizeMax] = calloc(3, sizeof (char));
@@ -1293,39 +1189,27 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             curr->khInts.matrixPriv[sizeMax][0] = -1;
             curr->khInts.matrixCod[sizeMax][0] = -1;
 
-            //curr->khInts.matrixPub[sizeMax] = NULL;
-            //curr->khInts.matrixPriv[sizeMax] = NULL;
-            //curr->khInts.matrixCod[sizeMax] = NULL;
-
+            // se não for o primeiro porta chaves, atualizamos a lista ligada
             if(keyHolderPos != 1) {
-                temp->next = curr->next;
-                curr->next = *portaChaves;
-                *portaChaves = curr;
+                temp->next = curr->next;    // o porta chaves anterior vai agora apontar para o proximo deste porta chaves editado
+                curr->next = *portaChaves;  // o porta chaves editado agora vai apontar para o primeiro porta chaves
+                *portaChaves = curr;        // o primeiro porta chaves agora é este porta chaves que foi editado
             }
 
             return;
         }
         size++;
     }
-    if(isAdd == 0){
-        //curr->khString.matrixPub = (char**) realloc(curr->khString.matrixPub, (sizeMax+2)*sizeof (char*));
-        //curr->khString.matrixPriv = (char**) realloc(curr->khString.matrixPriv, (sizeMax+2)*sizeof (char*));
-        //curr->khString.matrixCod = (char**) realloc(curr->khString.matrixCod, (sizeMax+2)*sizeof (char*));
-        //curr->khInts.matrixPub = (short**) realloc(curr->khInts.matrixPub, (sizeMax+2)*sizeof (short*));
-        //curr->khInts.matrixPriv = (short**) realloc(curr->khInts.matrixPriv, (sizeMax+2)*sizeof (short*));
-        //curr->khInts.matrixCod = (short**) realloc(curr->khInts.matrixCod, (sizeMax+2)*sizeof (short*));
+    if(isAdd == 0){     // se a linha não foi adicionada então quer dizer que já existe no porta chaves e vamos editar
 
-        if(newKeyPos >= mString.lines){
+        if(newKeyPos >= mString.lines){ // se a linha das matrizes não existir é inserido um 0
             curr->khString.matrixPub[keyPosChange] = (char *) calloc(1, sizeof (char ));
             curr->khString.matrixPriv[keyPosChange] = (char *) calloc(1, sizeof (char ));
             curr->khString.matrixCod[keyPosChange] = (char *) calloc(1,  sizeof (char ));
             strcpy(curr->khString.matrixPub[keyPosChange], "0");
             strcpy(curr->khString.matrixPriv[keyPosChange], "0");
             strcpy(curr->khString.matrixCod[keyPosChange], "0");
-            //curr->khString.matrixPub[keyPosChange] = "0\0";
-            //curr->khString.matrixPriv[keyPosChange] = "0\0";
-            //curr->khString.matrixCod[keyPosChange] = "0\0";
-        } else{
+        } else{     // se existir essa linha é inserida
             curr->khString.matrixPub[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPub[newKeyPos]))+1, sizeof (char ));
             curr->khString.matrixPriv[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixPriv[newKeyPos]))+1, sizeof (char ));
             curr->khString.matrixCod[keyPosChange] = (char *) calloc(numDigitsLong(atoll(mString.matrixCod[newKeyPos]))+1,  sizeof (char ));
@@ -1333,7 +1217,7 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             curr->khString.matrixPriv[keyPosChange] = mString.matrixPriv[newKeyPos];
             curr->khString.matrixCod[keyPosChange] = mString.matrixCod[newKeyPos];
         }
-        if(newKeyPos >= mInts.lines){
+        if(newKeyPos >= mInts.lines){ // se a linha das matrizes não existir é inserido um 0
             curr->khInts.matrixPub[keyPosChange] = (short *) calloc(2, sizeof (short ));
             curr->khInts.matrixPriv[keyPosChange] = (short *) calloc(2, sizeof (short ));
             curr->khInts.matrixCod[keyPosChange] = (short *) calloc(2, sizeof (short ));
@@ -1343,7 +1227,7 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
             curr->khInts.matrixPub[keyPosChange][1] = -1;
             curr->khInts.matrixPriv[keyPosChange][1] = -1;
             curr->khInts.matrixCod[keyPosChange][1] = -1;
-        } else{
+        } else{     // se existir essa linha é inserida
             curr->khInts.matrixPub[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPub[newKeyPos]))+1, sizeof (short ));
             curr->khInts.matrixPriv[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixPriv[newKeyPos]))+1, sizeof (short ));
             curr->khInts.matrixCod[keyPosChange] = (short *) calloc(numDigitsLong(key_digits_2_long_int(mInts.matrixCod[newKeyPos]))+1, sizeof (short ));
@@ -1359,63 +1243,70 @@ void edit_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struc
         }
     }
 
-    //new_keyHolder->khInts.matrixPub[posChange] = key_digits_2_long_int(mInts.matrixPub[keyPos]);
-    //new_keyHolder->khInts.matrixPriv[posChange] = key_digits_2_long_int(mInts.matrixPriv[keyPos]);
-    //new_keyHolder->khInts.matrixCod[posChange] = key_digits_2_long_int(mInts.matrixCod[keyPos]);
+    curr->data_modificacao = ctime(&data_modificacao);      // artualizo a data de modificação
 
-    curr->data_modificacao = ctime(&data_modificacao);
-
+    // se não for o primeiro porta chaves, atualizo a lista ligada
     if(keyHolderPos != 1){
-        temp->next = curr->next;
-        curr->next = *portaChaves;
-        *portaChaves = curr;
+        temp->next = curr->next;    // o porta chaves anterior agora vai apontador para o proximo deste prota chaves editado
+        curr->next = *portaChaves;  // este porta chaves vai agora apontar para o primeiro porta chaves
+        *portaChaves = curr;        // este porta chaves editado vai passar a ser o primeiro porta chaves da lista ligada
     }
 }
 
+/**
+ * Esta função remove um porta chaves numa dada posição
+ * @param portaChaves apontador que aponta para os vários porta chaves
+ * @param keyHolderPos posição do porta chaves
+ */
 void remove_keyHolder(KEY_HOLDER** portaChaves, int keyHolderPos){
     int removePos = 1;
 
     if(*portaChaves == NULL) return;
 
+    // se for o primeiro porta chaves, o segundo porta chaves vai agora passar a ser o primeiro
     if(keyHolderPos == 1){
-        *portaChaves = (*portaChaves)->next;
+        *portaChaves = (*portaChaves)->next;    // igualar o primeiro porta chaves ao seu proximo(segundo porta chaves)
     }
 
+    // percorrer os porta chaves até ao na posição dada
     KEY_HOLDER *curr = *portaChaves;
     while (curr->next != NULL){
-        if(removePos+1 == keyHolderPos){
-            curr->next = curr->next->next;
-            if(curr->next == NULL) break;
-            /*
-            KEY_HOLDER *temp_remove = curr->next;
-            curr->next = curr->next->next;
-            free(temp_remove);
-            break;
-             */
+        if(removePos+1 == keyHolderPos){       // quando o proximo porta chaves for o escolhido
+            curr->next = curr->next->next;     // este porta chaves(1 antes do que vai ser removido) vai apontador para o proximo porta chaves do porta chaves que vai ser removido
+            if(curr->next == NULL) break;      // se o porta chaves não existir saimos do ciclo
         }
         removePos++;
         curr = curr->next;
     }
 }
 
+/**
+ * Função que escreve na consola e num ficheiro se uma dada chave existe num dado porta chaves
+ * @param portaChaves apontador que aponta para os vários porta chaves
+ * @param keyHolderPos posição do porta chaves
+ * @param keyToSeach chave a ser procurada
+ * @param type tipode chave (1 - chave publica / 2 - chave privada / 3 - chave codificada)
+ * @param filenamenome do ficheiro a inserir as informações
+ */
 void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsigned long long keyToSeach, int type, char* filename){
 
     FILE *fp = fopen(filename, "a+");
     int stopPos = 1, exist = 0;
-    if(type > 3 || type <= 0){
+    if(type > 3 || type <= 0){  // se for inserido um tipo de chave que não existe
         printf("Tipo de chaves nao existe (1 - Publica / 2 - Privada / 3 - Codificada)\n");
         return;
     }
+    // ciclo para percorrer a lista ligada até encontrar o porta chaves escolhido
     while (stopPos != keyHolderPos){
         portaChaves = portaChaves->next;
         stopPos++;
-        if(portaChaves == NULL){
+        if(portaChaves == NULL){        // se o porta chaves não existir
             printf("Porta Chaves nao existe\n");
             return;
         }
     }
 
-        if(type == 1){
+        if(type == 1){  // chaves publicas
             for (int i = 0; portaChaves->khString.matrixPub[i] ; ++i) {
                 if(atoll(portaChaves->khString.matrixPub[i]) == keyToSeach){
                     printf("A chave %llu existe na matrix de chaves publicas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
@@ -1441,7 +1332,7 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsi
             }
             exist = 0;
         }
-        else if(type == 2){
+        else if(type == 2){     // chaves privadas
             for (int i = 0; portaChaves->khString.matrixPriv[i] ; ++i) {
                 if(atoll(portaChaves->khString.matrixPriv[i]) == keyToSeach){
                     printf("A chave %llu existe na matrix de chaves privadas de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
@@ -1467,7 +1358,7 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsi
             }
             exist = 0;
         }
-        else if(type == 3){
+        else if(type == 3){     // chaves codificadas
             for (int i = 0; portaChaves->khString.matrixCod[i] ; ++i) {
                 if(atoll(portaChaves->khString.matrixCod[i]) == keyToSeach){
                     printf("A chave %llu existe na matrix de chaves codificada de Strings na prosicao %d do porta chaves %d\n", keyToSeach, i, keyHolderPos);
@@ -1496,6 +1387,14 @@ void searchSingleKey_inKeyHolder(KEY_HOLDER* portaChaves, int keyHolderPos, unsi
     fclose(fp);
 }
 
+/**
+ * Função que guarda um porta chaves num ficheiro
+ * @param portaChaves apontador que aponta para os vários porta chaves
+ * @param mString struct de matrizes de string
+ * @param mInts struct de matrizes de ints
+ * @param keyHolderPos posição do porta chaves
+ * @param filename nome do ficheiro
+ */
 void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, char filename[]){
 
     FILE *fileChavesPubWrite;
@@ -1540,29 +1439,18 @@ void save_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, 
         i++;
     }
 
-    /*
-    for (int i = 0; i < lines; ++i) {
-        if(matrix_kpub[i][0] != NULL){
-            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kpub[i]));
-            fprintf(fileChavesPubWrite,"\n");
-        }
-    }
-    for (int i = 0; i < lines; ++i) {
-        if(matrix_kpriv[i][0] != NULL){
-            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kpriv[i]));
-            fprintf(fileChavesPubWrite,"\n");
-        }
-    }for (int i = 0; i < lines; ++i) {
-        if(matrix_kcod[i][0] != NULL){
-            fprintf(fileChavesPubWrite,"%llu" , key_digits_2_long_int(matrix_kcod[i]));
-            fprintf(fileChavesPubWrite,"\n");
-        }
-    }
-     */
-
     fclose(fileChavesPubWrite);
 }
 
+/**
+ * Funçãoq eu recebe um porta chaves de um ficheiro
+ * @param portaChaves apontador que aponta para os vários porta chaves
+ * @param mString struct de matrizes string
+ * @param mInts struct de matrizes ints
+ * @param keyHolderPos posição do porta chaves
+ * @param newKeysPos linha do porta chaves a adicionar
+ * @param filename nome do ficheiro
+ */
 void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, struct matrixInts mInts, int keyHolderPos, int newKeysPos, char filename[]){
 
     FILE *fileChavesPubRead;
@@ -1676,12 +1564,16 @@ void load_txt_keyHolder(KEY_HOLDER ** portaChaves, struct matrixString mString, 
     fclose(fileChavesPubRead);
 } //TODO Load porta Chaves de ficheiros
 
+/**
+ * Função que escreve os vários porta chaves na consola
+ * @param portaChaves apontador que aponta para os vários porta chaves
+ */
 void print_keyHolders(KEY_HOLDER** portaChaves){
     int sair = 0, numPortaChaves = 1;
     for (KEY_HOLDER *curr = *portaChaves; curr != NULL ; curr = curr->next) {
         int i = 0;
         printf("Porta Chaves - %d\n", numPortaChaves);
-        while (1){
+        while (1){  // ciclo infinito (termina quando as matrizes chegarem ao fim)
             if(strcmp(curr->khString.matrixPub[i], "-1") != 0) {
                 printf("Porta Chaves PubKey String - %s\n", curr->khString.matrixPub[i]);
                 sair = 0;
