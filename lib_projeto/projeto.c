@@ -6,1001 +6,9 @@
 #include "aed1_lp1_2223_proj_part1_chars.h"
 #include "aed1_lp1_2223_proj_part1_ints.h"
 
-int bipolar_number(char *text){
-
-    int bipolar = 0, changes = 0, exits = 0;
-    int number, pow, digits = 0;
-    char *str = &text[0];
-
-    for (int i = 0; i < strlen(text); ++i) {
-        if(isalpha(text[i])){
-            printf("Nao pode ter letras\n");
-            return -1;
-        }
-        if(text[i] != text[i+1]){
-            changes++;
-        }
-    }
-    changes--;
-    if(changes == 1){
-        for (int i = 0; i < 3; ++i) {
-            *(str+i) = text[i];
-            if(text[i] == text[i+1]){
-                bipolar = 1;
-            }
-        }
-        number = atoi(str);
-        return 0;
-    }
-    else{
-        return -1;
-    }
-}
-
-int bipolar_numberInt(short text[]){
-
-    int bipolar = 0, changes = 0, exits = 0;
-    int number, pow, digits = 0;
-
-    for (int i = 0; text[i+1] != -1; ++i) {
-        if(text[i] != text[i+1]){
-            changes++;
-        }
-    }
-    //changes--;
-    if(changes == 1){
-        return 0;
-    }
-    else{
-        return -1;
-    }
-}
-
-void print_bipolar_numbers(int k){
-
-    int n[4] = {};
-    int num = 1, rightNum = 0, leftNum = 0;
-    int j = 0, changePos = k-1;
-
-    /*
-    for (int i = 0; i < k; ++i) {
-        n[i] = leftNum;
-        printf("%d", n[i]);
-    }
-    */
-
-    while (1){
-        if(leftNum == 9 && changePos == 0 && rightNum == 8){
-            break;
-        }
-        if(rightNum == 9 && changePos == 0){
-            rightNum = -1;
-            leftNum++;
-        }
-        if(changePos == 0){
-            changePos = k-1;
-            if(rightNum != 9){
-                rightNum++;
-            } else{
-                rightNum = -1;
-            }
-        }
-        if(leftNum == rightNum){
-            rightNum++;
-        }
-        if(j >= changePos){
-            n[j] = rightNum;
-        } else{
-            n[j] = leftNum;
-        }
-        if(j == k){
-            printf("\t");
-            changePos--;
-            j = 0;
-        } else{
-            printf("%d", n[j]);
-            j++;
-        }
-    }
-}
-
-char* find_mul_bipolar_number(char *k){
-    char *n;
-    char rightNum = '0', leftNum = '1';
-    int digitos = 2, j = 0, changePos = 0, numDigits = 2;
-
-    n = (char *) calloc(digitos, sizeof (char));
-    while (1){
-        n = (char *) realloc(n, digitos);
-        if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
-            digitos++;
-            changePos--;
-            leftNum = '1';
-            rightNum = '0';
-        }
-        if(rightNum == '9' && changePos == digitos -1){
-            leftNum++;
-        }
-        if(changePos == digitos -1){
-            changePos = 0;
-            if(rightNum != '9'){
-                rightNum++;
-            } else{
-                rightNum = '0';
-            }
-        }
-        if(leftNum == rightNum){
-            rightNum++;
-        }
-        if(j > changePos){
-            n[j] = rightNum;
-        } else{
-            n[j] = leftNum;
-        }
-        if(j == digitos-1){
-            if(atoi(n) > 2147483647 || atoi(n) < 0){
-                n = "\0";
-                return n;
-            } else{
-                numDigits = digitos;
-                n[strlen(n)] = '\0';
-                if(atoi(n) > atoi(k) && atoi(n)%atoi(k) == 0){
-                    return n;
-                }
-                changePos++;
-                j = 0;
-            }
-
-        } else{
-            j++;
-        }
-    }
-}
-
-int find_mul_bipolar_number_Int(int k){
-    int *n;
-    int rightNum = 0, leftNum = 1;
-    int digitos = 2, j = 0, changePos = 0;
-
-    n = (int *) calloc(digitos, sizeof (int));
-    while (1){
-        n = (int *) realloc(n, digitos);
-        if(leftNum == 9 && changePos == digitos -1 && rightNum == 8){
-            digitos++;
-            leftNum = 1;
-            rightNum = 0;
-        }
-        if(rightNum == 9 && changePos == digitos -1){
-            leftNum++;
-        }
-        if(changePos == digitos -1){
-            changePos = 0;
-            if(rightNum != 9){
-                rightNum++;
-            } else{
-                rightNum = 0;
-            }
-        }
-        if(leftNum == rightNum){
-            rightNum++;
-        }
-        if(j > changePos){
-            n[j] = rightNum;
-        } else{
-            n[j] = leftNum;
-        }
-        if(j == digitos-1){
-            if(*n > 2147483647 || *n < 0){
-                n = NULL;
-                return *n;
-            } else{
-                if(*n > k && *n%k == 0){
-                    return *n;
-                }
-                changePos++;
-                j = 0;
-            }
-
-        } else{
-            j++;
-        }
-    }
-}
-
-/**
- * Função que vai calcular o número de digitos de um número (int)
- * @param num número usado para calcular o seu número de digitos
- * @return número de digitos (int)
- */
-int numDigits(int num){
-    int digits = 0;
-    do {
-        num /= 10;
-        digits++;
-    } while (num != 0);
-    return digits;
-}
-
-/**
- * Função que vai calcular o número de digitos de um número (unsigned long long)
- * @param num número usado para calcular o seu número de digitos
- * @return número de digitos (int)
- */
-int numDigitsLong(unsigned long long num){
-    int digits = 0;
-    do {
-        num /= 10;
-        digits++;
-    } while (num != 0);
-    return digits;
-}
-
-/**
- * Função que vai dividir um número (int) por digitos e armazenar os mesmos num array
- * @param num número a ser dividido em digitos
- * @param allD aray com todos os digitos de num
- */
-void allDigits(int num, int allD[]){
-    int i = 0;
-    while (num){
-        allD[i] = num%10;
-        num /= 10;
-        i++;
-    }
-}
-
-/**
- * Função que vai dividir um número (unsigned long long) por digitos e armazenar os mesmos num array
- * @param num número a ser dividido em digitos
- * @param allD aray com todos os digitos de num
- */
-void allDigitsLong(unsigned long long num, int allD[]){
-    int i = 0;
-    while (num){
-        allD[i] = num%10;
-        num /= 10;
-        i++;
-    }
-}
-
-/**
- * Função que gera um número aleatório e insere num ficheiro
- * @param fileChavesPubWrite ficheiro qe vai receber o número aleatório
- * @param fileName nome do ficheiro
- * @param n número de números aleatórios a serem gerados para o ficheiro
- */
-void randomKeyFile(FILE *fileChavesPubWrite, char *fileName, int n){
-
-    fileChavesPubWrite = fopen(fileName, "a");
-    time_t t1;
-    srand((unsigned ) time(&t1));
-    for (int i = 0; i < n; ++i) {
-        int r = rand()%250;
-        fprintf(fileChavesPubWrite,"%d",r);
-        fprintf(fileChavesPubWrite,"\n");
-    }
-    fclose(fileChavesPubWrite);
-}
-
-/**
- * Função que vai gerar um número aleatório e retornar o mesmo em char**
- * @param r matrix de strings (char*)
- * @param n número de números aleatórios a serem gerados
- * @return da matrix de strings (char*)
- */
-char** randomKeyMatrix(char** r, int n){
-    int random = 0, digits = 0;
-
-    r = (char **) malloc(n*sizeof (char *));
-    for (int i = 0; i < n; ++i) {
-        random = rand();
-        digits = numDigits(random);
-        r[i] = (char *) malloc(digits * sizeof (char));
-        sprintf(r[i], "%d", random);
-    }
-    return r;
-}
-
-/**
- * Função que retorna um número aleatório (char*)
- * @param r apontador de char (char*) usado para armazenar o número em carateres
- * @return do número em carateres
- */
-char* randomKeyValue(char* r){
-    int random = 0, digits = 0;
-
-    r = (char *) malloc(sizeof (char));
-    for (int i = 0; i < 1; ++i) {
-        random = rand()%250;
-        digits = numDigits(random);
-        sprintf(r, "%d", random);
-    }
-    char *returnval = r;
-    r=NULL;
-    free(r);
-    return returnval;
-}
-
-/**
- * Função que retorna um número aleatório em short
- * @param r variável que vai conter o número aleatório a ser retornado
- * @return valor aleatório short
- */
-short randomKeyValueShort(short r){
-    int digits = 0;
-    for (int i = 0; i < 1; ++i) {
-        r = rand()%250;
-        digits = numDigits(r);
-    }
-    return r;
-}
-
-/**
- * Algoritmos de ordenacao ShellSort
- * @param a mmatriz de strings
- * @param N tamanho da matriz
- * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
- */
-void shellSortChar(char** a, int N, int order){
-    int h = 1;
-    while (h < N/3){
-        h = 3*h + 1;
-    }
-    while (h >= 1){
-        for (int i = 0; i < N; ++i) {
-            //if(strcmp(a[i], "\0") == 0) return;
-            if(strcmp(a[i], "-1") == 0) return;
-            if(order == 1){ // 1 -> ascendente
-                for (int j = i; j >= h && atoll(a[j]) < atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapChar(a, j, j-h);
-                }
-            } else{ // 0 -> descendente
-                for (int j = i; j >= h && atoll(a[j]) > atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapChar(a, j, j-h);
-                }
-            }
-        }
-        h /= 3;
-    }
-}
-
-/**
- * Algoritmos de ordenacao ShellSort (ordenar por numero de digitos)
- * @param a matriz de strings com chaves publicas
- * @param priv matriz de strings com chaves privadas
- * @param cod matriz de strings com chaves codificadas
- * @param N tamanho das matrizes
- * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
- */
-void shellSortCharDigits(char** a, char** priv, char** cod, int N, int order){
-    int h = 1;
-    while (h < N/3){
-        h = 3*h + 1;
-    }
-    while (h >= 1){
-        for (int i = 0; i < N; ++i) {
-            //if(strcmp(a[i], "\0") == 0) return;
-            if(strcmp(a[i], "-1") == 0) return;
-            if(order == 1){ // 1 -> ascendente
-                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapCharDigits(a, priv, cod, j, j-h);
-                }
-            } else{ // 0 -> descendente
-                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapCharDigits(a, priv, cod, j, j-h);
-                }
-            }
-        }
-        h /= 3;
-    }
-}
-
-/**
- * Troca valores de 2 posições diferentes
- * @param a matriz de strings com chaves publicas
- * @param priv matriz de strings com chaves privadas
- * @param cod matriz de strigns com chaves codificadas
- * @param i primeira posição do array a ser trocada
- * @param min segunda posição do array a ser trocada
- */
-void swapCharDigits(char** a, char** priv, char** cod, int i, int min){
-
-    char* temp = (char *) calloc(strlen(a[min]) * sizeof (char), sizeof (char));
-    strcpy(temp, a[min]);
-    strcpy(a[min], a[i]);
-    strcpy(a[i], temp);
-    strcpy(temp, priv[min]);
-    strcpy(priv[min], priv[i]);
-    strcpy(priv[i], temp);
-    strcpy(temp, cod[min]);
-    strcpy(cod[min], cod[i]);
-    strcpy(cod[i], temp);
-    temp = NULL;
-    free(temp);
-}
-
-/**
- * Troca valores de 2 posições diferentes
- * @param a matriz de strings
- * @param i primeira posição do array a ser trocada
- * @param min segunda posição do array a ser trocada
- */
-void swapChar(char** a, int i, int min){
-
-    char* temp = (char *) calloc(strlen(a[min]) * sizeof (char), sizeof (char));
-    strcpy(temp, a[min]);
-    strcpy(a[min], a[i]);
-    strcpy(a[i], temp);
-    temp = NULL;
-    free(temp);
-}
-
-/**
- * Algoritmos de ordenacao ShellSort
- * @param a matriz de short
- * @param N tamanho da matriz
- * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
- */
-void shellSortInt(short** a, int N, int order){
-    int h = 1;
-    while (h < N/3){
-        h = 3*h + 1;
-    }
-    while (h >= 1){
-        for (int i = 0; i < N; ++i) {
-            //if(a[i][0] == 0) return;
-            if(a[i][0] == -1) return;
-            if(order == 1){ // 1 -> ascendente
-                for (int j = i; j >= h && key_digits_2_long_int(a[j]) < key_digits_2_long_int(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapInt(a, j, j-h);
-                }
-            } else{ // 0 -> descendente
-                for (int j = i; j >= h && key_digits_2_long_int(a[j]) > key_digits_2_long_int(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapInt(a, j, j-h);
-                }
-            }
-        }
-        h /= 3;
-    }
-}
-
- /**
-  * Algoritmos de ordenacao ShellSort (ordenar por numero de digitos)
-  * @param a matriz de short com chaves publicas
-  * @param priv matriz de short com chaves privadas
-  * @param cod matriz de short com chaves codificadas
-  * @param N tamanho das matrizes
-  * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
-  */
-void shellSortIntDigits(short** a, short** priv, short** cod, int N, int order){
-    int h = 1;
-    while (h < N/3){
-        h = 3*h + 1;
-    }
-    while (h >= 1){
-        for (int i = 0; i < N; ++i) {
-            //if(a[i][0] == 0) return;
-            if(a[i][0] == -1) return;
-            if(order == 1){ // 1 -> ascendente
-                for (int j = i; j >= h && numDigitsLong(key_digits_2_long_int(a[j])) < numDigitsLong(key_digits_2_long_int(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapIntDigits(a, priv, cod, j, j-h);
-                }
-            } else{ // 0 -> descendente
-                for (int j = i; j >= h && numDigitsLong(key_digits_2_long_int(a[j])) > numDigitsLong(key_digits_2_long_int(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
-                    swapIntDigits(a, priv, cod, j, j-h);
-                }
-            }
-        }
-        h /= 3;
-    }
-}
-
-/**
- * Troca valores de 2 posições diferentes
- * @param a matriz de short com chaves publicas
- * @param priv matriz de short com chaves privadas
- * @param cod matriz de short com chaves codificadas
- * @param i primeira posição do array a ser trocada
- * @param min segunda posição do array a ser trocada
-*/
-void swapIntDigits(short** a, short** priv, short** cod, int i, int min){
-
-    short* temp = (short *) calloc(numDigitsLong(key_digits_2_long_int(a[min])), sizeof (short ));
-    temp = a[min];
-    a[min] = a[i];
-    a[i] = temp;
-    temp = priv[min];
-    priv[min] = priv[i];
-    priv[i] = temp;
-    temp = cod[min];
-    cod[min] = cod[i];
-    cod[i] = temp;
-    temp = NULL;
-    free(temp);
-}
-
-/**
- * Troca valores de 2 posições diferentes
- * @param a matriz de short
- * @param i primeira posição do array a ser trocada
- * @param min segunda posição do array a ser trocada
- */
-void swapInt(short** a, int i, int min){
-
-    short* temp = (short *) calloc(numDigitsLong(key_digits_2_long_int(a[min])), sizeof (short ));
-    temp = a[min];
-    a[min] = a[i];
-    a[i] = temp;
-    temp = NULL;
-    free(temp);
-}
-
-/**
- * Cria o array auxiliar para utilizar no algoritmo de merge sort
- * @param a matriz de strings
- * @param N tamanho da matriz
- * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
- */
-void merge_char_sort_base(char* a[], int N, int order){
-    char **aux = malloc(N * sizeof (char*));
-    merge_char_sort_recursive_cutoff(a, aux, 0, N-1, order);
-}
-
-/**
- * faz o merge dos 2 arrays de forma a ficarem ordenados
- * @param a matriz de strings
- * @param aux matriz auxiliar
- * @param lo menor posição
- * @param mid posição do meio
- * @param hi maior posição
- * @param order tipo de ordem (1 - ascendente e 0 - descendente)
- */
-void merge_char(char* a[], char* aux[], int lo, int mid, int hi, int order){
-    for (int k = lo; k <= hi; ++k) {
-        aux[k] = malloc(strlen(a[k]) * sizeof (char));
-        strcpy(aux[k], a[k]);
-    }
-    int i = lo, j = mid+1;
-    if(order == 1){
-        for (int k = lo; k <= hi; ++k) {
-            if      (i > mid)                           strcpy(a[k], aux[j++]);
-            else if (j > hi)                            strcpy(a[k], aux[i++]);
-            else if (atoll(aux[j]) < atoll(aux[i]))     strcpy(a[k], aux[j++]);
-            else                                        strcpy(a[k], aux[i++]);
-        }
-    } else{
-        for (int k = lo; k <= hi; ++k) {
-            if      (i > mid)                           strcpy(a[k], aux[j++]);
-            else if (j > hi)                            strcpy(a[k], aux[i++]);
-            else if (atoll(aux[j]) > atoll(aux[i]))     strcpy(a[k], aux[j++]);
-            else                                        strcpy(a[k], aux[i++]);
-        }
-    }
-}
-
-/**
- * Calcula a posição do meio de ambas as metades do array
- * @param a matriz de strings
- * @param aux matriz auxiliar
- * @param lo menor posição
- * @param hi maior posição
- * @param order tipo de ordem (1 - ascendente e 0 - descendente)
- */
-void merge_char_sort_recursive_basic(char* a[], char* aux[], int lo, int hi, int order){
-
-    if(hi <= lo) return;
-    int mid = lo + (hi-lo)/2;
-    merge_char_sort_recursive_basic(a, aux, lo, mid, order);
-    merge_char_sort_recursive_basic(a, aux, mid+1, hi, order);
-    merge_char(a, aux, lo, mid, hi, order);
-}
-
-/**
- * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
- * @param a matriz de strings
- * @param aux matriz auxiliar
- * @param lo menor posição
- * @param hi maior posição
- * @param order tipo de ordem (1 - ascendente e 0 - descendente)
- */
-void merge_char_sort_recursive_cutoff(char* a[], char* aux[], int lo, int hi, int order){
-
-    if (hi <= lo + CUTOFF - 1)
-    {
-        insertionSort_char(&a[lo], hi-lo+1, order);
-        return;
-    }
-    int mid = lo + (hi-lo)/2;
-    merge_char_sort_recursive_basic(a, aux, lo, mid, order);
-    merge_char_sort_recursive_basic(a, aux, mid+1, hi, order);
-    merge_char(a, aux, lo, mid, hi, order);
-}
-
-/**
- * Algoritmo de ordenação insertion sort pega num valor do array e compara com os anteriores
- * @param a matriz de strings
- * @param N tamanho da matriz
- * @param order tipo de ordem (1 - ascendente e 0 - descendente)
- */
-void insertionSort_char(char* a[], int N, int order){
-    for (int i = 0; i < N; ++i) {
-        for (int j = i; j > 0; j--) {
-            if(order == 1){
-                if(atoll(a[j]) < atoll(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
-                    swapChar(a, j, j-1);
-                } else break;
-            } else{
-                if(atoll(a[j]) > atoll(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
-                    swapChar(a, j, j-1);
-                } else break;
-            }
-        }
-    }
-}
-
- /**
-  * Cria os arrais auxiliares para utilizar no algoritmo de merge sort (ordem por digitos)
-  * @param a matriz de strings com chaves publicas
-  * @param priv matriz de strings com chaves privadas
-  * @param cod matriz de strings com chaves codificadas
-  * @param N tamanho das matrizes
-  * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
-  */
-void mergeDigits_char_sort_base(char* a[], char* priv[], char* cod[], int N, int order){
-    char **aux = malloc(N * sizeof (char*));
-    char **auxPriv = malloc(N * sizeof (char*));
-    char **auxCod = malloc(N * sizeof (char*));
-    mergeDigits_char_sort_recursive_cutoff(a, aux, priv, cod, auxPriv, auxCod, 0, N-1, order);
-}
-
-/**
- * faz o merge dos 2 arrays de forma a ficarem ordenados (por digitos)
- * @param a matriz de strings com chaves publicas
- * @param aux matriz auxiliar de chaves publicas
- * @param priv matriz de strings com chaves privadas
- * @param cod matriz de strings co chaves codificadas
- * @param auxPriv matriz auxiliar de chaves privadas
- * @param auxCod matriz auxiliar de chaves codificadas
- * @param lo menor posição
- * @param mid posição do meio
- * @param hi maior posição
- * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
- */
-void mergeDigits_char(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int mid, int hi, int order){
-    for (int k = lo; k <= hi; ++k) {
-        aux[k] = malloc((strlen(a[k])+1) * sizeof (char));
-        auxPriv[k] = malloc((strlen(priv[k])+1) * sizeof (char));
-        auxCod[k] = malloc((strlen(cod[k])+1) * sizeof (char));
-        strcpy(aux[k], a[k]);
-        strcpy(auxPriv[k], priv[k]);
-        strcpy(auxCod[k], cod[k]);
-    }
-    int i = lo, j = mid+1;
-    if(order == 1){
-        for (int k = lo; k <= hi; ++k) {
-            if (i > mid){
-                strcpy(a[k], aux[j++]);
-                j--;
-                strcpy(priv[k], auxPriv[j++]);
-                j--;
-                strcpy(cod[k], auxCod[j++]);
-            }
-            else if (j > hi){
-                strcpy(a[k], aux[i++]);
-                i--;
-                strcpy(priv[k], auxPriv[i++]);
-                i--;
-                strcpy(cod[k], auxCod[i++]);
-            }
-            else if (numDigitsLong(atoll(aux[j])) < numDigitsLong(atoll(aux[i]))){
-                strcpy(a[k], aux[j++]);
-                j--;
-                strcpy(priv[k], auxPriv[j++]);
-                j--;
-                strcpy(cod[k], auxCod[j++]);
-            }
-            else{
-                strcpy(a[k], aux[i++]);
-                i--;
-                strcpy(priv[k], auxPriv[i++]);
-                i--;
-                strcpy(cod[k], auxCod[i++]);
-            }
-        }
-    } else{
-        for (int k = lo; k <= hi; ++k) {
-            if (i > mid){
-                strcpy(a[k], aux[j++]);
-                j--;
-                strcpy(priv[k], auxPriv[j++]);
-                j--;
-                strcpy(cod[k], auxCod[j++]);
-            }
-            else if (j > hi) {
-                strcpy(a[k], aux[i++]);
-                i--;
-                strcpy(priv[k], auxPriv[i++]);
-                i--;
-                strcpy(cod[k], auxCod[i++]);
-            }
-            else if (numDigitsLong(atoll(aux[j])) > numDigitsLong(atoll(aux[i]))){
-                strcpy(a[k], aux[j++]);
-                j--;
-                strcpy(priv[k], auxPriv[j++]);
-                j--;
-                strcpy(cod[k], auxCod[j++]);
-            }
-            else {
-                strcpy(a[k], aux[i++]);
-                i--;
-                strcpy(priv[k], auxPriv[i++]);
-                i--;
-                strcpy(cod[k], auxCod[i++]);
-            }
-        }
-    }
-}
-
-/**
- * Calcula a posição do meio de ambas as metades do array
- * @param a matriz de string de chaves publicas
- * @param aux matriz auxiliar de chaves publicas
- * @param priv matriz de chaves privadas
- * @param cod matriz de chaves codificadas
- * @param auxPriv matriz auxiliar de chaves privadas
- * @param auxCod matriz auxiliar de chaves codificadas
- * @param lo menor posição
- * @param hi maior posição
- * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
- */
-void mergeDigits_char_sort_recursive_basic(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int hi, int order){
-
-    if(hi <= lo) return;
-    int mid = lo + (hi-lo)/2;
-    mergeDigits_char_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
-    mergeDigits_char_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
-    mergeDigits_char(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
-}
-
-/**
- * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
- * @param a matriz de string de chaves publicas
- * @param aux matriz auxiliar de chaves publicas
- * @param priv matriz de string de chaves privadas
- * @param cod matriz de string de chaves codificadas
- * @param auxPriv matriz auxiliar de chaves privadas
- * @param auxCod matriz auxiliar de chaves codificadas
- * @param lo menor posição
- * @param hi maior posição
- * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
- */
-void mergeDigits_char_sort_recursive_cutoff(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int hi, int order){
-
-    if (hi <= lo + CUTOFF - 1)
-    {
-        insertionSortDigits_char(&a[lo], priv, cod, hi-lo+1, order);
-        return;
-    }
-    int mid = lo + (hi-lo)/2;
-    mergeDigits_char_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
-    mergeDigits_char_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
-    mergeDigits_char(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
-}
-
-/**
- * Algoritmo de ordenação insertion sort pega num valor de digitos do array e compara com os anteriores
- * @param a matriz de string de chaves publicas
- * @param priv matriz de strignde chaves privadas
- * @param cod matriz de string de chaves codificadas
- * @param N tamanho das matrizes
- * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
- */
-void insertionSortDigits_char(char* a[], char* priv[], char* cod[], int N, int order){
-    for (int i = 0; i < N; ++i) {
-        for (int j = i; j > 0; j--) {
-            if(order == 1){
-                if(numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
-                    swapCharDigits(a, priv, cod, j, j-1);
-                } else break;
-            } else{
-                if(numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
-                    swapCharDigits(a, priv, cod, j, j-1);
-                } else break;
-            }
-        }
-    }
-}
-
-
-void merge_int_sort_base(short* a[], int N, int order){
-    short **aux = malloc(N * sizeof (short*));
-    merge_int_sort_recursive_cutoff(a, aux, 0, N-1, order);
-}
-
-void merge_int(short* a[], short* aux[], int lo, int mid, int hi, int order){
-    for (int k = lo; k <= hi; ++k) {
-        aux[k] = malloc(numDigitsLong(key_digits_2_long_int(a[k]) * sizeof (short)));
-        aux[k] = a[k];
-    }
-    int i = lo, j = mid+1;
-    if(order == 1){
-        for (int k = lo; k <= hi; ++k) {
-            if      (i > mid)                           a[k] = aux[j++];
-            else if (j > hi)                            a[k] = aux[i++];
-            else if (key_digits_2_long_int(aux[j]) < key_digits_2_long_int(aux[i]))                   a[k] = aux[j++];
-            else                                        a[k] = aux[i++];
-        }
-    } else{
-        for (int k = lo; k <= hi; ++k) {
-            if      (i > mid)                           a[k] = aux[j++];
-            else if (j > hi)                            a[k] = aux[i++];
-            else if (key_digits_2_long_int(aux[j]) > key_digits_2_long_int(aux[i]))     a[k] = aux[j++];
-            else                                        a[k] = aux[i++];
-        }
-    }
-}
-
-void merge_int_sort_recursive_basic(short* a[], short* aux[], int lo, int hi, int order){
-
-    if(hi <= lo) return;
-    int mid = lo + (hi-lo)/2;
-    merge_int_sort_recursive_basic(a, aux, lo, mid, order);
-    merge_int_sort_recursive_basic(a, aux, mid+1, hi, order);
-    merge_int(a, aux, lo, mid, hi, order);
-}
-
-void merge_int_sort_recursive_cutoff(short* a[], short* aux[], int lo, int hi, int order){
-
-    if (hi <= lo + CUTOFF - 1)
-    {
-        insertionSort_int(&a[lo], hi-lo+1, order);
-        return;
-    }
-    int mid = lo + (hi-lo)/2;
-    merge_int_sort_recursive_basic(a, aux, lo, mid, order);
-    merge_int_sort_recursive_basic(a, aux, mid+1, hi, order);
-    merge_int(a, aux, lo, mid, hi, order);
-}
-
-void insertionSort_int(short* a[], int N, int order){
-    for (int i = 0; i < N; ++i) {
-        for (int j = i; j > 0; j--) {
-            if(order == 1){
-                if(key_digits_2_long_int(a[j]) < key_digits_2_long_int(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
-                    swapInt(a, j, j-1);
-                } else break;
-            } else{
-                if(key_digits_2_long_int(a[j]) > key_digits_2_long_int(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
-                    swapInt(a, j, j-1);
-                } else break;
-            }
-        }
-    }
-}
-
-
-void mergeDigits_int_sort_base(short* a[], short* priv[], short* cod[], int N, int order){
-    short **aux = malloc(N * sizeof (short*));
-    short **auxPriv = malloc(N * sizeof (short*));
-    short **auxCod = malloc(N * sizeof (short*));
-    mergeDigits_int_sort_recursive_cutoff(a, aux, priv, cod, auxPriv, auxCod, 0, N-1, order);
-}
-
-void mergeDigits_int(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int mid, int hi, int order){
-    for (int k = lo; k <= hi; ++k) {
-        aux[k] = malloc(numDigitsLong(key_digits_2_long_int(a[k]) * sizeof (short)));
-        auxPriv[k] = malloc(numDigitsLong(key_digits_2_long_int(priv[k]) * sizeof (short)));
-        auxCod[k] = malloc(numDigitsLong(key_digits_2_long_int(cod[k]) * sizeof (short)));
-        aux[k] = a[k];
-        auxPriv[k] = priv[k];
-        auxCod[k] = cod[k];
-    }
-    int i = lo, j = mid+1;
-    if(order == 1){
-        for (int k = lo; k <= hi; ++k) {
-            if (i > mid){
-                a[k] = aux[j++];
-                j--;
-                priv[k] = auxPriv[j++];
-                j--;
-                cod[k] = auxCod[j++];
-            }
-            else if (j > hi){
-                a[k] = aux[i++];
-                i--;
-                priv[k] = auxPriv[i++];
-                i--;
-                cod[k] = auxCod[i++];
-            }
-            else if (numDigitsLong(key_digits_2_long_int(aux[j])) < numDigitsLong(key_digits_2_long_int(aux[i]))){
-                a[k] = aux[j++];
-                j--;
-                priv[k] = auxPriv[j++];
-                j--;
-                cod[k] = auxCod[j++];
-            }
-            else{
-                a[k] = aux[i++];
-                i--;
-                priv[k] = auxPriv[i++];
-                i--;
-                cod[k] = auxCod[i++];
-            }
-        }
-    } else{
-        for (int k = lo; k <= hi; ++k) {
-            if (i > mid){
-                a[k] = aux[j++];
-                j--;
-                priv[k] = auxPriv[j++];
-                j--;
-                cod[k] = auxCod[j++];
-            }
-            else if (j > hi) {
-                a[k] = aux[i++];
-                i--;
-                priv[k] = auxPriv[i++];
-                i--;
-                cod[k] = auxCod[i++];
-            }
-            else if (numDigitsLong(key_digits_2_long_int(aux[j])) > numDigitsLong(key_digits_2_long_int(aux[i]))){
-                a[k] = aux[j++];
-                j--;
-                priv[k] = auxPriv[j++];
-                j--;
-                cod[k] = auxCod[j++];
-            }
-            else {
-                a[k] = aux[i++];
-                i--;
-                priv[k] = auxPriv[i++];
-                i--;
-                cod[k] = auxCod[i++];
-            }
-        }
-    }
-}
-
-void mergeDigits_int_sort_recursive_basic(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int hi, int order){
-
-    if(hi <= lo) return;
-    int mid = lo + (hi-lo)/2;
-    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
-    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
-    mergeDigits_int(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
-}
-
-void mergeDigits_int_sort_recursive_cutoff(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int hi, int order){
-
-    if (hi <= lo + CUTOFF - 1)
-    {
-        insertionSortDigits_int(&a[lo], priv, cod, hi-lo+1, order);
-        return;
-    }
-    int mid = lo + (hi-lo)/2;
-    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
-    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
-    mergeDigits_int(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
-}
-
-void insertionSortDigits_int(short* a[], short* priv[], short* cod[], int N, int order){
-    for (int i = 0; i < N; ++i) {
-        for (int j = i; j > 0; j--) {
-            if(order == 1){
-                if(numDigitsLong(key_digits_2_long_int(a[j])) < numDigitsLong(key_digits_2_long_int(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
-                    swapIntDigits(a, priv, cod, j, j-1);
-                } else break;
-            } else{
-                if(numDigitsLong(key_digits_2_long_int(a[j])) > numDigitsLong(key_digits_2_long_int(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
-                    swapIntDigits(a, priv, cod, j, j-1);
-                } else break;
-            }
-        }
-    }
-}
-
-
-//Funcoes Strings do ficheiro dos professores
+// ===================================================================================================================================== //
+// ===================================== FUNÇÕES STRINGS DO FICHEIRO DOS PROFESSORES =================================================== //
+// ===================================================================================================================================== //
 char* key_long_2_digits_char(unsigned long long key){
     int digits = numDigits(key);                        //variavel com o numero de digitos de (key)
     char *keydigits = malloc(digits * sizeof (char));   //alocar memória para *keydigits com o valor de (digits)
@@ -1505,7 +513,9 @@ void save_bin_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_k
 }
 
 
-//Funcoes Ints do ficheiro dos professores
+// ===================================================================================================================================== //
+// ===================================== FUNÇÕES INTS DO FICHEIRO DOS PROFESSORES ====================================================== //
+// ===================================================================================================================================== //
 unsigned long long new_public_key_int(void){
     unsigned long long r = 0;
     for (int i = 0; i < 1; ++i) {
@@ -2097,7 +1107,9 @@ void save_bin_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 }
 
 
-// Funcoes para porta-chaves
+// ===================================================================================================================================== //
+// ========================================== FUNÇÕES PARA PORTA-CHAVES ================================================================ //
+// ===================================================================================================================================== //
 void insert_keyHolder(KEY_HOLDER** portaChaves, struct matrixString mString, struct matrixInts mInts, int pos){
     KEY_HOLDER* new_keyHolder = (KEY_HOLDER *) malloc(sizeof (KEY_HOLDER));
     time_t data_criacao;
@@ -2722,6 +1734,10 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
     }
 }
 
+
+// ===================================================================================================================================== //
+// ========================================== FUNÇÕES PARA UTILIZADORES ================================================================ //
+// ===================================================================================================================================== //
 void create_utilizador_ordenado(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
     int stopKeyHolderPos = 1;
     UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
@@ -2996,6 +2012,10 @@ void ordenar_utilizadores(UTILIZADORES_QUEUE* queue){
     }
 }
 
+
+// ===================================================================================================================================== //
+// ============================================== FUNÇÕES FREE ========================================================================= //
+// ===================================================================================================================================== //
 void freeMatrixChar(char **matrix, int N){
     for (int i = 0; i < N; ++i) {
         matrix[i] = NULL;
@@ -3011,7 +2031,1034 @@ void freeMatrixShort(short **matrix, int N){
     }
 }
 
+// ===================================================================================================================================== //
+// =============================================== FUNÇÕES EXTRA ======================================================================= //
+// ===================================================================================================================================== //
+
+/**
+ * Função que vai verificar se um dado numero é bipolar
+ * @param text array com os vários digitos do numero
+ * @return 0 se for bipolar / -1 se não for bipolar
+ */
+int bipolar_numberInt(short text[]){
+
+    int bipolar = 0, changes = 0, exits = 0;
+    int number, pow, digits = 0;
+
+    for (int i = 0; text[i+1] != -1; ++i) {
+        if(text[i] != text[i+1]){
+            changes++;
+        }
+    }
+    //changes--;
+    if(changes == 1){
+        return 0;
+    }
+    else{
+        return -1;
+    }
+}
+
+/**
+ * Versão antiga da função para calcular chave privada
+ * @param k string com os vários digitos da chave publica
+ * @return chave privada
+ */
+char* find_mul_bipolar_number(char *k){
+    char *n;
+    char rightNum = '0', leftNum = '1';
+    int digitos = 2, j = 0, changePos = 0, numDigits = 2;
+
+    n = (char *) calloc(digitos, sizeof (char));
+    while (1){
+        n = (char *) realloc(n, digitos);
+        if(leftNum == '9' && changePos == digitos -1 && rightNum == '8'){
+            digitos++;
+            changePos--;
+            leftNum = '1';
+            rightNum = '0';
+        }
+        if(rightNum == '9' && changePos == digitos -1){
+            leftNum++;
+        }
+        if(changePos == digitos -1){
+            changePos = 0;
+            if(rightNum != '9'){
+                rightNum++;
+            } else{
+                rightNum = '0';
+            }
+        }
+        if(leftNum == rightNum){
+            rightNum++;
+        }
+        if(j > changePos){
+            n[j] = rightNum;
+        } else{
+            n[j] = leftNum;
+        }
+        if(j == digitos-1){
+            if(atoi(n) > 2147483647 || atoi(n) < 0){
+                n = "\0";
+                return n;
+            } else{
+                numDigits = digitos;
+                n[strlen(n)] = '\0';
+                if(atoi(n) > atoi(k) && atoi(n)%atoi(k) == 0){
+                    return n;
+                }
+                changePos++;
+                j = 0;
+            }
+
+        } else{
+            j++;
+        }
+    }
+}
+
+/**
+ * Versão antiga da função para calcular chave privada
+ * @param k chave publica
+ * @return chave privada
+ */
+int find_mul_bipolar_number_Int(int k){
+    int *n;
+    int rightNum = 0, leftNum = 1;
+    int digitos = 2, j = 0, changePos = 0;
+
+    n = (int *) calloc(digitos, sizeof (int));
+    while (1){
+        n = (int *) realloc(n, digitos);
+        if(leftNum == 9 && changePos == digitos -1 && rightNum == 8){
+            digitos++;
+            leftNum = 1;
+            rightNum = 0;
+        }
+        if(rightNum == 9 && changePos == digitos -1){
+            leftNum++;
+        }
+        if(changePos == digitos -1){
+            changePos = 0;
+            if(rightNum != 9){
+                rightNum++;
+            } else{
+                rightNum = 0;
+            }
+        }
+        if(leftNum == rightNum){
+            rightNum++;
+        }
+        if(j > changePos){
+            n[j] = rightNum;
+        } else{
+            n[j] = leftNum;
+        }
+        if(j == digitos-1){
+            if(*n > 2147483647 || *n < 0){
+                n = NULL;
+                return *n;
+            } else{
+                if(*n > k && *n%k == 0){
+                    return *n;
+                }
+                changePos++;
+                j = 0;
+            }
+
+        } else{
+            j++;
+        }
+    }
+}
+
+/**
+ * Função que vai calcular o número de digitos de um número (int)
+ * @param num número usado para calcular o seu número de digitos
+ * @return número de digitos (int)
+ */
+int numDigits(int num){
+    int digits = 0;
+    do {
+        num /= 10;
+        digits++;
+    } while (num != 0);
+    return digits;
+}
+
+/**
+ * Função que vai calcular o número de digitos de um número (unsigned long long)
+ * @param num número usado para calcular o seu número de digitos
+ * @return número de digitos (int)
+ */
+int numDigitsLong(unsigned long long num){
+    int digits = 0;
+    do {
+        num /= 10;
+        digits++;
+    } while (num != 0);
+    return digits;
+}
+
+/**
+ * Função que vai dividir um número (int) por digitos e armazenar os mesmos num array
+ * @param num número a ser dividido em digitos
+ * @param allD aray com todos os digitos de num
+ */
+void allDigits(int num, int allD[]){
+    int i = 0;
+    while (num){
+        allD[i] = num%10;
+        num /= 10;
+        i++;
+    }
+}
+
+/**
+ * Função que vai dividir um número (unsigned long long) por digitos e armazenar os mesmos num array
+ * @param num número a ser dividido em digitos
+ * @param allD aray com todos os digitos de num
+ */
+void allDigitsLong(unsigned long long num, int allD[]){
+    int i = 0;
+    while (num){
+        allD[i] = num%10;
+        num /= 10;
+        i++;
+    }
+}
+
+/**
+ * Função que gera um número aleatório e insere num ficheiro
+ * @param fileChavesPubWrite ficheiro qe vai receber o número aleatório
+ * @param fileName nome do ficheiro
+ * @param n número de números aleatórios a serem gerados para o ficheiro
+ */
+void randomKeyFile(FILE *fileChavesPubWrite, char *fileName, int n){
+
+    fileChavesPubWrite = fopen(fileName, "a");
+    time_t t1;
+    srand((unsigned ) time(&t1));
+    for (int i = 0; i < n; ++i) {
+        int r = rand()%250;
+        fprintf(fileChavesPubWrite,"%d",r);
+        fprintf(fileChavesPubWrite,"\n");
+    }
+    fclose(fileChavesPubWrite);
+}
+
+/**
+ * Função que vai gerar um número aleatório e retornar o mesmo em char**
+ * @param r matrix de strings (char*)
+ * @param n número de números aleatórios a serem gerados
+ * @return da matrix de strings (char*)
+ */
+char** randomKeyMatrix(char** r, int n){
+    int random = 0, digits = 0;
+
+    r = (char **) malloc(n*sizeof (char *));
+    for (int i = 0; i < n; ++i) {
+        random = rand();
+        digits = numDigits(random);
+        r[i] = (char *) malloc(digits * sizeof (char));
+        sprintf(r[i], "%d", random);
+    }
+    return r;
+}
+
+/**
+ * Função que retorna um número aleatório (char*)
+ * @param r apontador de char (char*) usado para armazenar o número em carateres
+ * @return do número em carateres
+ */
+char* randomKeyValue(char* r){
+    int random = 0, digits = 0;
+
+    r = (char *) malloc(sizeof (char));
+    for (int i = 0; i < 1; ++i) {
+        random = rand()%250;
+        digits = numDigits(random);
+        sprintf(r, "%d", random);
+    }
+    char *returnval = r;
+    r=NULL;
+    free(r);
+    return returnval;
+}
+
+/**
+ * Função que retorna um número aleatório em short
+ * @param r variável que vai conter o número aleatório a ser retornado
+ * @return valor aleatório short
+ */
+short randomKeyValueShort(short r){
+    int digits = 0;
+    for (int i = 0; i < 1; ++i) {
+        r = rand()%250;
+        digits = numDigits(r);
+    }
+    return r;
+}
+
+/**
+ * Retorna o valor de uma posição de um array
+ * @param a array
+ * @param d posição
+ * @return retorna o valor dessa posição ou -1 se não existir
+ */
 int charPos(char *a, int d){
     if(d < strlen(a)) return a[d];
     else return -1;
+}
+
+/**
+ * Algoritmos de ordenacao ShellSort
+ * @param a mmatriz de strings
+ * @param N tamanho da matriz
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void shellSortChar(char** a, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            //if(strcmp(a[i], "\0") == 0) return;
+            if(strcmp(a[i], "-1") == 0) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && atoll(a[j]) < atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapChar(a, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && atoll(a[j]) > atoll(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapChar(a, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+/**
+ * Algoritmos de ordenacao ShellSort (ordenar por numero de digitos)
+ * @param a matriz de strings com chaves publicas
+ * @param priv matriz de strings com chaves privadas
+ * @param cod matriz de strings com chaves codificadas
+ * @param N tamanho das matrizes
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void shellSortCharDigits(char** a, char** priv, char** cod, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            //if(strcmp(a[i], "\0") == 0) return;
+            if(strcmp(a[i], "-1") == 0) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapCharDigits(a, priv, cod, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapCharDigits(a, priv, cod, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+/**
+ * Troca valores de 2 posições diferentes
+ * @param a matriz de strings com chaves publicas
+ * @param priv matriz de strings com chaves privadas
+ * @param cod matriz de strigns com chaves codificadas
+ * @param i primeira posição do array a ser trocada
+ * @param min segunda posição do array a ser trocada
+ */
+void swapCharDigits(char** a, char** priv, char** cod, int i, int min){
+
+    char* temp = (char *) calloc(strlen(a[min]) * sizeof (char), sizeof (char));
+    strcpy(temp, a[min]);
+    strcpy(a[min], a[i]);
+    strcpy(a[i], temp);
+    strcpy(temp, priv[min]);
+    strcpy(priv[min], priv[i]);
+    strcpy(priv[i], temp);
+    strcpy(temp, cod[min]);
+    strcpy(cod[min], cod[i]);
+    strcpy(cod[i], temp);
+    temp = NULL;
+    free(temp);
+}
+
+/**
+ * Troca valores de 2 posições diferentes
+ * @param a matriz de strings
+ * @param i primeira posição do array a ser trocada
+ * @param min segunda posição do array a ser trocada
+ */
+void swapChar(char** a, int i, int min){
+
+    char* temp = (char *) calloc(strlen(a[min]) * sizeof (char), sizeof (char));
+    strcpy(temp, a[min]);
+    strcpy(a[min], a[i]);
+    strcpy(a[i], temp);
+    temp = NULL;
+    free(temp);
+}
+
+/**
+ * Algoritmos de ordenacao ShellSort
+ * @param a matriz de short
+ * @param N tamanho da matriz
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void shellSortInt(short** a, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            //if(a[i][0] == 0) return;
+            if(a[i][0] == -1) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && key_digits_2_long_int(a[j]) < key_digits_2_long_int(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && key_digits_2_long_int(a[j]) > key_digits_2_long_int(a[j-h]); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+/**
+ * Algoritmos de ordenacao ShellSort (ordenar por numero de digitos)
+ * @param a matriz de short com chaves publicas
+ * @param priv matriz de short com chaves privadas
+ * @param cod matriz de short com chaves codificadas
+ * @param N tamanho das matrizes
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void shellSortIntDigits(short** a, short** priv, short** cod, int N, int order){
+    int h = 1;
+    while (h < N/3){
+        h = 3*h + 1;
+    }
+    while (h >= 1){
+        for (int i = 0; i < N; ++i) {
+            //if(a[i][0] == 0) return;
+            if(a[i][0] == -1) return;
+            if(order == 1){ // 1 -> ascendente
+                for (int j = i; j >= h && numDigitsLong(key_digits_2_long_int(a[j])) < numDigitsLong(key_digits_2_long_int(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapIntDigits(a, priv, cod, j, j-h);
+                }
+            } else{ // 0 -> descendente
+                for (int j = i; j >= h && numDigitsLong(key_digits_2_long_int(a[j])) > numDigitsLong(key_digits_2_long_int(a[j-h])); j -= h) {  //Para ordenar descendente é mudar de "<" para ">"
+                    swapIntDigits(a, priv, cod, j, j-h);
+                }
+            }
+        }
+        h /= 3;
+    }
+}
+
+/**
+ * Troca valores de 2 posições diferentes
+ * @param a matriz de short com chaves publicas
+ * @param priv matriz de short com chaves privadas
+ * @param cod matriz de short com chaves codificadas
+ * @param i primeira posição do array a ser trocada
+ * @param min segunda posição do array a ser trocada
+*/
+void swapIntDigits(short** a, short** priv, short** cod, int i, int min){
+
+    short* temp = (short *) calloc(numDigitsLong(key_digits_2_long_int(a[min])), sizeof (short ));
+    temp = a[min];
+    a[min] = a[i];
+    a[i] = temp;
+    temp = priv[min];
+    priv[min] = priv[i];
+    priv[i] = temp;
+    temp = cod[min];
+    cod[min] = cod[i];
+    cod[i] = temp;
+    temp = NULL;
+    free(temp);
+}
+
+/**
+ * Troca valores de 2 posições diferentes
+ * @param a matriz de short
+ * @param i primeira posição do array a ser trocada
+ * @param min segunda posição do array a ser trocada
+ */
+void swapInt(short** a, int i, int min){
+
+    short* temp = (short *) calloc(numDigitsLong(key_digits_2_long_int(a[min])), sizeof (short ));
+    temp = a[min];
+    a[min] = a[i];
+    a[i] = temp;
+    temp = NULL;
+    free(temp);
+}
+
+/**
+ * Cria o array auxiliar para utilizar no algoritmo de merge sort
+ * @param a matriz de strings
+ * @param N tamanho da matriz
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void merge_char_sort_base(char* a[], int N, int order){
+    char **aux = malloc(N * sizeof (char*));
+    merge_char_sort_recursive_cutoff(a, aux, 0, N-1, order);
+}
+
+/**
+ * faz o merge dos 2 arrays de forma a ficarem ordenados
+ * @param a matriz de strings
+ * @param aux matriz auxiliar
+ * @param lo menor posição
+ * @param mid posição do meio
+ * @param hi maior posição
+ * @param order tipo de ordem (1 - ascendente e 0 - descendente)
+ */
+void merge_char(char* a[], char* aux[], int lo, int mid, int hi, int order){
+    for (int k = lo; k <= hi; ++k) {
+        aux[k] = malloc(strlen(a[k]) * sizeof (char));
+        strcpy(aux[k], a[k]);
+    }
+    int i = lo, j = mid+1;
+    if(order == 1){
+        for (int k = lo; k <= hi; ++k) {
+            if      (i > mid)                           strcpy(a[k], aux[j++]);
+            else if (j > hi)                            strcpy(a[k], aux[i++]);
+            else if (atoll(aux[j]) < atoll(aux[i]))     strcpy(a[k], aux[j++]);
+            else                                        strcpy(a[k], aux[i++]);
+        }
+    } else{
+        for (int k = lo; k <= hi; ++k) {
+            if      (i > mid)                           strcpy(a[k], aux[j++]);
+            else if (j > hi)                            strcpy(a[k], aux[i++]);
+            else if (atoll(aux[j]) > atoll(aux[i]))     strcpy(a[k], aux[j++]);
+            else                                        strcpy(a[k], aux[i++]);
+        }
+    }
+}
+
+/**
+ * Calcula a posição do meio de ambas as metades do array
+ * @param a matriz de strings
+ * @param aux matriz auxiliar
+ * @param lo menor posição
+ * @param hi maior posição
+ * @param order tipo de ordem (1 - ascendente e 0 - descendente)
+ */
+void merge_char_sort_recursive_basic(char* a[], char* aux[], int lo, int hi, int order){
+
+    if(hi <= lo) return;
+    int mid = lo + (hi-lo)/2;
+    merge_char_sort_recursive_basic(a, aux, lo, mid, order);
+    merge_char_sort_recursive_basic(a, aux, mid+1, hi, order);
+    merge_char(a, aux, lo, mid, hi, order);
+}
+
+/**
+ * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
+ * @param a matriz de strings
+ * @param aux matriz auxiliar
+ * @param lo menor posição
+ * @param hi maior posição
+ * @param order tipo de ordem (1 - ascendente e 0 - descendente)
+ */
+void merge_char_sort_recursive_cutoff(char* a[], char* aux[], int lo, int hi, int order){
+
+    if (hi <= lo + CUTOFF - 1)
+    {
+        insertionSort_char(&a[lo], hi-lo+1, order);
+        return;
+    }
+    int mid = lo + (hi-lo)/2;
+    merge_char_sort_recursive_basic(a, aux, lo, mid, order);
+    merge_char_sort_recursive_basic(a, aux, mid+1, hi, order);
+    merge_char(a, aux, lo, mid, hi, order);
+}
+
+/**
+ * Algoritmo de ordenação insertion sort pega num valor do array e compara com os anteriores
+ * @param a matriz de strings
+ * @param N tamanho da matriz
+ * @param order tipo de ordem (1 - ascendente e 0 - descendente)
+ */
+void insertionSort_char(char* a[], int N, int order){
+    for (int i = 0; i < N; ++i) {
+        for (int j = i; j > 0; j--) {
+            if(order == 1){
+                if(atoll(a[j]) < atoll(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapChar(a, j, j-1);
+                } else break;
+            } else{
+                if(atoll(a[j]) > atoll(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapChar(a, j, j-1);
+                } else break;
+            }
+        }
+    }
+}
+
+/**
+ * Cria os arrais auxiliares para utilizar no algoritmo de merge sort (ordem por digitos)
+ * @param a matriz de strings com chaves publicas
+ * @param priv matriz de strings com chaves privadas
+ * @param cod matriz de strings com chaves codificadas
+ * @param N tamanho das matrizes
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void mergeDigits_char_sort_base(char* a[], char* priv[], char* cod[], int N, int order){
+    char **aux = malloc(N * sizeof (char*));
+    char **auxPriv = malloc(N * sizeof (char*));
+    char **auxCod = malloc(N * sizeof (char*));
+    mergeDigits_char_sort_recursive_cutoff(a, aux, priv, cod, auxPriv, auxCod, 0, N-1, order);
+}
+
+/**
+ * faz o merge dos 2 arrays de forma a ficarem ordenados (por digitos)
+ * @param a matriz de strings com chaves publicas
+ * @param aux matriz auxiliar de chaves publicas
+ * @param priv matriz de strings com chaves privadas
+ * @param cod matriz de strings co chaves codificadas
+ * @param auxPriv matriz auxiliar de chaves privadas
+ * @param auxCod matriz auxiliar de chaves codificadas
+ * @param lo menor posição
+ * @param mid posição do meio
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void mergeDigits_char(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int mid, int hi, int order){
+    for (int k = lo; k <= hi; ++k) {
+        aux[k] = malloc((strlen(a[k])+1) * sizeof (char));
+        auxPriv[k] = malloc((strlen(priv[k])+1) * sizeof (char));
+        auxCod[k] = malloc((strlen(cod[k])+1) * sizeof (char));
+        strcpy(aux[k], a[k]);
+        strcpy(auxPriv[k], priv[k]);
+        strcpy(auxCod[k], cod[k]);
+    }
+    int i = lo, j = mid+1;
+    if(order == 1){
+        for (int k = lo; k <= hi; ++k) {
+            if (i > mid){
+                strcpy(a[k], aux[j++]);
+                j--;
+                strcpy(priv[k], auxPriv[j++]);
+                j--;
+                strcpy(cod[k], auxCod[j++]);
+            }
+            else if (j > hi){
+                strcpy(a[k], aux[i++]);
+                i--;
+                strcpy(priv[k], auxPriv[i++]);
+                i--;
+                strcpy(cod[k], auxCod[i++]);
+            }
+            else if (numDigitsLong(atoll(aux[j])) < numDigitsLong(atoll(aux[i]))){
+                strcpy(a[k], aux[j++]);
+                j--;
+                strcpy(priv[k], auxPriv[j++]);
+                j--;
+                strcpy(cod[k], auxCod[j++]);
+            }
+            else{
+                strcpy(a[k], aux[i++]);
+                i--;
+                strcpy(priv[k], auxPriv[i++]);
+                i--;
+                strcpy(cod[k], auxCod[i++]);
+            }
+        }
+    } else{
+        for (int k = lo; k <= hi; ++k) {
+            if (i > mid){
+                strcpy(a[k], aux[j++]);
+                j--;
+                strcpy(priv[k], auxPriv[j++]);
+                j--;
+                strcpy(cod[k], auxCod[j++]);
+            }
+            else if (j > hi) {
+                strcpy(a[k], aux[i++]);
+                i--;
+                strcpy(priv[k], auxPriv[i++]);
+                i--;
+                strcpy(cod[k], auxCod[i++]);
+            }
+            else if (numDigitsLong(atoll(aux[j])) > numDigitsLong(atoll(aux[i]))){
+                strcpy(a[k], aux[j++]);
+                j--;
+                strcpy(priv[k], auxPriv[j++]);
+                j--;
+                strcpy(cod[k], auxCod[j++]);
+            }
+            else {
+                strcpy(a[k], aux[i++]);
+                i--;
+                strcpy(priv[k], auxPriv[i++]);
+                i--;
+                strcpy(cod[k], auxCod[i++]);
+            }
+        }
+    }
+}
+
+/**
+ * Calcula a posição do meio de ambas as metades do array
+ * @param a matriz de string de chaves publicas
+ * @param aux matriz auxiliar de chaves publicas
+ * @param priv matriz de chaves privadas
+ * @param cod matriz de chaves codificadas
+ * @param auxPriv matriz auxiliar de chaves privadas
+ * @param auxCod matriz auxiliar de chaves codificadas
+ * @param lo menor posição
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void mergeDigits_char_sort_recursive_basic(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int hi, int order){
+
+    if(hi <= lo) return;
+    int mid = lo + (hi-lo)/2;
+    mergeDigits_char_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
+    mergeDigits_char_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
+    mergeDigits_char(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
+}
+
+/**
+ * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
+ * @param a matriz de string de chaves publicas
+ * @param aux matriz auxiliar de chaves publicas
+ * @param priv matriz de string de chaves privadas
+ * @param cod matriz de string de chaves codificadas
+ * @param auxPriv matriz auxiliar de chaves privadas
+ * @param auxCod matriz auxiliar de chaves codificadas
+ * @param lo menor posição
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void mergeDigits_char_sort_recursive_cutoff(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int hi, int order){
+
+    if (hi <= lo + CUTOFF - 1)
+    {
+        insertionSortDigits_char(&a[lo], priv, cod, hi-lo+1, order);
+        return;
+    }
+    int mid = lo + (hi-lo)/2;
+    mergeDigits_char_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
+    mergeDigits_char_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
+    mergeDigits_char(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
+}
+
+/**
+ * Algoritmo de ordenação insertion sort pega num valor de digitos do array e compara com os anteriores
+ * @param a matriz de string de chaves publicas
+ * @param priv matriz de strignde chaves privadas
+ * @param cod matriz de string de chaves codificadas
+ * @param N tamanho das matrizes
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void insertionSortDigits_char(char* a[], char* priv[], char* cod[], int N, int order){
+    for (int i = 0; i < N; ++i) {
+        for (int j = i; j > 0; j--) {
+            if(order == 1){
+                if(numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapCharDigits(a, priv, cod, j, j-1);
+                } else break;
+            } else{
+                if(numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapCharDigits(a, priv, cod, j, j-1);
+                } else break;
+            }
+        }
+    }
+}
+
+/**
+ * Cria o array auxiliar para utilizar no algoritmo de merge sort
+ * @param a matriz de short
+ * @param N tamanho da matriz
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void merge_int_sort_base(short* a[], int N, int order){
+    short **aux = malloc(N * sizeof (short*));
+    merge_int_sort_recursive_cutoff(a, aux, 0, N-1, order);
+}
+
+/**
+ * faz o merge dos 2 arrays de forma a ficarem ordenados
+ * @param a matriz de short
+ * @param aux matriz auxiliar de short
+ * @param lo menor posição
+ * @param mid posição do meio
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void merge_int(short* a[], short* aux[], int lo, int mid, int hi, int order){
+    for (int k = lo; k <= hi; ++k) {
+        aux[k] = malloc(numDigitsLong(key_digits_2_long_int(a[k]) * sizeof (short)));
+        aux[k] = a[k];
+    }
+    int i = lo, j = mid+1;
+    if(order == 1){
+        for (int k = lo; k <= hi; ++k) {
+            if      (i > mid)                           a[k] = aux[j++];
+            else if (j > hi)                            a[k] = aux[i++];
+            else if (key_digits_2_long_int(aux[j]) < key_digits_2_long_int(aux[i]))                   a[k] = aux[j++];
+            else                                        a[k] = aux[i++];
+        }
+    } else{
+        for (int k = lo; k <= hi; ++k) {
+            if      (i > mid)                           a[k] = aux[j++];
+            else if (j > hi)                            a[k] = aux[i++];
+            else if (key_digits_2_long_int(aux[j]) > key_digits_2_long_int(aux[i]))     a[k] = aux[j++];
+            else                                        a[k] = aux[i++];
+        }
+    }
+}
+
+/**
+ * Calcula a posição do meio de ambas as metades do array
+ * @param a matriz de short
+ * @param aux matriz auxiliar de short
+ * @param lo menor posição
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void merge_int_sort_recursive_basic(short* a[], short* aux[], int lo, int hi, int order){
+
+    if(hi <= lo) return;
+    int mid = lo + (hi-lo)/2;
+    merge_int_sort_recursive_basic(a, aux, lo, mid, order);
+    merge_int_sort_recursive_basic(a, aux, mid+1, hi, order);
+    merge_int(a, aux, lo, mid, hi, order);
+}
+
+/**
+ * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
+ * @param a matriz de short
+ * @param aux matriz auxiliar de short
+ * @param lo menor posição
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void merge_int_sort_recursive_cutoff(short* a[], short* aux[], int lo, int hi, int order){
+
+    if (hi <= lo + CUTOFF - 1)
+    {
+        insertionSort_int(&a[lo], hi-lo+1, order);
+        return;
+    }
+    int mid = lo + (hi-lo)/2;
+    merge_int_sort_recursive_basic(a, aux, lo, mid, order);
+    merge_int_sort_recursive_basic(a, aux, mid+1, hi, order);
+    merge_int(a, aux, lo, mid, hi, order);
+}
+
+/**
+ * Algoritmo de ordenação insertion sort pega num valor do array e compara com os anteriores
+ * @param a matriz de short
+ * @param N tamanho da matriz
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void insertionSort_int(short* a[], int N, int order){
+    for (int i = 0; i < N; ++i) {
+        for (int j = i; j > 0; j--) {
+            if(order == 1){
+                if(key_digits_2_long_int(a[j]) < key_digits_2_long_int(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-1);
+                } else break;
+            } else{
+                if(key_digits_2_long_int(a[j]) > key_digits_2_long_int(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapInt(a, j, j-1);
+                } else break;
+            }
+        }
+    }
+}
+
+/**
+  * Cria os arrais auxiliares para utilizar no algoritmo de merge sort (ordem por digitos)
+ * @param a matriz de short com chaves publicas
+ * @param priv matriz de short com  chaves privadas
+ * @param cod matriz de short com chaves codificadas
+ * @param N tamanho das matrizes
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void mergeDigits_int_sort_base(short* a[], short* priv[], short* cod[], int N, int order){
+    short **aux = malloc(N * sizeof (short*));
+    short **auxPriv = malloc(N * sizeof (short*));
+    short **auxCod = malloc(N * sizeof (short*));
+    mergeDigits_int_sort_recursive_cutoff(a, aux, priv, cod, auxPriv, auxCod, 0, N-1, order);
+}
+
+/**
+ * Faz o merge dos 2 arrays de forma a ficarem ordenados (por digitos)
+ * @param a matriz de short com chaves publicas
+ * @param aux matriz auxiliar de chaves publicas
+ * @param priv matriz de short de chaves privadas
+ * @param cod matriz de short de chaves codificadas
+ * @param auxPriv matriz auxiliar de chaves privadas
+ * @param auxCod matriz auxiliar de chaves codificadas
+ * @param lo menor posição
+ * @param mid posição do meio
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void mergeDigits_int(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int mid, int hi, int order){
+    for (int k = lo; k <= hi; ++k) {
+        aux[k] = malloc(numDigitsLong(key_digits_2_long_int(a[k]) * sizeof (short)));
+        auxPriv[k] = malloc(numDigitsLong(key_digits_2_long_int(priv[k]) * sizeof (short)));
+        auxCod[k] = malloc(numDigitsLong(key_digits_2_long_int(cod[k]) * sizeof (short)));
+        aux[k] = a[k];
+        auxPriv[k] = priv[k];
+        auxCod[k] = cod[k];
+    }
+    int i = lo, j = mid+1;
+    if(order == 1){
+        for (int k = lo; k <= hi; ++k) {
+            if (i > mid){
+                a[k] = aux[j++];
+                j--;
+                priv[k] = auxPriv[j++];
+                j--;
+                cod[k] = auxCod[j++];
+            }
+            else if (j > hi){
+                a[k] = aux[i++];
+                i--;
+                priv[k] = auxPriv[i++];
+                i--;
+                cod[k] = auxCod[i++];
+            }
+            else if (numDigitsLong(key_digits_2_long_int(aux[j])) < numDigitsLong(key_digits_2_long_int(aux[i]))){
+                a[k] = aux[j++];
+                j--;
+                priv[k] = auxPriv[j++];
+                j--;
+                cod[k] = auxCod[j++];
+            }
+            else{
+                a[k] = aux[i++];
+                i--;
+                priv[k] = auxPriv[i++];
+                i--;
+                cod[k] = auxCod[i++];
+            }
+        }
+    } else{
+        for (int k = lo; k <= hi; ++k) {
+            if (i > mid){
+                a[k] = aux[j++];
+                j--;
+                priv[k] = auxPriv[j++];
+                j--;
+                cod[k] = auxCod[j++];
+            }
+            else if (j > hi) {
+                a[k] = aux[i++];
+                i--;
+                priv[k] = auxPriv[i++];
+                i--;
+                cod[k] = auxCod[i++];
+            }
+            else if (numDigitsLong(key_digits_2_long_int(aux[j])) > numDigitsLong(key_digits_2_long_int(aux[i]))){
+                a[k] = aux[j++];
+                j--;
+                priv[k] = auxPriv[j++];
+                j--;
+                cod[k] = auxCod[j++];
+            }
+            else {
+                a[k] = aux[i++];
+                i--;
+                priv[k] = auxPriv[i++];
+                i--;
+                cod[k] = auxCod[i++];
+            }
+        }
+    }
+}
+
+/**
+ * Calcula a posição do meio de ambas as metades do array
+ * @param a matriz de short de chaves publicas
+ * @param aux matriz auxiliar de chaves publicas
+ * @param priv matriz de short de chaves privadas
+ * @param cod matriz de short de chaves codificadas
+ * @param auxPriv matriz auxiliar de chaves privadas
+ * @param auxCod matrix auxiliar de chaves codificadas
+ * @param lo menor posição
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void mergeDigits_int_sort_recursive_basic(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int hi, int order){
+
+    if(hi <= lo) return;
+    int mid = lo + (hi-lo)/2;
+    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
+    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
+    mergeDigits_int(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
+}
+
+/**
+ * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
+ * @param a matriz de short de chaves publicas
+ * @param aux matriz auxiliar de chaves publicas
+ * @param priv matriz de short de chaves privadas
+ * @param cod matriz de short de chaves codificadas
+ * @param auxPriv matriz auxiliar de chaves privadas
+ * @param auxCod matriz auxiliar de chaves codificadas
+ * @param lo menor posição
+ * @param hi maior posição
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void mergeDigits_int_sort_recursive_cutoff(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int hi, int order){
+
+    if (hi <= lo + CUTOFF - 1)
+    {
+        insertionSortDigits_int(&a[lo], priv, cod, hi-lo+1, order);
+        return;
+    }
+    int mid = lo + (hi-lo)/2;
+    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, lo, mid, order);
+    mergeDigits_int_sort_recursive_basic(a, aux, priv, cod, auxPriv, auxCod, mid+1, hi, order);
+    mergeDigits_int(a, aux, priv, cod, auxPriv, auxCod, lo, mid, hi, order);
+}
+
+/**
+ * Algoritmo de ordenação insertion sort pega num valor de digitos do array e compara com os anteriores
+ * @param a matriz de short de chaves publicas
+ * @param priv matriz de short de chves privadas
+ * @param cod matriz de short de chaves codificadas
+ * @param N tamanho das matrizes
+ * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
+ */
+void insertionSortDigits_int(short* a[], short* priv[], short* cod[], int N, int order){
+    for (int i = 0; i < N; ++i) {
+        for (int j = i; j > 0; j--) {
+            if(order == 1){
+                if(numDigitsLong(key_digits_2_long_int(a[j])) < numDigitsLong(key_digits_2_long_int(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapIntDigits(a, priv, cod, j, j-1);
+                } else break;
+            } else{
+                if(numDigitsLong(key_digits_2_long_int(a[j])) > numDigitsLong(key_digits_2_long_int(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
+                    swapIntDigits(a, priv, cod, j, j-1);
+                } else break;
+            }
+        }
+    }
 }
