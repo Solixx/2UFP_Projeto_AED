@@ -1,0 +1,19 @@
+Requisitos
+
+Requisitos Implementados:
+•	R1 (AED: 0.5 / LP: 0.5)
+•	R2 (AED: 1.5 / LP: 1.5)
+•	R3 (AED: 1.0 / LP: 1.0)
+•	R4 (AED: 1.5 / LP; 1.5)
+•	R5 (AED: 1.5 / LP: 1.5)
+•	R6 (AED: 2.0 / LP: 1.5)
+•	R7 (AED: 2.0 / LP: 1.5)
+•	R8 (AED: 4.0 / LP: 4.0)
+•	R9 (AED: 4.0 / LP: 4.0)
+
+Requisitos Parcialmente Implementados:
+
+•	R10 (AED: 2.0 / LP: 2.0)
+(Dificuldades na implementação das funções de leitura/input de ficheiros)
+•	R11 (AED: 0.0 / LP: 1.5)
+(Dificuldades na implementação das funções de leitura/input de ficheiros) 
