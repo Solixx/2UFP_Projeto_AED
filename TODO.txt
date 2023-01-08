@@ -1,10 +1,6 @@
 TODO - Projeto LP/AED
 
- ========== IMPORTANTE ==========
-
-Modificar de inteiros completos ex: int n = 157 para um array de inteiros ex: int n[3] = {1,2,3}
-//^Acredito que na verdade seja assim^
-
+// Parei de usar este ficheiro á muito tempo pois mudei para a app Notion
 
  ========== TOPICOS ==========
 
@@ -14,18 +10,18 @@ Topico 2 - ✔️​	(1,5)	(1,5)
 
 Topico 3 - ✔️	(1,0)	(1,0)
 
-Topico 4 - ❌​	(1,5)	(1,5)
+Topico 4 - ✔️​	(1,5)	(1,5)
 
-Topico 5 - ❌​	(1,5)	(1,5)
+Topico 5 - ✔️​	(1,5)	(1,5)
 
-Topico 6 - ❌​	(1,5)	(2,0)
+Topico 6 - ✔️	(1,5)	(2,0)
 
-Topico 7 - ❌​ 	(1,0)	(2,0)
+Topico 7 - ✔️​ 	(1,0)	(2,0)
 
-Topico 8 - ❌​ 	(4,0)	(4,0)
+Topico 8 - ✔️​ 	(4,0)	(4,0)
 
-Topico 9 - ❌​	(4,0)	(4,0)
+Topico 9 - ✔️​	(4,0)	(4,0)
 
-Topico 10 - ❌​	(2,0)	(2,0)
+Topico 10 - ✔️​	(2,0)	(2,0)
 
-Topico 11 - ❌​	(1,5)	(0,0)
+Topico 11 - ✔️​	(1,5)	(0,0)
