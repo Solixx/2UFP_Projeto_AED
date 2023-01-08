@@ -19,7 +19,20 @@
   <component name="ChangeListManager">
     <list default="true" id="4d660894-d3c2-4f74-9e1c-aab11e66193d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/chaves_Ints_Bn.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/chaves_Ints_Bn.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/chaves_publicas_ints.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/chaves_publicas_ints.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/formulas_mat_juntasDigitos_runLength.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/portaChaves.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/portaChaves.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/portaChavesPesquisa.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/portaChavesPesquisa.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/excel/tempo_codigo.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/link_apresentacao_LP_AED.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,6 +252,7 @@
       <workItem from="1673129654301" duration="6262000" />
       <workItem from="1673137073232" duration="3348000" />
       <workItem from="1673140492976" duration="78000" />
+      <workItem from="1673144648141" duration="27000" />
     </task>
     <servers />
   </component>
