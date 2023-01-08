@@ -856,9 +856,7 @@ short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int l
     partialKeyArray = key_long_2_digits_int(partialpubkey);
 
     for (int i = 0; i < lines; ++i) {
-        //if(matrix_kpub[i][0] == NULL) break;
         int k = 0;
-        //if(!matrix_kpub[i] || matrix_kpub[i][0] == 0) continue;
         if(matrix_kpub[i][0] == -1) break;
         for (int j = 0; j < numDigitsLong(key_digits_2_long_int(matrix_kpub[i])); ++j) {
             if(matrix_kpub[i][j] == partialKeyArray[k]){
@@ -1282,6 +1280,7 @@ void remove_keyHolder(KEY_HOLDER** portaChaves, int keyHolderPos){
 
 /**
  * Função que escreve na consola e num ficheiro se uma dada chave existe num dado porta chaves
+ * Complexidade algoritmica Best case: O(1) / Average: O(n) / Worst: O(n^2)
  * @param portaChaves apontador que aponta para os vários porta chaves
  * @param keyHolderPos posição do porta chaves
  * @param keyToSeach chave a ser procurada
@@ -1906,6 +1905,7 @@ void remover_cauda_utilizador(UTILIZADORES_QUEUE* queue) {
 
 /**
  * Procura um utilizador por um dado nome
+ * Complexidade algoritmica Best case: O(1) / Average: O(n) / Worst: O(n)
  * @param queue fila de utilizadores
  * @param name nome a ser procurado
  */
@@ -1939,6 +1939,7 @@ void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name) {
 
 /**
  * Funçãoq eu ordena os utilizador por nome
+ * Complexidade algoritmica Best case: O(n) / Average: O(n^2) / Worst: O(n^2)
  * @param queue fila de utilizadores
  */
 void ordenar_utilizadores(UTILIZADORES_QUEUE* queue){
@@ -2288,6 +2289,7 @@ int charPos(char *a, int d){
 
 /**
  * Algoritmos de ordenacao ShellSort
+ * Complexidade algoritmica Best case: Nlog3(N) / Average: ? / Worst: cN^3/2
  * @param a mmatriz de strings
  * @param N tamanho da matriz
  * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
@@ -2317,6 +2319,7 @@ void shellSortChar(char** a, int N, int order){
 
 /**
  * Algoritmos de ordenacao ShellSort (ordenar por numero de digitos)
+ * Complexidade algoritmica Best case: Nlog3(N) / Average: ? / Worst: cN^3/2
  * @param a matriz de strings com chaves publicas
  * @param priv matriz de strings com chaves privadas
  * @param cod matriz de strings com chaves codificadas
@@ -2388,6 +2391,7 @@ void swapChar(char** a, int i, int min){
 
 /**
  * Algoritmos de ordenacao ShellSort
+ * Complexidade algoritmica Best case: Nlog3(N) / Average: ? / Worst: cN^3/2
  * @param a matriz de short
  * @param N tamanho da matriz
  * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
@@ -2417,6 +2421,7 @@ void shellSortInt(short** a, int N, int order){
 
 /**
  * Algoritmos de ordenacao ShellSort (ordenar por numero de digitos)
+ * Complexidade algoritmica Best case: Nlog3(N) / Average: ? / Worst: cN^3/2
  * @param a matriz de short com chaves publicas
  * @param priv matriz de short com chaves privadas
  * @param cod matriz de short com chaves codificadas
@@ -2488,6 +2493,7 @@ void swapInt(short** a, int i, int min){
 
 /**
  * Cria o array auxiliar para utilizar no algoritmo de merge sort
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de strings
  * @param N tamanho da matriz
  * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
@@ -2499,6 +2505,7 @@ void merge_char_sort_base(char* a[], int N, int order){
 
 /**
  * faz o merge dos 2 arrays de forma a ficarem ordenados
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de strings
  * @param aux matriz auxiliar
  * @param lo menor posição
@@ -2508,6 +2515,10 @@ void merge_char_sort_base(char* a[], int N, int order){
  */
 void merge_char(char* a[], char* aux[], int lo, int mid, int hi, int order){
     for (int k = lo; k <= hi; ++k) {
+        if(strcmp(a[k], "-1") == 0){
+            hi--;
+            continue;
+        }
         aux[k] = malloc(strlen(a[k]) * sizeof (char));
         strcpy(aux[k], a[k]);
     }
@@ -2531,6 +2542,7 @@ void merge_char(char* a[], char* aux[], int lo, int mid, int hi, int order){
 
 /**
  * Calcula a posição do meio de ambas as metades do array
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de strings
  * @param aux matriz auxiliar
  * @param lo menor posição
@@ -2548,6 +2560,7 @@ void merge_char_sort_recursive_basic(char* a[], char* aux[], int lo, int hi, int
 
 /**
  * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de strings
  * @param aux matriz auxiliar
  * @param lo menor posição
@@ -2569,6 +2582,7 @@ void merge_char_sort_recursive_cutoff(char* a[], char* aux[], int lo, int hi, in
 
 /**
  * Algoritmo de ordenação insertion sort pega num valor do array e compara com os anteriores
+ * Complexidade algoritmica: Best case: N / Average: 1/4N^2 / Worst: 1/2N^2
  * @param a matriz de strings
  * @param N tamanho da matriz
  * @param order tipo de ordem (1 - ascendente e 0 - descendente)
@@ -2577,10 +2591,12 @@ void insertionSort_char(char* a[], int N, int order){
     for (int i = 0; i < N; ++i) {
         for (int j = i; j > 0; j--) {
             if(order == 1){
+                if(strcmp(a[j], "-1") == 0) break;
                 if(atoll(a[j]) < atoll(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
                     swapChar(a, j, j-1);
                 } else break;
             } else{
+                if(strcmp(a[j], "-1") == 0) break;
                 if(atoll(a[j]) > atoll(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
                     swapChar(a, j, j-1);
                 } else break;
@@ -2591,6 +2607,7 @@ void insertionSort_char(char* a[], int N, int order){
 
 /**
  * Cria os arrais auxiliares para utilizar no algoritmo de merge sort (ordem por digitos)
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de strings com chaves publicas
  * @param priv matriz de strings com chaves privadas
  * @param cod matriz de strings com chaves codificadas
@@ -2606,6 +2623,7 @@ void mergeDigits_char_sort_base(char* a[], char* priv[], char* cod[], int N, int
 
 /**
  * faz o merge dos 2 arrays de forma a ficarem ordenados (por digitos)
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de strings com chaves publicas
  * @param aux matriz auxiliar de chaves publicas
  * @param priv matriz de strings com chaves privadas
@@ -2619,6 +2637,10 @@ void mergeDigits_char_sort_base(char* a[], char* priv[], char* cod[], int N, int
  */
 void mergeDigits_char(char* a[], char* aux[], char* priv[], char* cod[], char* auxPriv[], char* auxCod[], int lo, int mid, int hi, int order){
     for (int k = lo; k <= hi; ++k) {
+        if(strcmp(a[k], "-1") == 0){
+            hi--;
+            continue;
+        }
         aux[k] = malloc((strlen(a[k])+1) * sizeof (char));
         auxPriv[k] = malloc((strlen(priv[k])+1) * sizeof (char));
         auxCod[k] = malloc((strlen(cod[k])+1) * sizeof (char));
@@ -2694,6 +2716,7 @@ void mergeDigits_char(char* a[], char* aux[], char* priv[], char* cod[], char* a
 
 /**
  * Calcula a posição do meio de ambas as metades do array
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de string de chaves publicas
  * @param aux matriz auxiliar de chaves publicas
  * @param priv matriz de chaves privadas
@@ -2715,6 +2738,7 @@ void mergeDigits_char_sort_recursive_basic(char* a[], char* aux[], char* priv[],
 
 /**
  * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de string de chaves publicas
  * @param aux matriz auxiliar de chaves publicas
  * @param priv matriz de string de chaves privadas
@@ -2740,6 +2764,7 @@ void mergeDigits_char_sort_recursive_cutoff(char* a[], char* aux[], char* priv[]
 
 /**
  * Algoritmo de ordenação insertion sort pega num valor de digitos do array e compara com os anteriores
+ * Complexidade algoritmica: Best case: N / Average: 1/4N^2 / Worst: 1/2N^2
  * @param a matriz de string de chaves publicas
  * @param priv matriz de strignde chaves privadas
  * @param cod matriz de string de chaves codificadas
@@ -2750,10 +2775,12 @@ void insertionSortDigits_char(char* a[], char* priv[], char* cod[], int N, int o
     for (int i = 0; i < N; ++i) {
         for (int j = i; j > 0; j--) {
             if(order == 1){
+                if(strcmp(a[j], "-1") == 0) break;
                 if(numDigitsLong(atoll(a[j])) < numDigitsLong(atoll(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
                     swapCharDigits(a, priv, cod, j, j-1);
                 } else break;
             } else{
+                if(strcmp(a[j], "-1") == 0) break;
                 if(numDigitsLong(atoll(a[j])) > numDigitsLong(atoll(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
                     swapCharDigits(a, priv, cod, j, j-1);
                 } else break;
@@ -2764,6 +2791,7 @@ void insertionSortDigits_char(char* a[], char* priv[], char* cod[], int N, int o
 
 /**
  * Cria o array auxiliar para utilizar no algoritmo de merge sort
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de short
  * @param N tamanho da matriz
  * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
@@ -2775,6 +2803,7 @@ void merge_int_sort_base(short* a[], int N, int order){
 
 /**
  * faz o merge dos 2 arrays de forma a ficarem ordenados
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de short
  * @param aux matriz auxiliar de short
  * @param lo menor posição
@@ -2784,6 +2813,10 @@ void merge_int_sort_base(short* a[], int N, int order){
  */
 void merge_int(short* a[], short* aux[], int lo, int mid, int hi, int order){
     for (int k = lo; k <= hi; ++k) {
+        if(a[k][0] == -1){
+            hi--;
+            continue;
+        }
         aux[k] = malloc(numDigitsLong(key_digits_2_long_int(a[k]) * sizeof (short)));
         aux[k] = a[k];
     }
@@ -2807,6 +2840,7 @@ void merge_int(short* a[], short* aux[], int lo, int mid, int hi, int order){
 
 /**
  * Calcula a posição do meio de ambas as metades do array
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de short
  * @param aux matriz auxiliar de short
  * @param lo menor posição
@@ -2824,6 +2858,7 @@ void merge_int_sort_recursive_basic(short* a[], short* aux[], int lo, int hi, in
 
 /**
  * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de short
  * @param aux matriz auxiliar de short
  * @param lo menor posição
@@ -2845,6 +2880,7 @@ void merge_int_sort_recursive_cutoff(short* a[], short* aux[], int lo, int hi, i
 
 /**
  * Algoritmo de ordenação insertion sort pega num valor do array e compara com os anteriores
+ * Complexidade algoritmica: Best case: N / Average: 1/4N^2 / Worst: 1/2N^2
  * @param a matriz de short
  * @param N tamanho da matriz
  * @param order tipo de ordenação (1 - ascendente / 0 - descendente)
@@ -2853,10 +2889,12 @@ void insertionSort_int(short* a[], int N, int order){
     for (int i = 0; i < N; ++i) {
         for (int j = i; j > 0; j--) {
             if(order == 1){
+                if(a[j][0] == -1) break;
                 if(key_digits_2_long_int(a[j]) < key_digits_2_long_int(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
                     swapInt(a, j, j-1);
                 } else break;
             } else{
+                if(a[j][0] == -1) break;
                 if(key_digits_2_long_int(a[j]) > key_digits_2_long_int(a[j-1])){  //Para ordenar descendente é mudar de "<" para ">"
                     swapInt(a, j, j-1);
                 } else break;
@@ -2867,6 +2905,7 @@ void insertionSort_int(short* a[], int N, int order){
 
 /**
   * Cria os arrais auxiliares para utilizar no algoritmo de merge sort (ordem por digitos)
+  * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de short com chaves publicas
  * @param priv matriz de short com  chaves privadas
  * @param cod matriz de short com chaves codificadas
@@ -2882,6 +2921,7 @@ void mergeDigits_int_sort_base(short* a[], short* priv[], short* cod[], int N, i
 
 /**
  * Faz o merge dos 2 arrays de forma a ficarem ordenados (por digitos)
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de short com chaves publicas
  * @param aux matriz auxiliar de chaves publicas
  * @param priv matriz de short de chaves privadas
@@ -2895,6 +2935,10 @@ void mergeDigits_int_sort_base(short* a[], short* priv[], short* cod[], int N, i
  */
 void mergeDigits_int(short* a[], short* aux[], short* priv[], short* cod[], short* auxPriv[], short* auxCod[], int lo, int mid, int hi, int order){
     for (int k = lo; k <= hi; ++k) {
+        if(a[k][0] == -1){
+            hi--;
+            continue;
+        }
         aux[k] = malloc(numDigitsLong(key_digits_2_long_int(a[k]) * sizeof (short)));
         auxPriv[k] = malloc(numDigitsLong(key_digits_2_long_int(priv[k]) * sizeof (short)));
         auxCod[k] = malloc(numDigitsLong(key_digits_2_long_int(cod[k]) * sizeof (short)));
@@ -2970,6 +3014,7 @@ void mergeDigits_int(short* a[], short* aux[], short* priv[], short* cod[], shor
 
 /**
  * Calcula a posição do meio de ambas as metades do array
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de short de chaves publicas
  * @param aux matriz auxiliar de chaves publicas
  * @param priv matriz de short de chaves privadas
@@ -2991,6 +3036,7 @@ void mergeDigits_int_sort_recursive_basic(short* a[], short* aux[], short* priv[
 
 /**
  * Calcula a posição do meio de ambas as metades do array e caso o tamanho do array seja menor que 10 usa o insertion sort
+ * Complexidade algoritmica: Best case: 1/2NlgN / Average: NlgN / Worst: NlgN
  * @param a matriz de short de chaves publicas
  * @param aux matriz auxiliar de chaves publicas
  * @param priv matriz de short de chaves privadas
@@ -3016,6 +3062,7 @@ void mergeDigits_int_sort_recursive_cutoff(short* a[], short* aux[], short* priv
 
 /**
  * Algoritmo de ordenação insertion sort pega num valor de digitos do array e compara com os anteriores
+ * Complexidade algoritmica: Best case: N / Average: 1/4N^2 / Worst: 1/2N^2
  * @param a matriz de short de chaves publicas
  * @param priv matriz de short de chves privadas
  * @param cod matriz de short de chaves codificadas
@@ -3026,10 +3073,12 @@ void insertionSortDigits_int(short* a[], short* priv[], short* cod[], int N, int
     for (int i = 0; i < N; ++i) {
         for (int j = i; j > 0; j--) {
             if(order == 1){
+                if(a[j][0] == -1) break;
                 if(numDigitsLong(key_digits_2_long_int(a[j])) < numDigitsLong(key_digits_2_long_int(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
                     swapIntDigits(a, priv, cod, j, j-1);
                 } else break;
             } else{
+                if(a[j][0] == -1) break;
                 if(numDigitsLong(key_digits_2_long_int(a[j])) > numDigitsLong(key_digits_2_long_int(a[j-1]))){  //Para ordenar descendente é mudar de "<" para ">"
                     swapIntDigits(a, priv, cod, j, j-1);
                 } else break;
