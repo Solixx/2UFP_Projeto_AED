@@ -1630,6 +1630,16 @@ void print_keyHolders(KEY_HOLDER** portaChaves){
 // ===================================================================================================================================== //
 // ========================================== FUNÇÕES PARA UTILIZADORES ================================================================ //
 // ===================================================================================================================================== //
+
+/**
+ * Função que cria um utilizador com uma dada lista de porta chaves (ordenado alfabeticamente por nome)
+ * @param queue fila de utilizadores
+ * @param utilizadores apontador que aponta para os vários utilizadores
+ * @param name nome a ser inserido no utilizador
+ * @param email email a ser inserido no utilizador
+ * @param key_holder_list lista de porta chaves a ser inserida no utilizador
+ * @param pos posição do primeiro porta chaves
+ */
 void create_utilizador_ordenado(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
     int stopKeyHolderPos = 1;
     UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
@@ -1638,55 +1648,56 @@ void create_utilizador_ordenado(UTILIZADORES_QUEUE* queue, UTILIZADORES **utiliz
     utilizador->email = malloc(sizeof (char) * (strlen(email) + 1));
     strcpy(utilizador->email, email);
     utilizador->email = email;
+    utilizador->next = NULL;
     KEY_HOLDER *currKeyHolder = key_holder_list;
-    while (stopKeyHolderPos < pos){
+    while (stopKeyHolderPos < pos){     // ciclo até chegar ao porta chaves escolhido
         currKeyHolder = currKeyHolder->next;
         stopKeyHolderPos++;
-        if (currKeyHolder == NULL){
+        if (currKeyHolder == NULL){     // se não existir o porta chaves
             printf("Porta Chaves nao encontrado\n");
             return;
         }
     }
     utilizador->key_holder_list = currKeyHolder;
-    utilizador->next = NULL;
 
+    // se a lista de utilizadores estiver vazia
     if(*utilizadores == NULL){
-        *utilizadores = utilizador;
+        *utilizadores = utilizador; // este vai ser o primerio utilizador
         queue->size++;
-        enqueue(queue, utilizador);
+        enqueue(queue, utilizador); // chama a função para ordenar (head & tail) na fila de utilizadores
         return;
     }
 
-    /*
-    UTILIZADORES *curr = *utilizadores;
-    while (curr->next != NULL){
-        curr = curr->next;
-    }
-    curr->next = utilizador;
-    queue->size++;
-    enqueue(queue, utilizador->next);
-    */
-
+    // ciclo para encontrar a posição do novo utilizador (ordenado alfabeticamente)
     UTILIZADORES *curr = *utilizadores;
     UTILIZADORES *prev = NULL;
-
-    while (curr != NULL && strcmp(curr->name, name) < 0) {
-        prev = curr;
-        curr = curr->next;
+    while (curr != NULL && strcmp(curr->name, name) < 0) {  // o ciclo continua a procurar a pos enquanto existirem porta chaves com um nome alfabeticamente "menor" que o utilizador a ser criado
+        prev = curr;        // porta chaves anterior vai passar a ser igual ao atual
+        curr = curr->next;  // porta chaves atual vai passar a ser o proximo porta chaves
     }
 
+    // se não existirem porta chaves anteriores quer dizer que este utilizador é o que tem o nome alfabeticamente "menor" etnão fica em primeiro
     if (prev == NULL) {
         utilizador->next = *utilizadores;
         *utilizadores = utilizador;
         queue->head = utilizador;
-    } else {
-        utilizador->next = prev->next;
-        prev->next = utilizador;
+    } else {    // se existirem utilizadores com nome "menor"
+        utilizador->next = prev->next;  // o novo utilizador vai apontar para o antigo utilizador apontado pelo anterior
+        prev->next = utilizador;        // e o utilizador anteriro agora vai apontar para o novo utilizador
     }
 
     queue->size++;
 }
 
+/**
+ * Função que cria um utilizador à cauda com uma dada lista de porta chaves
+ * @param queue fila de utilizadores
+ * @param utilizadores apontador que aponta para os vários utilizadores
+ * @param name nome a ser inserido no utilizador
+ * @param email email a ser inserido no utilizador
+ * @param key_holder_list lista de porta chaves a ser inserida no utilizador
+ * @param pos posição do primeiro porta chaves
+ */
 void create_utilizador_cauda(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
     int stopKeyHolderPos = 1;
     UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
@@ -1695,34 +1706,46 @@ void create_utilizador_cauda(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizado
     utilizador->email = malloc(sizeof (char) * (strlen(email) + 1));
     strcpy(utilizador->email, email);
     utilizador->email = email;
+    utilizador->next = NULL;
     KEY_HOLDER *currKeyHolder = key_holder_list;
-    while (stopKeyHolderPos < pos){
+    while (stopKeyHolderPos < pos){     // ciclo até chegar ao porta chaves escolhido
         currKeyHolder = currKeyHolder->next;
         stopKeyHolderPos++;
-        if (currKeyHolder == NULL){
+        if (currKeyHolder == NULL){     // se não existir o porta chaves
             printf("Porta Chaves nao encontrado\n");
             return;
         }
     }
     utilizador->key_holder_list = currKeyHolder;
-    utilizador->next = NULL;
 
+    // se a lista de utilizadores estiver vazia
     if(*utilizadores == NULL){
-        *utilizadores = utilizador;
+        *utilizadores = utilizador; // este vai ser o primerio utilizador
         queue->size++;
-        enqueue(queue, utilizador);
+        enqueue(queue, utilizador); // chama a função para ordenar (head & tail) na fila de utilizadores
         return;
     }
 
+    // ciclo para percorrer os utilizadores até chegar ao penultimo
     UTILIZADORES *curr = *utilizadores;
     while (curr->next != NULL){
         curr = curr->next;
     }
+    // o penultimo utilizador vai apontar para o novo utilizar
     curr->next = utilizador;
     queue->size++;
-    enqueue(queue, curr->next);
+    enqueue(queue, curr->next);  // chama a função para ordenar (head & tail) na fila de utilizadores
 }
 
+/**
+ * Função que cria um utilizador à cabeça com uma dada lista de porta chaves
+ * @param queue fila de utilizadores
+ * @param utilizadores apontador que aponta para os vários utilizadores
+ * @param name nome a ser inserido no utilizador
+ * @param email email a ser inserido no utilizador
+ * @param key_holder_list lista de porta chaves a ser inserida no utilizador
+ * @param pos posição do primeiro porta chaves
+ */
 void create_utilizador_cabeca(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizadores, char* name, char* email, KEY_HOLDER* key_holder_list, int pos) {
     int stopKeyHolderPos = 1;
     UTILIZADORES* utilizador = malloc(sizeof(UTILIZADORES));
@@ -1731,86 +1754,110 @@ void create_utilizador_cabeca(UTILIZADORES_QUEUE* queue, UTILIZADORES **utilizad
     utilizador->email = malloc(sizeof (char) * (strlen(email) + 1));
     strcpy(utilizador->email, email);
     utilizador->email = email;
-
+    utilizador->next = *utilizadores;
     KEY_HOLDER *currKeyHolder = key_holder_list;
-    while (stopKeyHolderPos < pos){
+    while (stopKeyHolderPos < pos){     // ciclo até chegar ao porta chaves escolhido
         currKeyHolder = currKeyHolder->next;
         stopKeyHolderPos++;
-        if (currKeyHolder == NULL){
+        if (currKeyHolder == NULL){     // se não existir o porta chaves
             printf("Porta Chaves nao encontrado\n");
             return;
         }
     }
     utilizador->key_holder_list = currKeyHolder;
-    utilizador->next = *utilizadores;
 
+    // se a lista de utilizadores estiver vazia
     if(*utilizadores == NULL){
-        *utilizadores = utilizador;
+        *utilizadores = utilizador; // este vai ser o primerio utilizador
         queue->size++;
-        enqueue(queue, utilizador);
+        enqueue(queue, utilizador); // chama a função para ordenar (head & tail) na fila de utilizadores
         return;
     }
 
+    // Insere o novo utilizador no inicio da lista ligada
     queue->size++;
-    *utilizadores = utilizador;
-    queue->head = utilizador;
+    *utilizadores = utilizador; // o primeiro utilizador vai ser este novo utilizador
+    queue->head = utilizador;   // a head da fila vai passar a ser este novo utilizador
 }
 
+/**
+ * Atualiza a head e tail da fila de utilizadores
+ * @param queue fila de utilizadores
+ * @param utilizador apontador de um utilizador
+ */
 void enqueue(UTILIZADORES_QUEUE* queue, UTILIZADORES* utilizador) {
-    if (queue->tail == NULL) {
-        queue->head = utilizador;
-        queue->tail = utilizador;
-    } else {
-        queue->tail->next = utilizador;
-        queue->tail = utilizador;
+    if (queue->tail == NULL) {  // se a tail for NULL que dizer que a fila está vaiza
+        queue->head = utilizador;   // então a head vai ser o utilizador
+        queue->tail = utilizador;   // a tail tambem vai ser o utilizador
+    } else {    // se a fila não estiver vazia
+        queue->tail->next = utilizador; // a antiga tail vai apontador para o utilizador
+        queue->tail = utilizador;       // tail vai ser atualizada para o utilizador (no fim a tail aponta para ela mesma por causa da linha anterior)
     }
 }
 
+/**
+ * Função para dar free a toda a fila de utilizadores
+ * @param queue fila de utilizadors
+ */
 void dequeue(UTILIZADORES_QUEUE* queue){
-    while (queue->head != NULL){
-        if(queue->head == queue->tail){
+    while (queue->head != NULL){        // cilco enquanto a head for diferente de NULL
+        if(queue->head == queue->tail){ // se a head e a tail forem iguais então só existe 1 utilizador
             queue->head = NULL;
             queue->tail = NULL;
         }
-        else{
-            UTILIZADORES *temp = queue->head;
-            queue->head = queue->head->next;
-            free(temp);
+        else{                                   // se a head e a tail não forem iguais a fila tem vários utilizadores
+            UTILIZADORES *temp = queue->head;   // temp a apontar para a head
+            queue->head = queue->head->next;    // a head vai passar a ser o prox utilizador
+            free(temp);                 // free à antiga head
         }
     }
 }
 
+/**
+ * Função que escreve na consola todos os utilizadores
+ * @param queue fila de utilizadores
+ */
 void print_utilizadores(UTILIZADORES_QUEUE* queue) {
     UTILIZADORES* curr = queue->head;
     while (curr != NULL) {
         printf("Name: %s\n", curr->name);
         printf("Email: %s\n", curr->email);
-        print_keyHolders(&curr->key_holder_list);
+        print_keyHolders(&curr->key_holder_list);   // chama a função para escrever todos os porta chaves (deste utilizador)
         curr = curr->next;
     }
 }
 
+/**
+ * Função que remove um utilizasdor por nome
+ * @param queue fila de utilizadores
+ * @param name nome do utilizador
+ */
 void remover_nome_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
     UTILIZADORES* curr = queue->head;
     UTILIZADORES* previous = NULL;
 
+    // percorre a fila de utilizadores até encontrar um utilizador com o nome a ser procurado
     while (curr != NULL && strcmp(curr->name, name) != 0) {
-        previous = curr;
-        curr = curr->next;
+        previous = curr;        // o utilizador o valor de prev com o utilizador anterior
+        curr = curr->next;      // percorre a fila de utilizadores
     }
 
+    // se não encontrar nenhum utilizador com o nome a ser procurado
     if (curr == NULL) {
         printf("Utilizador Nao Encontrado\n");
         return;
     }
 
+    // se existe um utilizador com o nome a ser procurado remove
     printf("Utilizador Apagado: %s\n", curr->name);
+    // se o prev for NULL quer dizer que é o primeiro utilizador
     if (previous == NULL) {
-        queue->head = curr->next;
-    } else {
-        previous->next = curr->next;
+        queue->head = curr->next;    // atualiza a head para o proximo utilizador
+    } else {    // se não for o primeiro
+        previous->next = curr->next;   // o anterior vai apontar para o proximo do utilizador a ser removido
     }
 
+    // se o utilizador removido fosee o ultimo da fila a tail vai passar a ser o utilizador anterior ao que foi apagado
     if (curr->next == NULL) {
         queue->tail = previous;
     }
@@ -1819,66 +1866,86 @@ void remover_nome_utilizador(UTILIZADORES_QUEUE* queue, char* name) {
     free(curr);
 }
 
+/**
+ * Função que remove um utilizador à cabeça
+ * @param queue fila de utilizadores
+ */
 void remover_cabeca_utilizador(UTILIZADORES_QUEUE* queue) {
     printf("Utilizador Apagado: %s\n", queue->head->name);
-    queue->head = queue->head->next;
+    queue->head = queue->head->next;    // a head passa a ser o prox utilizador
 
     queue->size--;
 }
 
+/**
+ * Função que remove um utilizador à cauda
+ * @param queue fila de utilizadores
+ */
 void remover_cauda_utilizador(UTILIZADORES_QUEUE* queue) {
     UTILIZADORES *curr = queue->head;
     UTILIZADORES* previous = NULL;
 
+    // percorre a fila de utilizadores
     while (curr->next != NULL){
         previous = curr;
         curr = curr->next;
     }
 
     printf("Utilizador Apagado: %s\n", curr->name);
+    // se o utilizador a ser apagado não tinha anterior então era o primeiro
     if (previous == NULL) {
         queue->head = NULL;
         queue->tail = NULL;
-    } else {
-        previous->next = NULL;
-        queue->tail = previous;
+    } else {    // se não era o primeiro
+        previous->next = NULL;  // o utilizador anterior vai apontar para NULL
+        queue->tail = previous; // a tail vai passar a ser o utilizador anterior
     }
 
     queue->size--;
 }
 
+/**
+ * Procura um utilizador por um dado nome
+ * @param queue fila de utilizadores
+ * @param name nome a ser procurado
+ */
 void search_utilizador_by_name(UTILIZADORES_QUEUE* queue, char* name) {
     int exist = 0;
-    char nomeMinisculas[MAX_NAME_LEN];
-    char nomeUtilMinusculas[MAX_NAME_LEN];
+    char nomeMinisculas[strlen(name)];  // array que vai ter o nome a ser procurado em minusculas
     UTILIZADORES* curr = queue->head;
 
-    for (int i = 0; i < strlen(name); ++i) {
+    for (int i = 0; i < strlen(name); ++i) {    // mudar todos os carateres do nome a procurar para minusculas
         nomeMinisculas[i] = tolower(name[i]);
     }
-    nomeMinisculas[strlen(name)] = '\0';
+    nomeMinisculas[strlen(name)] = '\0';    // inserir o \0 no fim da string
     while (curr != NULL) {
-        for (int i = 0; i < strlen(curr->name); ++i) {
+        char nomeUtilMinusculas[strlen(curr->name)];    // array que vai ter o nome do utilizador em minusculas
+        for (int i = 0; i < strlen(curr->name); ++i) {  // mudar todos os carateres do nome do utilizador para minusculas
             nomeUtilMinusculas[i] = tolower(curr->name[i]);
         }
-        nomeUtilMinusculas[strlen(curr->name)] = '\0';
-        if (strstr(nomeUtilMinusculas, nomeMinisculas) != NULL) {
-            exist = 1;
-            printf("Name: %s\n", curr->name);
+        nomeUtilMinusculas[strlen(curr->name)] = '\0';  // inserir o \0 no fim da string
+        if (strstr(nomeUtilMinusculas, nomeMinisculas) != NULL) {   // se existir a sub string "nomeMinusculas" (nome a ser procurado) no nome do utilizador
+            exist = 1;                                              // existe
+            printf("Name: %s\n", curr->name);                // escreve na consola
             printf("Email: %s\n", curr->email);
             print_keyHolders(&curr->key_holder_list);
         }
         curr = curr->next;
     }
-    if(exist == 0){
+    if(exist == 0){ // se nao existir
         printf("Utilizador Nao Econtrado\n");
     }
 }
 
+/**
+ * Funçãoq eu ordena os utilizador por nome
+ * @param queue fila de utilizadores
+ */
 void ordenar_utilizadores(UTILIZADORES_QUEUE* queue){
-    UTILIZADORES* current;
+    UTILIZADORES* curr;
     UTILIZADORES* index;
 
+    // se a fila estiver vazia
     if (queue == NULL) {
         return;
     }
@@ -1887,15 +1954,19 @@ void ordenar_utilizadores(UTILIZADORES_QUEUE* queue){
         return;
     }
 
-    for (current = queue->head; current->next != NULL; current = current->next) {
-        for (index = current->next; index != NULL; index = index->next) {
-            if (strcmp(current->name, index->name) > 0) {
-                char* temp_name = current->name;
-                char* temp_email = current->email;
-                KEY_HOLDER* temp_key_holder_list = current->key_holder_list;
-                current->name = index->name;
-                current->email = index->email;
-                current->key_holder_list = index->key_holder_list;
+    // bubble sort
+    // ciclo que percorre os utilizadores até o proximo ser NULL
+    for (curr = queue->head; curr->next != NULL; curr = curr->next) {
+        // ciclo que percorre os utilizadors até o index ser NULL (index inicial é sempre o prox utilizador do primeiro ciclo)
+        for (index = curr->next; index != NULL; index = index->next) {
+            if (strcmp(curr->name, index->name) > 0) {   // se o index->name for menor que o curr->name
+                char* temp_name = curr->name;            // guarda temporariamente o nome do curr
+                char* temp_email = curr->email;          // guarda temporariamente o email do curr
+                KEY_HOLDER* temp_key_holder_list = curr->key_holder_list;    // guardar temporariamente a lista de porta chaves do curr
+                // Troca as posições dos utilizadores curr e index
+                curr->name = index->name;
+                curr->email = index->email;
+                curr->key_holder_list = index->key_holder_list;
                 index->name = temp_name;
                 index->email = temp_email;
                 index->key_holder_list = temp_key_holder_list;
@@ -1908,12 +1979,24 @@ void ordenar_utilizadores(UTILIZADORES_QUEUE* queue){
 // ===================================================================================================================================== //
 // ============================================== FUNÇÕES FREE ========================================================================= //
 // ===================================================================================================================================== //
+
+/**
+ * Função que dá free à matriz de Char em N linhas
+ * @param matrix matriz
+ * @param N numero de linhas
+ */
 void freeMatrixChar(char **matrix, int N){
     for (int i = 0; i < N; ++i) {
         matrix[i] = NULL;
         free(matrix[i]);
     }
 }
+
+/**
+ * Função que dá free à matriz de Ints em N linhas
+ * @param matrix matriz
+ * @param N nuero de linhas
+ */
 void freeMatrixShort(short **matrix, int N){
     for (int i = 0; i < N; ++i) {
         if(matrix[i] != NULL){

@@ -23,10 +23,14 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/2UFP_Projeto_AED.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/projeto.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/2UFP_Projeto_AED.dir/lib_projeto/testes.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/chaves_Ints_Bn.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/chaves_Ints_Bn.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/chaves_publicas_ints.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/chaves_publicas_ints.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/portaChaves.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/portaChaves.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/portaChavesPesquisa.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/portaChavesPesquisa.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib_projeto/projeto.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/projeto.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib_projeto/testes.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib_projeto/testes.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -244,6 +248,7 @@
       <workItem from="1673123937897" duration="741000" />
       <workItem from="1673127803858" duration="1417000" />
       <workItem from="1673129654301" duration="6262000" />
+      <workItem from="1673137073232" duration="3348000" />
     </task>
     <servers />
   </component>
@@ -260,16 +265,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/lib_projeto/testes.c</url>
-          <line>506</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

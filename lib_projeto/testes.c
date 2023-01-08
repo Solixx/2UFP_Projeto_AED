@@ -52,9 +52,9 @@ int main_test(){
     }
     */
 
-    //portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
+    portaChaves = clienteKeyHolder(portaChaves, mString, mInts);
 
-    //clienteUtilizadores(utilizador, queue, portaChaves);
+    clienteUtilizadores(utilizador, queue, portaChaves);
 
     freeMatrixChar(mString.matrixPub, mString.lines);
     freeMatrixChar(mString.matrixPriv, mString.lines);
@@ -69,14 +69,15 @@ int main_test(){
     free(mInts.matrixPriv);
     free(mInts.matrixCod);
 
-    /*
+
     end = clock();
     execution_time = ((double)(end - start))/CLOCKS_PER_SEC;
     printf("Numero de Matrix Strings %d\n", mString.lines);
     printf("Numero de Matrix Ints %d\n", mString.lines);
     printf("Porta Chaves\n");
+    printf("Utilizadores\n");
     printf("Time = %f\n", execution_time);
-    */
+
 
     return 0;
 }
@@ -435,7 +436,7 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
     insert_keyHolder(&portaChaves, mString, mInts, 0);
     insert_keyHolder(&portaChaves, mString, mInts, 1);
     insert_keyHolder(&portaChaves, mString, mInts, 2);
-    //print_keyHolders(&portaChaves);
+    print_keyHolders(&portaChaves);
 
     searchSingleKey_inKeyHolder(portaChaves, 2, 2014, 1, filenameSearch);
 
@@ -444,13 +445,13 @@ KEY_HOLDER* clienteKeyHolder(KEY_HOLDER *portaChaves, struct matrixString mStrin
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 4);
     //edit_keyHolder(&portaChaves, mString, mInts, 2, 10, 6);
 
-    //print_keyHolders(&portaChaves);
+    print_keyHolders(&portaChaves);
 
     save_txt_keyHolder(&portaChaves, mString, mInts, 2, filename);
 
     remove_keyHolder(&portaChaves, 1);
 
-    //print_keyHolders(&portaChaves);
+    print_keyHolders(&portaChaves);
 
     /*
     printf("Do ficheiro de texto\n");
@@ -489,19 +490,18 @@ void clienteUtilizadores(UTILIZADORES *utilizador, UTILIZADORES_QUEUE queue, KEY
 
     print_utilizadores(&queue);
 
-    //remover_nome_utilizador(&queue, "Manuel");
+    remover_nome_utilizador(&queue, "Manuel");
     //remover_cabeca_utilizador(&queue);
-    remover_cauda_utilizador(&queue);
-    //aux = realloc(aux, queue.size * sizeof (UTILIZADORES*));
-
-    print_utilizadores(&queue);
-
-    //printf("Ordenado\n");
-    //ordenar_utilizadores(&queue);
+    //remover_cauda_utilizador(&queue);
 
     //print_utilizadores(&queue);
 
-    //search_utilizador_by_name(&queue, "Manuel");
+    //printf("Ordenado\n");
+    ordenar_utilizadores(&queue);
+
+    print_utilizadores(&queue);
+
+    search_utilizador_by_name(&queue, "Manuel");
     //search_utilizador_by_name(&queue, "Ricardo");
 
     //print_utilizadores(&queue);
