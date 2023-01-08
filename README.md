@@ -1,5 +1,5 @@
 <h1>Projeto LP/AED</h1>
-<h2>Grupo: Manuel Gonçalves nº 43087</h2>
+<h3>Grupo: Manuel Gonçalves nº 43087</h3>
 
 <h2>Rquisitos</h2>
 <h3>Implementados</h3>
