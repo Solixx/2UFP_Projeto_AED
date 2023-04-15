@@ -54,3 +54,5 @@ A chave 230 nao existe na matrix de chaves publicas de Strings do porta chaves 2
 A chave 230 existe na matrix de chaves publicas de Inteiros na prosicao 0 do porta chaves 2
 A chave 230 nao existe na matrix de chaves publicas de Strings do porta chaves 2
 A chave 230 nao existe na matrix de chaves publicas de Inteiros do porta chaves 2
+A chave 230 nao existe na matrix de chaves publicas de Strings do porta chaves 2
+A chave 230 nao existe na matrix de chaves publicas de Inteiros do porta chaves 2
